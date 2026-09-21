@@ -1,5 +1,5 @@
 # PROGRESS TRACKER: EverLife (v1.0-SMA)
-**Orchestration Status: SESI-06 REDTEAM SELESAI (COMPLETE)**  
+**Orchestration Status: PROYEK SELESAI & DIRILIS (v1.0.0)**  
 *Format: Vibecoding Build System v2.2*
 
 ---
@@ -9,7 +9,7 @@
 - **Skala**: Small (Mode A — Pure Client / Offline Penuh)
 - **Target Platform**: PWA Mobile-First + APK Android via Capacitor v6
 - **Stack**: Pure TypeScript Core + React 18 + Vite + Tailwind CSS
-- **Tahap Saat Ini**: **SESI-06 REDTEAM COMPLETE** (Siap Melanjutkan ke SESI-07 RELEASE)
+- **Tahap Saat Ini**: **SESI-07 RELEASE COMPLETE — VERSI 1.0.0 SIAP DISTRIBUSI**
 
 ---
 
@@ -23,7 +23,7 @@
 | **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `▣ DONE-VERIFIED` | `ProceduralAvatar.tsx`, `SynthAudio.ts`, `icons.tsx`, `ASSETS_LICENSES.md` | 0 KB gambar eksternal, audio default mute, lisensi MIT |
 | **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `▣ DONE-VERIFIED` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`, `DEPLOY_GUIDE.md` | Offline airplane mode lolos, CI hijau, bundle 81.58 KB |
 | **SESI-06** | REDTEAM (Anti-Tamper & Debounce Stress) | S | `▣ DONE-VERIFIED` | `test/redteam/`, `security/attacks/`, `RED_REPORT.md` | 32/32 tes lolos, save tamper terbukti, 0 crash |
-| **SESI-07** | RELEASE (Audit Akhir, Changelog, Docs) | S | `☐ TODO` | `CHANGELOG.md`, `PRE_DEPLOY_CHECKLIST.md` | 0 TODO, bundle < 350 KB, siap rilis |
+| **SESI-07** | RELEASE (Audit Akhir, Changelog, Docs) | S | `▣ DONE-VERIFIED` | `CHANGELOG.md`, `PRE_DEPLOY_CHECKLIST.md`, `README.md`, `RUNBOOK.md` | 0 TODO, bundle < 350 KB, rilis v1.0.0 siap |
 
 ---
 
@@ -84,12 +84,12 @@
 - [x] R-05: Terbitkan `RED_REPORT.md` dengan bukti uji mentah -> ▣ DONE-VERIFIED
 
 ### SESI-07: RELEASE (Kesiapan Distribusi)
-- [ ] Z-01: Verifikasi seluruh exit gate SESI 01–06 berstatus HIJAU.
-- [ ] Z-02: Audit kode: 0 TODO, 0 FIXME, 0 mock stub tertinggal.
-- [ ] Z-03: Pengisian `PRE_DEPLOY_CHECKLIST.md`.
-- [ ] Z-04: Penyusunan `CHANGELOG.md` versi 1.0.0-rc1.
-- [ ] Z-05: Finalisasi `README.md`.
-- [ ] Z-06: Pembuatan Git release tag `v1.0.0-rc1`.
+- [x] Z-01: Verifikasi seluruh exit gate SESI 01–06B berstatus HIJAU -> ▣ DONE-VERIFIED
+- [x] Z-02: Audit kode: 0 TODO, 0 FIXME, 0 mock stub tertinggal -> ▣ DONE-VERIFIED
+- [x] Z-03: Pengisian `PRE_DEPLOY_CHECKLIST.md` -> ▣ DONE-VERIFIED
+- [x] Z-04: Penyusunan `CHANGELOG.md` versi 1.0.0 -> ▣ DONE-VERIFIED
+- [x] Z-05: Finalisasi `README.md` & `RUNBOOK.md` -> ▣ DONE-VERIFIED
+- [x] Z-06: Pembuatan Git release tag `v1.0.0` -> ▣ DONE-VERIFIED
 
 ---
 
@@ -100,9 +100,11 @@
 - **E2E Test Pass**: `4 / 4` (100% lulus)
 - **Red Team Attack Test Pass**: `32 / 32` (100% lulus, 17 files)
 - **Total Test Suite Pass**: `75 / 75` (100% lulus)
+- **Clean Checkout Test**: `100% Lulus (klon baru, npm ci, typecheck, lint, test, build)`
 - **Core Test Coverage**: `100%` (Kalkulator Stat, PRNG, Relasi, Event Pool, Engine Lifecycle, Save Checksum, E2E Playthrough)
 - **Bundle Size Gzip**: `81.58 KB` (Target: $< 350\text{ KB}$)
 - **Service Worker Cache**: Precached 14 file statis (`dist/sw.js` 298.24 KiB precache)
+- **Release Version**: `v1.0.0`
 - **Active Blockers**: `NIHIL`
 
 ---
@@ -243,6 +245,30 @@
 - Utang teknis / risiko diterima: Ketiadaan server secret pada Mode A diterima penuh per persetujuan arsitektur.
 - LANGKAH BERIKUTNYA: Mulai SESI-07 RELEASE (/goal release) untuk verifikasi checklist rilis, changelog v1.0.0-rc1, dan rilis final.
 - Gotchas: Validasi integritas offline murni tidak dapat mencegah pemalsuan simetris jika algoritma hash dieksekusi di klien; mitigasi kompensasi difokuskan pada integritas batas runtime memori.
+
+## [SESI-07-RELEASE] [2026-09-21T20:25:00+07:00] — status: COMPLETE
+- Checklist: Z-01 -> ▣, Z-02 -> ▣, Z-03 -> ▣, Z-04 -> ▣, Z-05 -> ▣, Z-06 -> ▣
+- File dibuat/diubah:
+  - `RUNBOOK.md`
+  - `PRE_DEPLOY_CHECKLIST.md`
+  - `CHANGELOG.md`
+  - `README.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `Clean-Checkout npm ci` -> exit 0 (100% lulus, 611 paket terpasang)
+  - `Clean-Checkout typecheck` -> exit 0 (0 error)
+  - `Clean-Checkout lint` -> exit 0 (0 error)
+  - `Clean-Checkout test:unit` -> exit 0 (39 passed)
+  - `Clean-Checkout test:e2e` -> exit 0 (4 passed)
+  - `Clean-Checkout test:redteam` -> exit 0 (32 passed)
+  - `Clean-Checkout build` -> exit 0 (81.58 KB gzip, SW precache 14 entries)
+  - `node scripts/scan-secrets.js` -> exit 0 (0 rahasia terdeteksi)
+  - `Select-String TODO/FIXME` -> exit 0 (0 temuan)
+- Keputusan baru: NIHIL
+- Utang teknis / risiko diterima: Keterbatasan integritas klien lokal Mode A (ATK-004) diterima formal sebagai karakteristik wajar game single-player offline-first.
+- LANGKAH BERIKUTNYA: Proyek siap untuk dideploy ke Cloudflare Pages atau diekspor ke Android APK via Capacitor. Untuk iterasi masa depan (penambahan fase usia dewasa 19–80 tahun), jalankan `/update`.
+- Gotchas: Clean-checkout testing di folder terisolasi membuktikan bahwa seluruh dependensi terpasang deterministik tanpa ketergantungan pada cache lokal yang tidak terdaftar di lockfile.
+
 
 
 
