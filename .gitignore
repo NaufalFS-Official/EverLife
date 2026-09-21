@@ -9,8 +9,7 @@ dist-ssr/
 build/
 *.local
 
-# Capacitor & Android builds
-android/
+# Capacitor temporary files
 .cap/
 
 # Logs & temporary files

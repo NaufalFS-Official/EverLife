@@ -18,12 +18,12 @@ Dokumen ini menjelaskan prosedur deployment aplikasi EverLife untuk hosting stat
 ### Langkah Aktivasi GitHub Pages (Otomatis via GitHub Actions):
 1. **Push ke GitHub**:
    Kode dikirim ke cabang `main` di `https://github.com/NaufalFS-Official/EverLife`.
-2. **Aktifkan GitHub Pages**:
+2. **Pengaturan GitHub Pages**:
    - Buka repositori di browser: `https://github.com/NaufalFS-Official/EverLife/settings/pages`
-   - Pada bagian **Build and deployment** > **Source**, pilih **GitHub Actions**.
+   - Pada bagian **Build and deployment** > **Source**, pastikan terpilih **Deploy from a branch**.
+   - Pada bagian **Branch**, pilih cabang **`gh-pages`** dan folder **`/ (root)`**, lalu klik **Save**.
 3. **Pipeline Otomatis**:
-   - Workflow `.github/workflows/deploy-pages.yml` akan otomatis terpicu pada setiap push ke cabang `main`.
-   - Workflow ini membangun bundel PWA dengan `base: '/EverLife/'`, menghasilkan Service Worker CacheFirst, dan menerbitkan web ke GitHub Pages.
+   - Workflow `.github/workflows/deploy-pages.yml` akan otomatis mem-build bundel PWA dengan `base: '/EverLife/'`, menyertakan file `.nojekyll`, dan menerbitkan aset siap saji ke cabang `gh-pages`.
 4. **URL Akses Publik**:
    - `https://naufalfs-official.github.io/EverLife/`
    - Buka URL di Chrome/Safari pada perangkat seluler, lalu ketuk menu peramban > **"Tambahkan ke Layar Utama" (Add to Home Screen)** untuk menginstal PWA secara mandiri.
