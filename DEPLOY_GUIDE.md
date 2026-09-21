@@ -13,57 +13,45 @@ Dokumen ini menjelaskan prosedur deployment aplikasi EverLife untuk hosting stat
 
 ---
 
-## 2. DEPLOYMENT WEB STATIS (PWA OFFLINE)
+## 2. DEPLOYMENT WEB STATIS (PWA OFFLINE DI GITHUB PAGES)
 
-### Opsi A: Cloudflare Pages (Rekomendasi Utama — Bebas Biaya & Cepat)
-1. Hubungkan repositori Git ke dasbor **Cloudflare Pages**.
-2. Konfigurasi build setting:
-   - **Framework preset**: `Vite`
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-   - **Node.js version**: $\ge 20.12.0$ (tambahkan env variable `NODE_VERSION = 20.12.0`)
-3. Klik **Save and Deploy**. Cloudflare Pages menyediakan URL HTTPS otomatis dengan CDN global.
-4. Akses URL di browser ponsel (Chrome/Safari), lalu pilih **"Tambahkan ke Layar Utama" (Add to Home Screen)** untuk menginstal sebagai PWA mandiri.
-
-### Opsi B: Vercel
-1. Jalankan perintah via terminal atau hubungkan repositori di Vercel Dashboard:
-   ```bash
-   npx vercel --prod
-   ```
-2. Pengaturan otomatis mendeteksi direktori `dist/` dari script `build`.
-
-### Opsi C: GitHub Pages
-1. Pastikan GitHub Actions diaktifkan pada repositori.
-2. Gunakan artifact `dist/` yang dihasilkan oleh workflow `.github/workflows/ci.yml`.
-3. Aktifkan GitHub Pages dari cabang `gh-pages` atau Actions deployment.
+### Langkah Aktivasi GitHub Pages (Otomatis via GitHub Actions):
+1. **Push ke GitHub**:
+   Kode dikirim ke cabang `main` di `https://github.com/NaufalFS-Official/EverLife`.
+2. **Aktifkan GitHub Pages**:
+   - Buka repositori di browser: `https://github.com/NaufalFS-Official/EverLife/settings/pages`
+   - Pada bagian **Build and deployment** > **Source**, pilih **GitHub Actions**.
+3. **Pipeline Otomatis**:
+   - Workflow `.github/workflows/deploy-pages.yml` akan otomatis terpicu pada setiap push ke cabang `main`.
+   - Workflow ini membangun bundel PWA dengan `base: '/EverLife/'`, menghasilkan Service Worker CacheFirst, dan menerbitkan web ke GitHub Pages.
+4. **URL Akses Publik**:
+   - `https://naufalfs-official.github.io/EverLife/`
+   - Buka URL di Chrome/Safari pada perangkat seluler, lalu ketuk menu peramban > **"Tambahkan ke Layar Utama" (Add to Home Screen)** untuk menginstal PWA secara mandiri.
 
 ---
 
 ## 3. KOMPILASI APK ANDROID (CAPACITOR SIDELOAD)
 
-### Prasyarat Toolchain Android:
-- Java JDK 17 atau 21
-- Android Studio Ladybug (atau versi lebih baru) dengan Android SDK Platform API 34
-- Komponen Gradle $\ge 8.2$
+### Opsi 1: Unduh APK Otomatis via GitHub Actions (Rekomendasi Tanpa Perlu Setup Java/SDK Lokal)
+1. Workflow `.github/workflows/build-android.yml` otomatis terpicu setiap kali cabang `main` diperbarui.
+2. Buka tab **Actions** di repositori GitHub: `https://github.com/NaufalFS-Official/EverLife/actions`
+3. Pilih workflow run **Build Android APK (Capacitor Sideload)** terbaru yang telah selesai (centang hijau).
+4. Gulir ke bagian bawah pada tabel **Artifacts**, lalu unduh **`EverLife-v1.0.0-Android-APK`**.
+5. Ekstrak file zip hasil unduhan untuk mendapatkan `app-debug.apk`.
+6. Salin berkas `app-debug.apk` ke HP Android (via USB, Telegram, WhatsApp, atau Google Drive), lalu buka file tersebut untuk menginstal (sideload).
 
-### Langkah Kompilasi:
-1. Jalankan build produksi web:
+### Opsi 2: Kompilasi Lokal via Android Studio
+1. Pastikan terpasang Java JDK 17+ dan Android Studio Ladybug.
+2. Jalankan sinkronisasi aset web ke modul Android:
    ```bash
    npm run build
+   npm run cap:sync
    ```
-2. Sinkronkan aset web `dist/` ke proyek native Android:
-   ```bash
-   npx cap add android   # (Hanya jika folder android/ belum diinisialisasi)
-   npm run cap:sync      # Menjalankan: npx cap sync android
-   ```
-3. Buka Android Studio:
+3. Buka modul Android di Android Studio:
    ```bash
    npx cap open android
    ```
-4. Di dalam Android Studio:
-   - Pilih menu **Build > Build Bundle(s) / APK(s) > Build APK(s)** untuk menghasilkan berkas `app-debug.apk`.
-   - Atau pilih **Build > Generate Signed Bundle / APK** untuk rilis produksi mandiri (sideload).
-5. File APK siap didistribusikan langsung ke perangkat Android tanpa memerlukan koneksi internet aktif.
+4. Di Android Studio, pilih menu **Build > Build Bundle(s) / APK(s) > Build APK(s)** untuk menghasilkan berkas APK lokal.
 
 ---
 

@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === 'true' ? '/EverLife/' : './',
   plugins: [
     react(),
     VitePWA({
@@ -19,12 +20,12 @@ export default defineConfig({
         orientation: 'portrait',
         icons: [
           {
-            src: '/placeholder-icon-heart.svg',
+            src: 'placeholder-icon-heart.svg',
             sizes: '192x192',
             type: 'image/svg+xml',
           },
           {
-            src: '/placeholder-icon-book.svg',
+            src: 'placeholder-icon-book.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
           },
