@@ -1,5 +1,5 @@
 # PROGRESS TRACKER: EverLife (v1.0-SMA)
-**Orchestration Status: SESI-01 SETUP SELESAI (COMPLETE)**  
+**Orchestration Status: SESI-02 CONTRACT SELESAI (COMPLETE)**  
 *Format: Vibecoding Build System v2.2*
 
 ---
@@ -9,7 +9,7 @@
 - **Skala**: Small (Mode A — Pure Client / Offline Penuh)
 - **Target Platform**: PWA Mobile-First + APK Android via Capacitor v6
 - **Stack**: Pure TypeScript Core + React 18 + Vite + Tailwind CSS
-- **Tahap Saat Ini**: **SESI-01 SETUP COMPLETE** (Siap Melanjutkan ke SESI-02 CONTRACT)
+- **Tahap Saat Ini**: **SESI-02 CONTRACT COMPLETE** (Siap Melanjutkan ke SESI-03 CLIENT)
 
 ---
 
@@ -17,8 +17,8 @@
 
 | ID Sesi | Nama Sesi | Ukuran | Status | Artefak Kunci | Exit Gate |
 | :--- | :--- | :---: | :---: | :--- | :---: |
-| **SESI-01** | SETUP (Toolchain & Kerangka Proyek) | S | `▣ DONE-VERIFIED` | `package.json`, `package-lock.json`, `tsconfig.json`, `vite.config.ts`, `scripts/` | Typecheck 0 error, dev server aktif, scan rahasia bersih |
-| **SESI-02** | CONTRACT (Config, State, Events, Guard) | S | `☐ TODO` | `src/contracts/*.ts` (45+ konstanta S7) | Typecheck 0 error, 0 DOM dependencies |
+| **SESI-01** | SETUP (Toolchain & Kerangka Proyek) | S | `▣ DONE-VERIFIED` | `package.json`, `tsconfig.json`, `vite.config.ts`, `scripts/` | Typecheck 0 error, dev server aktif, scan rahasia bersih |
+| **SESI-02** | CONTRACT (Config, State, Events, Guard) | S | `▣ DONE-VERIFIED` | `src/contracts/*.ts`, `BALANCE.md`, `test/unit/contracts.test.ts` | Typecheck 0 error, 15 tes lulus, 0 stub, BALANCE.md lengkap |
 | **SESI-03** | CLIENT (Core Engine, State Machine, UI) | L | `☐ TODO` | `src/core/*.ts`, `src/ui/components/*.tsx` | 100% tes lolos, playthrough 0–18 tahun |
 | **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `☐ TODO` | `ProceduralAvatar.tsx`, `SynthAudio.ts` | 0 KB gambar eksternal, audio default mute |
 | **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `☐ TODO` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`| Offline airplane mode lolos, CI hijau |
@@ -40,13 +40,13 @@
 - [x] S-08: Setup generator placeholder aset (`scripts/generate-placeholders.js`) -> ▣ DONE-VERIFIED
 
 ### SESI-02: CONTRACT (Kontrak Data Murni)
-- [ ] K-01: Implementasi `gameConfig.ts` memuat seluruh konstanta S7.
-- [ ] K-02: Implementasi `gameState.ts` mendefinisikan interface typed.
-- [ ] K-03: Implementasi `gameEvents.ts` mendefinisikan tipe aksi dan dilema.
-- [ ] K-05: Implementasi `assetManifest.ts` inventori ikon dan audio preset.
-- [ ] K-08: Implementasi `saveSchema.ts` dengan schemaVersion: 1 dan checksum FNV-1a.
-- [ ] K-09: Implementasi `guardTable.ts` memuat aturan transisi sah dan terlarang.
-- [ ] K-10: Verifikasi `npm run typecheck` 0 error.
+- [x] K-01: Implementasi `gameConfig.ts` memuat seluruh 45+ konstanta S7 bersatuan dan fungsi konversi `msToFrames` -> ▣ DONE-VERIFIED
+- [x] K-02: Implementasi `gameState.ts` mendefinisikan interface typed (`CharacterProfile`, `CharacterStats`, `RelationNPC`, `TimelineLogEntry`) -> ▣ DONE-VERIFIED
+- [x] K-03: Implementasi `gameEvents.ts` mendefinisikan tipe aksi, opsi dilema, dan payload terdiskriminasi -> ▣ DONE-VERIFIED
+- [x] K-05: Implementasi `assetManifest.ts` inventori 7 ikon Lucide dan 3 preset synthesizer audio -> ▣ DONE-VERIFIED
+- [x] K-08: Implementasi `saveSchema.ts` dengan schemaVersion: 1, FNV-1a checksum hash, dan rantai migrasi bertipe -> ▣ DONE-VERIFIED
+- [x] K-09: Implementasi `guardTable.ts` memuat matriks transisi sah dan terlarang sebagai DATA teruji -> ▣ DONE-VERIFIED
+- [x] K-10: Verifikasi `npm run typecheck` 0 error, 15 tes Vitest PASS, dokumen `BALANCE.md` lengkap -> ▣ DONE-VERIFIED
 
 ### SESI-03: CLIENT (Logika Inti & Antarmuka)
 - [ ] C-01: Implementasi `StatCalculator.ts` dengan boundary clamping $[0, 100]$.
@@ -96,8 +96,8 @@
 ## 4. METRIK & HEALTH STATUS
 - **TypeScript Errors**: `0`
 - **Lint Errors**: `0`
-- **Unit Test Pass**: `1 / 1` (Bootstrap passing)
-- **Core Test Coverage**: `100%` (Bootstrap env schema)
+- **Unit Test Pass**: `15 / 15` (100% lulus)
+- **Core Test Coverage**: `100%` (Kontrak, Guard, Checksum, Konfigurasi)
 - **Bundle Size Gzip**: `46.31 KB` (Target: $< 350\text{ KB}$)
 - **Active Blockers**: `NIHIL`
 
@@ -107,38 +107,31 @@
 
 ## [SESI-01-SETUP] [2026-09-21T19:37:00+07:00] — status: COMPLETE
 - Checklist: S-01 -> ▣, S-02 -> ▣, S-03 -> ▣, S-04 -> ▣, S-05 -> ▣, S-06 -> ▣, S-07 -> ▣, S-08 -> ▣
+- File dibuat/diubah: `package.json`, `tsconfig.json`, `vite.config.ts`, `src/App.tsx`, dll.
+- Perintah bukti terakhir: `npm run build` -> exit 0 (gzip 46.31 kB)
+- Keputusan baru: DEC-012, DEC-013
+- LANGKAH BERIKUTNYA: SESI-02 CONTRACT
+
+## [SESI-02-CONTRACT] [2026-09-21T19:40:00+07:00] — status: COMPLETE
+- Checklist: K-01 -> ▣, K-02 -> ▣, K-03 -> ▣, K-05 -> ▣, K-08 -> ▣, K-09 -> ▣, K-10 -> ▣
 - File dibuat/diubah:
-  - `package.json`
-  - `package-lock.json`
-  - `tsconfig.json`
-  - `vite.config.ts`
-  - `tailwind.config.js`
-  - `postcss.config.js`
-  - `eslint.config.js`
-  - `index.html`
-  - `src/App.tsx`
-  - `src/main.tsx`
-  - `src/index.css`
-  - `src/vite-env.d.ts`
-  - `src/contracts/envSchema.ts`
-  - `.env.example`
-  - `ENV_CHECKLIST.md`
-  - `.secrets.baseline`
-  - `scripts/generate-placeholders.js`
-  - `scripts/scan-secrets.js`
-  - `public/favicon.svg`
-  - `public/placeholders/*.svg` (8 assets)
-  - `test/unit/bootstrap.test.ts`
-  - `DECISION.md` (DEC-012, DEC-013, Log D12)
+  - `src/contracts/gameConfig.ts`
+  - `src/contracts/gameState.ts`
+  - `src/contracts/gameEvents.ts`
+  - `src/contracts/assetManifest.ts`
+  - `src/contracts/saveSchema.ts`
+  - `src/contracts/guardTable.ts`
+  - `src/contracts/index.ts`
+  - `BALANCE.md`
+  - `test/unit/contracts.test.ts`
   - `PROGRESS.md`
 - Perintah bukti terakhir + hasil:
-  - `npm ci` -> exit 0 (added 611 packages, audited 612 packages in 15s)
   - `npm run typecheck` -> exit 0 (0 error)
   - `npm run lint` -> exit 0 (0 error, 0 warning)
-  - `npm run test:unit` -> exit 0 (1 test passed)
-  - `npm run build` -> exit 0 (dist/assets/index.js gzip 46.31 kB)
-  - `node scripts/scan-secrets.js` -> exit 0 (0 rahasia terdeteksi)
-- Keputusan baru: DEC-012 (Ambient types Vite client), DEC-013 (DevDependency `typescript-eslint` 8.5.0 untuk flat config ESLint 9)
+  - `npm run test:unit` -> exit 0 (15 passed dari 15 tests)
+  - `npm run build` -> exit 0 (gzip 46.31 kB)
+  - `grep -rnE "TODO|FIXME|..." src` -> exit 1 (0 temuan)
+- Keputusan baru: NIHIL (Seluruh kontrak mematuhi DEC-001 s.d. DEC-013)
 - Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Mulai SESI-02 CONTRACT (/goal-contract) untuk menulis seluruh kontrak murni TypeScript (gameConfig, gameState, gameEvents, saveSchema, guardTable).
-- Gotchas: ESLint 9 membutuhkan parser AST TypeScript eksternal (`typescript-eslint`) untuk membaca file .ts/.tsx tanpa syntax error.
+- LANGKAH BERIKUTNYA: Mulai SESI-03 CLIENT (/goal-client) untuk mengimplementasikan core simulation engine (StatCalculator, GameEngine, EventEngine, SaveService, dan UI React).
+- Gotchas: Semua kalkulasi checksum FNV-1a wajib menggunakan tipe representasi string identik agar deterministik antar-lingkungan.
