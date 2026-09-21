@@ -79,3 +79,30 @@ Dokumen ini mencatat seluruh keputusan arsitektural, teknis, dan mekanik game **
 - **Alasan**: Berdasarkan aturan aktivasi skala Vibecoding v2.2, game berskala Small (Mode A - Pure Client) beroperasi sepenuhnya offline tanpa backend server, tanpa Redis, tanpa database SQL, dan tanpa otentikasi jaringan.
 - **Alternatif Ditolak**: Memaksakan pembuatan server Express/NestJS dengan database lokal (Ditolak: over-engineering masif yang melanggar batasan arsitektur Rp0 dan offline-first).
 
+---
+
+### DEC-012: Resolusi Ambient Types Vite Client untuk ImportMeta
+- **Keputusan**: Menyediakan berkas `src/vite-env.d.ts` dengan referensi triple-slash `vite/client` dan `vite-plugin-pwa/client`.
+- **Alasan**: Menjamin type-checking TypeScript (`tsc --noEmit`) mengenali objek `import.meta.env` tanpa melonggarkan aturan strict `noImplicitAny`.
+- **Alternatif Ditolak**: Mengabaikan typecheck dengan `as any` (Ditolak: melanggar Direktif D6).
+
+---
+
+### DEC-013: Penambahan DevDependency typescript-eslint untuk ESLint 9 Flat Config
+- **Keputusan**: Menambahkan devDependency `typescript-eslint` versi terkunci `8.5.0` ke dalam `package.json`.
+- **Alasan**: ESLint 9 menggunakan parser default JavaScript murni (`espree`) yang gagal mem-parse sintaks TypeScript (`interface`, JSX). Dibutuhkan parser resmi agar `npm run lint` dapat memvalidasi berkas TS/TSX.
+- **Alternatif Ditolak**: Menonaktifkan linting pada berkas `.ts` dan `.tsx` (Ditolak: membuat perintah `npm run lint` tidak efektif dan semu).
+
+---
+
+## LOG SELF-HEALING (D12)
+- **[ITEM-01] ERROR**: `TS2339: Property 'env' does not exist on type 'ImportMeta' in src/contracts/envSchema.ts`
+  - **AKAR**: Bundler Vite membutuhkan deklarasi ambient `vite/client` agar TypeScript mengenali properti `import.meta.env`.
+  - **PERBAIKAN**: Menambahkan `src/vite-env.d.ts` yang mendeklarasikan referensi tipe `vite/client` dan tipe eksplisit variabel env.
+  - **PENCEGAHAN**: Selalu menyertakan `vite-env.d.ts` pada scaffold awal proyek berbasis Vite + TypeScript.
+- **[ITEM-02] ERROR**: `Parsing error: Unexpected token interface / Unexpected token < pada ESLint 9`
+  - **AKAR**: ESLint 9 default parser (`espree`) tidak mengenali sintaks TypeScript dan JSX tanpa parser TypeScript AST.
+  - **PERBAIKAN**: Memasang devDependency terkunci `typescript-eslint@8.5.0` dan mengonfigurasi parser di `eslint.config.js`.
+  - **PENCEGAHAN**: Konfigurasikan parser `typescript-eslint` pada setiap setup proyek TypeScript dengan ESLint flat config.
+
+

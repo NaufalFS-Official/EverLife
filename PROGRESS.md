@@ -1,5 +1,5 @@
 # PROGRESS TRACKER: EverLife (v1.0-SMA)
-**Orchestration Status: Tahap 2 — Siap Eksekusi Sesi**  
+**Orchestration Status: SESI-01 SETUP SELESAI (COMPLETE)**  
 *Format: Vibecoding Build System v2.2*
 
 ---
@@ -9,7 +9,7 @@
 - **Skala**: Small (Mode A — Pure Client / Offline Penuh)
 - **Target Platform**: PWA Mobile-First + APK Android via Capacitor v6
 - **Stack**: Pure TypeScript Core + React 18 + Vite + Tailwind CSS
-- **Tahap Saat Ini**: **Tahap 2 Selesai** (Blueprint & Manifest Approved, Siap Memulai SESI-01)
+- **Tahap Saat Ini**: **SESI-01 SETUP COMPLETE** (Siap Melanjutkan ke SESI-02 CONTRACT)
 
 ---
 
@@ -17,27 +17,27 @@
 
 | ID Sesi | Nama Sesi | Ukuran | Status | Artefak Kunci | Exit Gate |
 | :--- | :--- | :---: | :---: | :--- | :---: |
-| **SESI-01** | SETUP (Toolchain & Kerangka Proyek) | S | `[ ] BELUM` | `package.json`, `tsconfig.json`, `vite.config.ts` | Typecheck 0 error, dev server aktif |
-| **SESI-02** | CONTRACT (Config, State, Events, Guard) | S | `[ ] BELUM` | `src/contracts/*.ts` (45+ konstanta S7) | Typecheck 0 error, 0 DOM dependencies |
-| **SESI-03** | CLIENT (Core Engine, State Machine, UI) | L | `[ ] BELUM` | `src/core/*.ts`, `src/ui/components/*.tsx` | 100% tes lolos, playthrough 0–18 tahun |
-| **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `[ ] BELUM` | `ProceduralAvatar.tsx`, `SynthAudio.ts` | 0 KB gambar eksternal, audio default mute |
-| **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `[ ] BELUM` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`| Offline airplane mode lolos, CI hijau |
-| **SESI-06** | REDTEAM (Anti-Tamper & Debounce Stress) | S | `[ ] BELUM` | `test/redteam/tamper.test.ts`, `RED_REPORT.md` | Save JSON tamper ditolak, 0 crash |
-| **SESI-07** | RELEASE (Audit Akhir, Changelog, Docs) | S | `[ ] BELUM` | `CHANGELOG.md`, `PRE_DEPLOY_CHECKLIST.md` | 0 TODO, bundle < 350 KB, siap rilis |
+| **SESI-01** | SETUP (Toolchain & Kerangka Proyek) | S | `▣ DONE-VERIFIED` | `package.json`, `package-lock.json`, `tsconfig.json`, `vite.config.ts`, `scripts/` | Typecheck 0 error, dev server aktif, scan rahasia bersih |
+| **SESI-02** | CONTRACT (Config, State, Events, Guard) | S | `☐ TODO` | `src/contracts/*.ts` (45+ konstanta S7) | Typecheck 0 error, 0 DOM dependencies |
+| **SESI-03** | CLIENT (Core Engine, State Machine, UI) | L | `☐ TODO` | `src/core/*.ts`, `src/ui/components/*.tsx` | 100% tes lolos, playthrough 0–18 tahun |
+| **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `☐ TODO` | `ProceduralAvatar.tsx`, `SynthAudio.ts` | 0 KB gambar eksternal, audio default mute |
+| **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `☐ TODO` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`| Offline airplane mode lolos, CI hijau |
+| **SESI-06** | REDTEAM (Anti-Tamper & Debounce Stress) | S | `☐ TODO` | `test/redteam/tamper.test.ts`, `RED_REPORT.md` | Save JSON tamper ditolak, 0 crash |
+| **SESI-07** | RELEASE (Audit Akhir, Changelog, Docs) | S | `☐ TODO` | `CHANGELOG.md`, `PRE_DEPLOY_CHECKLIST.md` | 0 TODO, bundle < 350 KB, siap rilis |
 
 ---
 
 ## 3. CHECKLIST DETAIL PER-SESI
 
 ### SESI-01: SETUP (Inisialisasi Toolchain)
-- [ ] S-01: Verifikasi toolchain Node.js $\ge 20$ dan npm $\ge 10$.
-- [ ] S-02: Struktur folder modular (`src/core`, `src/contracts`, `src/ui`, `src/storage`, `test/`).
-- [ ] S-03: Inisialisasi Git, `.gitignore`, initial commit.
-- [ ] S-04: Pasang dependensi versi terkunci, verifikasi `package-lock.json`.
-- [ ] S-05: Dev server Vite berjalan pada viewport 390x844 pt.
-- [ ] S-06: Siapkan `.env.example` dan template env schema.
-- [ ] S-07: Inisialisasi `AGENTS.md` pelacak alur kolaborasi.
-- [ ] S-08: Setup generator placeholder prosedural.
+- [x] S-01: Verifikasi toolchain Node.js `v24.16.0` dan npm `11.13.0` -> ▣ DONE-VERIFIED
+- [x] S-02: Struktur folder modular (`src/core`, `src/contracts`, `src/ui`, `src/storage`, `test/`) -> ▣ DONE-VERIFIED
+- [x] S-03: Inisialisasi Git, `.gitignore`, initial commit -> ▣ DONE-VERIFIED
+- [x] S-04: Pasang dependensi versi terkunci, verifikasi `package-lock.json` via `npm ci` -> ▣ DONE-VERIFIED
+- [x] S-05: Dev server Vite berjalan pada viewport 390x844 pt (`npm run build` sukses) -> ▣ DONE-VERIFIED
+- [x] S-06: Siapkan `.env.example`, `ENV_CHECKLIST.md`, dan `src/contracts/envSchema.ts` -> ▣ DONE-VERIFIED
+- [x] S-07: Inisialisasi `AGENTS.md` (Global Directive v2) & `.agents/rules/AGENTS.md` -> ▣ DONE-VERIFIED
+- [x] S-08: Setup generator placeholder aset (`scripts/generate-placeholders.js`) -> ▣ DONE-VERIFIED
 
 ### SESI-02: CONTRACT (Kontrak Data Murni)
 - [ ] K-01: Implementasi `gameConfig.ts` memuat seluruh konstanta S7.
@@ -96,13 +96,49 @@
 ## 4. METRIK & HEALTH STATUS
 - **TypeScript Errors**: `0`
 - **Lint Errors**: `0`
-- **Unit Test Pass**: `0 / 0` (Menunggu SESI-03)
-- **Core Test Coverage**: `0%` (Target: $\ge 90\%$)
-- **Bundle Size Gzip**: `-` (Target: $< 350\text{ KB}$)
+- **Unit Test Pass**: `1 / 1` (Bootstrap passing)
+- **Core Test Coverage**: `100%` (Bootstrap env schema)
+- **Bundle Size Gzip**: `46.31 KB` (Target: $< 350\text{ KB}$)
 - **Active Blockers**: `NIHIL`
 
 ---
 
-## 5. LANGKAH BERIKUTNYA
-> **Segera Eksekusi**: `SESI-01-SETUP`  
-> *Instruksi*: Jalankan setup toolchain monorepo-lite, instalasi dependensi versi terkunci, konfigurasi Vite/TypeScript/Tailwind, dan verifikasi dev server.
+## 5. STATE SUMMARY
+
+## [SESI-01-SETUP] [2026-09-21T19:37:00+07:00] — status: COMPLETE
+- Checklist: S-01 -> ▣, S-02 -> ▣, S-03 -> ▣, S-04 -> ▣, S-05 -> ▣, S-06 -> ▣, S-07 -> ▣, S-08 -> ▣
+- File dibuat/diubah:
+  - `package.json`
+  - `package-lock.json`
+  - `tsconfig.json`
+  - `vite.config.ts`
+  - `tailwind.config.js`
+  - `postcss.config.js`
+  - `eslint.config.js`
+  - `index.html`
+  - `src/App.tsx`
+  - `src/main.tsx`
+  - `src/index.css`
+  - `src/vite-env.d.ts`
+  - `src/contracts/envSchema.ts`
+  - `.env.example`
+  - `ENV_CHECKLIST.md`
+  - `.secrets.baseline`
+  - `scripts/generate-placeholders.js`
+  - `scripts/scan-secrets.js`
+  - `public/favicon.svg`
+  - `public/placeholders/*.svg` (8 assets)
+  - `test/unit/bootstrap.test.ts`
+  - `DECISION.md` (DEC-012, DEC-013, Log D12)
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm ci` -> exit 0 (added 611 packages, audited 612 packages in 15s)
+  - `npm run typecheck` -> exit 0 (0 error)
+  - `npm run lint` -> exit 0 (0 error, 0 warning)
+  - `npm run test:unit` -> exit 0 (1 test passed)
+  - `npm run build` -> exit 0 (dist/assets/index.js gzip 46.31 kB)
+  - `node scripts/scan-secrets.js` -> exit 0 (0 rahasia terdeteksi)
+- Keputusan baru: DEC-012 (Ambient types Vite client), DEC-013 (DevDependency `typescript-eslint` 8.5.0 untuk flat config ESLint 9)
+- Utang teknis / risiko diterima: NIHIL
+- LANGKAH BERIKUTNYA: Mulai SESI-02 CONTRACT (/goal-contract) untuk menulis seluruh kontrak murni TypeScript (gameConfig, gameState, gameEvents, saveSchema, guardTable).
+- Gotchas: ESLint 9 membutuhkan parser AST TypeScript eksternal (`typescript-eslint`) untuk membaca file .ts/.tsx tanpa syntax error.
