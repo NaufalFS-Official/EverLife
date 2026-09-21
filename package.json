@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "test:unit": "vitest run test/unit",
     "test:e2e": "vitest run test/e2e",
-    "test:redteam": "vitest run test/redteam",
+    "test:redteam": "vitest run test/redteam security/attacks",
     "cap:sync": "cap sync android",
     "generate:placeholders": "node scripts/generate-placeholders.js"
   },
