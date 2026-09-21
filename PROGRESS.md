@@ -188,3 +188,13 @@
 - LANGKAH BERIKUTNYA: Mulai SESI-04 ASSET-HOOK (/goal asset-hook) untuk memetakan ikon Lucide secara lengkap, melengkapi file lisensi ASSETS_LICENSES.md, dan menyempurnakan audio synthesizer preset.
 - Gotchas: Matriks guard melarang transisi langsung dari EVENT_MODAL ke GRADUATION_SCREEN; transisi wajib melalui GAMEPLAY_ACTIVE terlebih dahulu.
 
+## [SESI-DATA] [2026-09-21T19:52:00+07:00] — status: SKIPPED (NOT APPLICABLE)
+- Checklist: D-01 s/d D-08 -> ▨ TIDAK BERLAKU (Skala Small Mode A — Pure Client / Offline Penuh, Rp0 Hosting)
+- Alasan Evaluasi: Sesuai klausul direktif *"Small: sesi ini tidak berlaku; berhenti"*, dokumen `manifest_v1.md` (§M1, §M2), dan `DECISION.md` (DEC-011). Proyek tidak memiliki backend database SQL/PostgreSQL, connection pool, Redis, atau RLS jaringan. Seluruh persistensi ditangani secara lokal melalui `SaveService.ts` (IndexedDB + localStorage) dengan FNV-1a checksum.
+- File dibuat/diubah: NIHIL
+- Perintah bukti verifikasi: `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
+- Keputusan baru: NIHIL (Mematuhi DEC-002 dan DEC-011)
+- Utang teknis / risiko diterima: NIHIL
+- LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal security` (yang juga berstatus tidak berlaku untuk Skala Small).
+
+
