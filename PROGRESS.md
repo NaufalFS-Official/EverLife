@@ -197,4 +197,14 @@
 - Utang teknis / risiko diterima: NIHIL
 - LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal security` (yang juga berstatus tidak berlaku untuk Skala Small).
 
+## [SESI-SECURITY] [2026-09-21T19:54:00+07:00] — status: SKIPPED (NOT APPLICABLE)
+- Checklist: G-01 s/d G-09 -> ▨ TIDAK BERLAKU (Skala Small Mode A — Pure Client / Offline Penuh, Rp0 Hosting)
+- Alasan Evaluasi: Sesuai dokumen `manifest_v1.md` (§M1, §M2) dan `DECISION.md` (DEC-004 & DEC-011). Proyek tidak menggunakan server backend, rute API jaringan, JWT RS256, OAuth, Redis blacklist, atau header server. Karakter bermain 100% anonim lokal offline tanpa auth cloud. Aspek integritas data dan proteksi manipulasi (validasi save checksum FNV-1a, boundary stat matematis, dan guard transisi giliran) telah terintegrasi di lapisan klien dan dijadwalkan untuk pengujian penetrasi pada SESI-06 REDTEAM.
+- File dibuat/diubah: NIHIL
+- Perintah bukti verifikasi: `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
+- Keputusan baru: NIHIL (Mematuhi DEC-004 dan DEC-011)
+- Utang teknis / risiko diterima: NIHIL
+- LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal server` (yang juga berstatus tidak berlaku untuk Skala Small).
+
+
 
