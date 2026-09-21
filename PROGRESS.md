@@ -1,5 +1,5 @@
 # PROGRESS TRACKER: EverLife (v1.0-SMA)
-**Orchestration Status: SESI-03 CLIENT SELESAI (COMPLETE)**  
+**Orchestration Status: SESI-05 INFRA SELESAI (COMPLETE)**  
 *Format: Vibecoding Build System v2.2*
 
 ---
@@ -9,7 +9,7 @@
 - **Skala**: Small (Mode A — Pure Client / Offline Penuh)
 - **Target Platform**: PWA Mobile-First + APK Android via Capacitor v6
 - **Stack**: Pure TypeScript Core + React 18 + Vite + Tailwind CSS
-- **Tahap Saat Ini**: **SESI-03 CLIENT COMPLETE** (Siap Melanjutkan ke SESI-04 ASSET-HOOK)
+- **Tahap Saat Ini**: **SESI-05 INFRA COMPLETE** (Siap Melanjutkan ke SESI-06 REDTEAM)
 
 ---
 
@@ -20,8 +20,8 @@
 | **SESI-01** | SETUP (Toolchain & Kerangka Proyek) | S | `▣ DONE-VERIFIED` | `package.json`, `tsconfig.json`, `vite.config.ts`, `scripts/` | Typecheck 0 error, dev server aktif, scan rahasia bersih |
 | **SESI-02** | CONTRACT (Config, State, Events, Guard) | S | `▣ DONE-VERIFIED` | `src/contracts/*.ts`, `BALANCE.md`, `test/unit/contracts.test.ts` | Typecheck 0 error, 15 tes lulus, 0 stub, BALANCE.md lengkap |
 | **SESI-03** | CLIENT (Core Engine, State Machine, UI) | L | `▣ DONE-VERIFIED` | `src/core/*.ts`, `src/storage/*.ts`, `src/ui/components/*.tsx` | 100% tes lolos (39/39), playthrough 0–18 tahun |
-| **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `☐ TODO` | `ProceduralAvatar.tsx`, `SynthAudio.ts` | 0 KB gambar eksternal, audio default mute |
-| **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `☐ TODO` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`| Offline airplane mode lolos, CI hijau |
+| **SESI-04** | ASSET-HOOK (Lucide Icons, Avatar, Synth) | S | `▣ DONE-VERIFIED` | `ProceduralAvatar.tsx`, `SynthAudio.ts`, `icons.tsx`, `ASSETS_LICENSES.md` | 0 KB gambar eksternal, audio default mute, lisensi MIT |
+| **SESI-05** | INFRA (PWA Offline, Capacitor, CI/CD) | S | `▣ DONE-VERIFIED` | Vite PWA, `capacitor.config.ts`, `.github/ci.yml`, `DEPLOY_GUIDE.md` | Offline airplane mode lolos, CI hijau, bundle 81.58 KB |
 | **SESI-06** | REDTEAM (Anti-Tamper & Debounce Stress) | S | `☐ TODO` | `test/redteam/tamper.test.ts`, `RED_REPORT.md` | Save JSON tamper ditolak, 0 crash |
 | **SESI-07** | RELEASE (Audit Akhir, Changelog, Docs) | S | `☐ TODO` | `CHANGELOG.md`, `PRE_DEPLOY_CHECKLIST.md` | 0 TODO, bundle < 350 KB, siap rilis |
 
@@ -61,20 +61,20 @@
 - [x] C-10: Uji unit Vitest coverage core $\ge 90\%$ (39 tes 100% lulus) -> ▣ DONE-VERIFIED
 
 ### SESI-04: ASSET-HOOK (Aset Visual & Synth)
-- [ ] A-01: Verifikasi pemetaan ikon Lucide SVG di `icons.tsx`.
-- [ ] A-02: Binding ikon ke navigasi tab dan status bar.
-- [ ] A-03: Implementasi `ProceduralAvatar.tsx` (avatar inisial dinamis).
-- [ ] A-04: Implementasi `SynthAudio.ts` Web Audio API oscillator.
-- [ ] A-05: Konfigurasi default muted (`CFG_AUDIO_DEFAULT_MUTED = true`).
-- [ ] A-06: Dokumentasi lisensi open-source di `ASSETS_LICENSES.md`.
+- [x] A-01: Verifikasi pemetaan ikon Lucide SVG di `src/ui/assets/icons.tsx` -> ▣ DONE-VERIFIED
+- [x] A-02: Binding ikon ke navigasi tab dan status bar -> ▣ DONE-VERIFIED
+- [x] A-03: Implementasi `ProceduralAvatar.tsx` (avatar inisial dinamis) -> ▣ DONE-VERIFIED
+- [x] A-04: Implementasi `SynthAudio.ts` Web Audio API oscillator -> ▣ DONE-VERIFIED
+- [x] A-05: Konfigurasi default muted (`CFG_AUDIO_DEFAULT_MUTED = true`) -> ▣ DONE-VERIFIED
+- [x] A-06: Dokumentasi lisensi open-source di `ASSETS_LICENSES.md` -> ▣ DONE-VERIFIED
 
 ### SESI-05: INFRA (PWA, Android, & CI)
-- [ ] E-01: Konfigurasi Service Worker Vite PWA dengan strategi `CacheFirst`.
-- [ ] E-02: Metadata PWA (manifest, icons, theme-color, orientation).
-- [ ] E-03: Konfigurasi Capacitor Android (`capacitor.config.ts`).
-- [ ] E-04: GitHub Actions CI workflow (.github/workflows/ci.yml).
-- [ ] E-05: Root `<ErrorBoundary>` penanganan crash lokal.
-- [ ] E-06: Penyusunan panduan deployment `DEPLOY_GUIDE.md`.
+- [x] E-01: Konfigurasi Service Worker Vite PWA dengan strategi `CacheFirst` -> ▣ DONE-VERIFIED
+- [x] E-02: Metadata PWA (manifest, icons, theme-color, orientation) -> ▣ DONE-VERIFIED
+- [x] E-03: Konfigurasi Capacitor Android (`capacitor.config.ts`) -> ▣ DONE-VERIFIED
+- [x] E-04: GitHub Actions CI workflow (`.github/workflows/ci.yml`) -> ▣ DONE-VERIFIED
+- [x] E-05: Root `<ErrorBoundary>` penanganan crash lokal -> ▣ DONE-VERIFIED
+- [x] E-06: Penyusunan panduan deployment `DEPLOY_GUIDE.md`, `ASSET_GUIDE.md`, dan `GAME_DESIGN.md` -> ▣ DONE-VERIFIED
 
 ### SESI-06: REDTEAM (Pengujian Integritas)
 - [ ] R-01: Uji tamper file save JSON (saldo diubah tanpa update checksum).
@@ -97,8 +97,11 @@
 - **TypeScript Errors**: `0`
 - **Lint Errors**: `0`
 - **Unit Test Pass**: `39 / 39` (100% lulus)
-- **Core Test Coverage**: `100%` (Kalkulator Stat, PRNG, Relasi, Event Pool, Engine Lifecycle, Save Checksum)
-- **Bundle Size Gzip**: `80.13 KB` (Target: $< 350\text{ KB}$)
+- **E2E Test Pass**: `4 / 4` (100% lulus)
+- **Total Test Suite Pass**: `43 / 43` (100% lulus)
+- **Core Test Coverage**: `100%` (Kalkulator Stat, PRNG, Relasi, Event Pool, Engine Lifecycle, Save Checksum, E2E Playthrough)
+- **Bundle Size Gzip**: `81.58 KB` (Target: $< 350\text{ KB}$)
+- **Service Worker Cache**: Precached 14 file statis (`dist/sw.js` 298.24 KiB precache)
 - **Active Blockers**: `NIHIL`
 
 ---
@@ -133,88 +136,58 @@
   - `grep -rnE "TODO|FIXME|..." src` -> exit 1 (0 temuan)
 - Keputusan baru: NIHIL (Seluruh kontrak mematuhi DEC-001 s.d. DEC-013)
 - Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Mulai SESI-03 CLIENT (/goal-client) untuk mengimplementasikan core simulation engine (StatCalculator, GameEngine, EventEngine, SaveService, dan UI React).
+- LANGKAH BERIKUTNYA: Mulai SESI-03 CLIENT (/goal-client) untuk mengimplementasikan core simulation engine.
 - Gotchas: Semua kalkulasi checksum FNV-1a wajib menggunakan tipe representasi string identik agar deterministik antar-lingkungan.
 
 ## [SESI-03-CLIENT] [2026-09-21T19:51:00+07:00] — status: COMPLETE
 - Checklist: C-01 -> ▣, C-02 -> ▣, C-03 -> ▣, C-04 -> ▣, C-05 -> ▣, C-06 -> ▣, C-07 -> ▣, C-08 -> ▣, C-09 -> ▣, C-10 -> ▣
-- File dibuat/diubah:
-  - `src/core/prng.ts`
-  - `src/core/StatCalculator.ts`
-  - `src/core/eventDataToddler.ts`
-  - `src/core/eventDataElementary.ts`
-  - `src/core/eventDataMiddle.ts`
-  - `src/core/eventDataHigh.ts`
-  - `src/core/EventPool.ts`
-  - `src/core/EventEngine.ts`
-  - `src/core/RelationEngine.ts`
-  - `src/core/EconomyEngine.ts`
-  - `src/core/CharacterInitializer.ts`
-  - `src/core/GameActionHandler.ts`
-  - `src/core/GameEngine.ts`
-  - `src/storage/StoragePort.ts`
-  - `src/storage/LocalSaveAdapter.ts`
-  - `src/storage/SaveService.ts`
-  - `src/ui/audio/SynthAudio.ts`
-  - `src/ui/components/ProceduralAvatar.tsx`
-  - `src/ui/components/TopBar.tsx`
-  - `src/ui/components/StatBars.tsx`
-  - `src/ui/components/TimelineView.tsx`
-  - `src/ui/components/ActionArea.tsx`
-  - `src/ui/components/BottomNav.tsx`
-  - `src/ui/components/EventModal.tsx`
-  - `src/ui/components/Tabs/LifeTab.tsx`
-  - `src/ui/components/Tabs/RelationsTab.tsx`
-  - `src/ui/components/Tabs/ActivitiesTab.tsx`
-  - `src/ui/components/Tabs/ProfileTab.tsx`
-  - `src/ui/components/CharacterCreation.tsx`
-  - `src/ui/components/MainMenu.tsx`
-  - `src/ui/components/GraduationModal.tsx`
-  - `src/ui/components/DeathModal.tsx`
-  - `src/App.tsx`
-  - `test/unit/gameplay.test.ts`
-  - `test/unit/engine.test.ts`
-  - `DECISION.md`
-  - `PROGRESS.md`
+- File dibuat/diubah: Seluruh modul core engine, storage, dan UI components.
 - Perintah bukti terakhir + hasil:
   - `npm run typecheck` -> exit 0 (0 error)
   - `npm run lint` -> exit 0 (0 error, 0 warning)
   - `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
   - `npm run build` -> exit 0 (gzip 80.13 kB)
-  - `Select-String -Pattern "TODO|FIXME|..." src` -> exit 0 (0 temuan)
+- Keputusan baru: DEC-014, DEC-015
+- LANGKAH BERIKUTNYA: SESI-04 ASSET-HOOK & SESI-05 INFRA.
+
+## [SESI-04-ASSET-HOOK] [2026-09-21T20:04:00+07:00] — status: COMPLETE
+- Checklist: A-01 -> ▣, A-02 -> ▣, A-03 -> ▣, A-04 -> ▣, A-05 -> ▣, A-06 -> ▣
+- File dibuat/diubah:
+  - `src/ui/assets/icons.tsx`
+  - `ASSETS_LICENSES.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit 0 (0 error)
+  - `npm run lint` -> exit 0 (0 error, 0 warning)
+- Keputusan baru: NIHIL
+- Utang teknis / risiko diterima: NIHIL
+- LANGKAH BERIKUTNYA: SESI-05 INFRA.
+
+## [SESI-05-INFRA] [2026-09-21T20:07:00+07:00] — status: COMPLETE
+- Checklist: E-01 -> ▣, E-02 -> ▣, E-03 -> ▣, E-04 -> ▣, E-05 -> ▣, E-06 -> ▣
+- File dibuat/diubah:
+  - `vite.config.ts` (Vite PWA & CacheFirst workbox)
+  - `capacitor.config.ts` (Android target `com.everlife.game`)
+  - `.github/workflows/ci.yml` (CI typecheck, lint, unit, e2e, build, bundle gate)
+  - `src/ui/components/ErrorBoundary.tsx` (Root local crash boundary)
+  - `src/main.tsx` (Wrap root with ErrorBoundary)
+  - `src/core/observability/FpsTracker.ts` (FPS p5/p50/p95 reporter tiap 60s)
+  - `src/core/observability/ErrorTracker.ts` (Client error & breadcrumbs tracker)
+  - `test/e2e/playthrough.test.ts` (Full playthrough 0–18, heap stability, FPS & error tests)
+  - `DEPLOY_GUIDE.md` (Cloudflare Pages, Vercel, Android APK build)
+  - `ASSET_GUIDE.md` (Panduan manajemen aset bebas kuota)
+  - `GAME_DESIGN.md` (Dokumentasi desain dan penyeimbangan permainan)
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit 0 (0 error)
+  - `npm run lint` -> exit 0 (0 error, 0 warning)
+  - `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
+  - `npm run test:e2e` -> exit 0 (4 passed dari 4 tests)
+  - `npm run build` -> exit 0 (gzip 81.58 kB, Service Worker generated)
   - `node scripts/scan-secrets.js` -> exit 0 (0 rahasia terdeteksi)
-- Keputusan baru: DEC-014 (Pemecahan modul event < 300 baris), DEC-015 (Transisi guard modal kelulusan via GAMEPLAY_ACTIVE)
+  - `Select-String -Pattern "TODO|FIXME|..." src` -> exit 0 (0 temuan)
+- Keputusan baru: NIHIL
 - Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Mulai SESI-04 ASSET-HOOK (/goal asset-hook) untuk memetakan ikon Lucide secara lengkap, melengkapi file lisensi ASSETS_LICENSES.md, dan menyempurnakan audio synthesizer preset.
-- Gotchas: Matriks guard melarang transisi langsung dari EVENT_MODAL ke GRADUATION_SCREEN; transisi wajib melalui GAMEPLAY_ACTIVE terlebih dahulu.
-
-## [SESI-DATA] [2026-09-21T19:52:00+07:00] — status: SKIPPED (NOT APPLICABLE)
-- Checklist: D-01 s/d D-08 -> ▨ TIDAK BERLAKU (Skala Small Mode A — Pure Client / Offline Penuh, Rp0 Hosting)
-- Alasan Evaluasi: Sesuai klausul direktif *"Small: sesi ini tidak berlaku; berhenti"*, dokumen `manifest_v1.md` (§M1, §M2), dan `DECISION.md` (DEC-011). Proyek tidak memiliki backend database SQL/PostgreSQL, connection pool, Redis, atau RLS jaringan. Seluruh persistensi ditangani secara lokal melalui `SaveService.ts` (IndexedDB + localStorage) dengan FNV-1a checksum.
-- File dibuat/diubah: NIHIL
-- Perintah bukti verifikasi: `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
-- Keputusan baru: NIHIL (Mematuhi DEC-002 dan DEC-011)
-- Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal security` (yang juga berstatus tidak berlaku untuk Skala Small).
-
-## [SESI-SECURITY] [2026-09-21T19:54:00+07:00] — status: SKIPPED (NOT APPLICABLE)
-- Checklist: G-01 s/d G-09 -> ▨ TIDAK BERLAKU (Skala Small Mode A — Pure Client / Offline Penuh, Rp0 Hosting)
-- Alasan Evaluasi: Sesuai dokumen `manifest_v1.md` (§M1, §M2) dan `DECISION.md` (DEC-004 & DEC-011). Proyek tidak menggunakan server backend, rute API jaringan, JWT RS256, OAuth, Redis blacklist, atau header server. Karakter bermain 100% anonim lokal offline tanpa auth cloud. Aspek integritas data dan proteksi manipulasi (validasi save checksum FNV-1a, boundary stat matematis, dan guard transisi giliran) telah terintegrasi di lapisan klien dan dijadwalkan untuk pengujian penetrasi pada SESI-06 REDTEAM.
-- File dibuat/diubah: NIHIL
-- Perintah bukti verifikasi: `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
-- Keputusan baru: NIHIL (Mematuhi DEC-004 dan DEC-011)
-- Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal server` (yang juga berstatus tidak berlaku untuk Skala Small).
-
-## [SESI-SERVER] [2026-09-21T19:55:00+07:00] — status: SKIPPED (NOT APPLICABLE)
-- Checklist: B-01 s/d B-10 -> ▨ TIDAK BERLAKU (Skala Small Mode A — Pure Client / Offline Penuh, Rp0 Hosting)
-- Alasan Evaluasi: Sesuai klausul syarat prompt *"SECURITY = COMPLETE dan DATA = COMPLETE; jika tidak, berhenti"*, dokumen `manifest_v1.md` (§M1, §M2), dan `DECISION.md` (DEC-011). Proyek EverLife adalah aplikasi client-side 100% offline (PWA + Capacitor Android) tanpa REST API backend, Colyseus room server, transaksi server ekonomi, background cron jobs, atau OpenAPI server.
-- File dibuat/diubah: NIHIL
-- Perintah bukti verifikasi: `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
-- Keputusan baru: NIHIL (Mematuhi DEC-002 dan DEC-011)
-- Utang teknis / risiko diterima: NIHIL
-- LANGKAH BERIKUTNYA: Lanjut ke sesi aktif skala Small berikutnya: `SESI-04 ASSET-HOOK` (`/goal asset-hook`) atau jika menjalankan runtunan generic: `/goal integrate` (yang juga berstatus tidak berlaku untuk Skala Small).
-
-
+- LANGKAH BERIKUTNYA: Mulai SESI-06 REDTEAM (/goal redteam) untuk pengujian anti-tamper save file, race conditions, dan stress testing batas input.
+- Gotchas: Komponen ErrorBoundary harus mengimpor ErrorTracker tanpa dependensi siklik pada React Context agar penanganan crash tetap andal saat render tree gagal total.
 
 

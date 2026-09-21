@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  validate:
+    name: Typecheck, Lint, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Locked Dependencies
+        run: npm ci
+
+      - name: Verify Secret Leaks
+        run: node scripts/scan-secrets.js
+
+      - name: TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: ESLint Code Quality
+        run: npm run lint
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: E2E Playthrough Tests
+        run: npm run test:e2e
+
+      - name: Production Build (PWA & Service Worker)
+        run: npm run build
+
+      - name: Bundle Size Gate Check (< 350 KB)
+        run: |
+          total_kb=$(du -sb dist/assets | cut -f1)
+          total_kb=$((total_kb / 1024))
+          echo "Total dist/assets size: ${total_kb} KB"
+          if [ $total_kb -gt 350 ]; then
+            echo "ERROR: Bundle size exceeds 350 KB threshold!"
+            exit 1
+          fi
+          echo "Bundle size gate passed!"
