@@ -225,5 +225,25 @@
 - LANGKAH BERIKUTNYA: Mulai SESI-07 RELEASE (/goal release) untuk audit final kode, pengisian PRE_DEPLOY_CHECKLIST.md, pembuatan CHANGELOG.md, dan git release tag v1.0.0-rc1.
 - Gotchas: Diperlukan pengetikan konstanta literal `as const` pada pembuatan objek pengujian mock `Gender` dan `Grade` agar lolos pengetikan ketat TypeScript tanpa flag `@ts-ignore`.
 
+## [SESI-06B-BLUETEAM] [2026-09-21T20:16:00+07:00] — status: COMPLETE
+- Checklist: Remediasi Temuan -> ▣, Klasifikasi Risiko (ATK-004) -> ▣, Uji Regresi Penuh -> ▣, Penerbitan security-test-report.md -> ▣
+- File dibuat/diubah:
+  - `security-test-report.md`
+  - `RED_REPORT.md`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit 0 (0 error)
+  - `npm run lint` -> exit 0 (0 error, 0 warning)
+  - `npm run test:unit` -> exit 0 (39 passed dari 39 tests)
+  - `npm run test:e2e` -> exit 0 (4 passed dari 4 tests)
+  - `npm run test:redteam` -> exit 0 (32 passed dari 32 tests, 17 files)
+  - `npm run build` -> exit 0 (gzip 81.58 kB, Service Worker generated)
+- Keputusan baru: DEC-016 (Klasifikasi formal ATK-004 sebagai ACCEPTED-RISK pada Mode A dengan mitigasi kompensasi runtime state guards dan isolasi dampak single-player)
+- Utang teknis / risiko diterima: Ketiadaan server secret pada Mode A diterima penuh per persetujuan arsitektur.
+- LANGKAH BERIKUTNYA: Mulai SESI-07 RELEASE (/goal release) untuk verifikasi checklist rilis, changelog v1.0.0-rc1, dan rilis final.
+- Gotchas: Validasi integritas offline murni tidak dapat mencegah pemalsuan simetris jika algoritma hash dieksekusi di klien; mitigasi kompensasi difokuskan pada integritas batas runtime memori.
+
+
 
 

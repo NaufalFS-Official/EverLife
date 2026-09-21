@@ -109,6 +109,13 @@ Dokumen ini mencatat seluruh keputusan arsitektural, teknis, dan mekanik game **
 - **Alasan**: Matriks guard `SCREEN_TRANSITION_MATRIX` secara ketat melarang transisi langsung `EVENT_MODAL -> GRADUATION_SCREEN` dengan pesan `ERR_BLOCKED_BY_EVENT`. Rantai transisi 2 langkah menjamin seluruh side-effect event terselesaikan secara atomik sebelum perayaan kelulusan.
 - **Alternatif Ditolak**: Mengubah matriks guard untuk membolehkan lompatan langsung (Ditolak: melanggar invariant arsitektural bahwa event modal wajib ditutup dan state kembali normal sebelum evaluasi akhir).
 
+### DEC-016: Penerimaan Risiko Integritas Klien pada Mode A (ACCEPTED-RISK ATK-004)
+- **Keputusan**: Mengklasifikasikan temuan ATK-004 (rekalkulasi FNV-1a checksum simpanan lokal di browser) sebagai `ACCEPTED-RISK` tanpa memaksakan teknik *security through obscurity* pada arsitektur Mode A.
+- **Alasan**: Sesuai Direktif D8 (Klien tidak pernah tepercaya) dan D11 (Scope Honesty), sebuah aplikasi peramban offline murni tanpa server otoritatif tidak dapat menyimpan rahasia kriptografi privat secara aman dari pemilik perangkat. Mengingat EverLife adalah simulasi offline single-player tanpa leaderboard atau transaksi nyata, blast radius eksploitasi terbatas pada perangkat pemain itu sendiri. Mitigasi kompensasi diterapkan via integritas runtime state guard di memori.
+- **Alternatif Ditolak**:
+  - Menyembunyikan hardcoded secret key di bundle JavaScript (Ditolak: rentan di-reverse-engineer dalam hitungan menit dan memberikan ilusi keamanan palsu).
+  - Mengharuskan server otorisasi (Ditolak: melanggar batasan arsitektur Mode A Rp0 hosting).
+
 ---
 
 ## LOG SELF-HEALING (D12)

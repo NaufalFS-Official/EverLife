@@ -14,10 +14,10 @@
 
 ## 2. RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)
 Pengujian Red Team pada arsitektur Mode A bertujuan untuk **mengukur, mengeksploitasi, dan mendokumentasikan** batas ketahanan logika klien (Client-Side Tampering & Input Resilience) tanpa ilusi keamanan mutlak:
-1. **Inherent Client-Side Limitation (ATK-004 / Status OPEN)**:
+1. **Inherent Client-Side Limitation (ATK-004 / Status ACCEPTED-RISK)**:
    - Karena EverLife v1.0 beroperasi 100% offline di peramban pemain tanpa backend server, seluruh algoritma verifikasi integritas (`FNV-1a 32-bit`) berjalan di sisi klien.
    - Penyerang yang memodifikasi berkas simpanan JSON (misal mengubah `cash` menjadi Rp 500.000.000) dan menghitung ulang nilai checksum menggunakan rumus publik yang sama dapat mengimpor simpanan tersebut dengan sukses.
-   - **Keputusan Desain**: Risiko ini diterima sebagai karakteristik wajar game single-player offline (Mode A) tanpa leaderboard global kompetitif.
+   - **Keputusan Desain**: Risiko ini diterima sebagai karakteristik wajar game single-player offline (Mode A) tanpa leaderboard global kompetitif (lihat `security-test-report.md`).
 2. **Robustness of In-Memory Guards (ATK-001–003, ATK-005–016 / Status BLOCKED-OK)**:
    - Modifikasi sembarang tanpa kalkulasi checksum, sintaks JSON rusak, atau skema versi masa depan ditolak secara elegan tanpa menyebabkan crash.
    - Seluruh transisi state terlarang (penambahan umur saat modal event aktif, bypass usia kerja, aktivitas fiktif, spam tombol aksi 50 tap/detik, dan injeksi XSS) berhasil diblokir oleh `guardTable.ts`, `EconomyEngine.ts`, dan mekanisme debounce `200 ms`.
@@ -31,7 +31,7 @@ Pengujian Red Team pada arsitektur Mode A bertujuan untuk **mengukur, mengeksplo
 | **ATK-001** | STORAGE / TAMPER | Saldo `cash` diubah `0 -> 999999999` tanpa ubah checksum | Tolak impor berkas | `ERR_SAVE_CHECKSUM_MISMATCH: Verifikasi checksum simpanan gagal.` | Medium | `BLOCKED-OK` |
 | **ATK-002** | STORAGE / PARSER | JSON terpotong: `{"schemaVersion": 1, ...` | Tolak parsing | `ERR_IMPORT_INVALID_JSON: Format berkas bukan JSON valid.` | Low | `BLOCKED-OK` |
 | **ATK-003** | STORAGE / SCHEMA | `schemaVersion: 999` ber-checksum valid | Tolak versi masa depan | `ERR_SAVE_FUTURE_VERSION: Skema simpanan v999 lebih tinggi dari versi aplikasi (v1).` | Medium | `BLOCKED-OK` |
-| **ATK-004** | STORAGE / EXPLOIT | Rekalkulasi FNV-1a checksum setelah modifikasi `cash` | Buktikan manipulasi klien | Impor sukses (`profile.cash = 500000000`). Risiko arsitektur Mode A terdokumentasi. | High | `OPEN` |
+| **ATK-004** | STORAGE / EXPLOIT | Rekalkulasi FNV-1a checksum setelah modifikasi `cash` | Buktikan manipulasi klien | Impor sukses (`profile.cash = 500000000`). Risiko arsitektur Mode A diterima (ACCEPTED-RISK). | High | `ACCEPTED-RISK` |
 | **ATK-005** | STORAGE / BOUNDARY | Slot ID di luar batas: `slotId: 0`, `4`, `-1`, `99` | Tolak akses slot | `ERR_INVALID_SLOT_ID: Nomor slot harus berupa bilangan bulat antara 1 dan 3.` | Low | `BLOCKED-OK` |
 | **ATK-006** | LOGIC / EVENT | Opsi fiktif: `engine.selectEventOption('opt-hacked-999')` | Tolak opsi ilegal, layar tetap stabil | `ERR_INVALID_OPTION_ID: Opsi pilihan opt-hacked-999 tidak valid.` (Screen: `EVENT_MODAL`) | Medium | `BLOCKED-OK` |
 | **ATK-007** | STATE / GUARD | Eksekusi `engine.ageUp()` saat layar `EVENT_MODAL` | Cegah skip dilema | `ERR_AGE_UP_GUARD: Tidak dapat menambah umur: Selesaikan dialog event yang sedang aktif terlebih dahulu.` | Medium | `BLOCKED-OK` |
