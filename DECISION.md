@@ -95,6 +95,22 @@ Dokumen ini mencatat seluruh keputusan arsitektural, teknis, dan mekanik game **
 
 ---
 
+---
+
+### DEC-014: Pemecahan Modul Event Data per Jenjang Pendidikan (Anti-Truncation D5)
+- **Keputusan**: Memecah 50 kartu event SMA ke dalam 4 modul terpisah per jenjang: `eventDataToddler.ts` (0–5 thn), `eventDataElementary.ts` (6–11 thn), `eventDataMiddle.ts` (12–14 thn), dan `eventDataHigh.ts` (15–18 thn).
+- **Alasan**: Mematuhi Direktif Global D5 yang membatasi ukuran berkas maksimal 300 baris. Modul master `EventPool.ts` menggabungkan keempat himpunan kartu secara aman dan bertipe.
+- **Alternatif Ditolak**: Menyimpan seluruh 50 event dalam satu berkas raksasa (Ditolak: menghasilkan > 600 baris yang melanggar D5).
+
+---
+
+### DEC-015: Penataan Ulang Transisi Layar Antara EVENT_MODAL dan GRADUATION_SCREEN
+- **Keputusan**: Penyelesaian dialog dilema event pada usia 18 tahun selalu melakukan transisi `EVENT_MODAL -> GAMEPLAY_ACTIVE` terlebih dahulu sebelum kemudian mengeksekusi transisi sah `GAMEPLAY_ACTIVE -> GRADUATION_SCREEN`.
+- **Alasan**: Matriks guard `SCREEN_TRANSITION_MATRIX` secara ketat melarang transisi langsung `EVENT_MODAL -> GRADUATION_SCREEN` dengan pesan `ERR_BLOCKED_BY_EVENT`. Rantai transisi 2 langkah menjamin seluruh side-effect event terselesaikan secara atomik sebelum perayaan kelulusan.
+- **Alternatif Ditolak**: Mengubah matriks guard untuk membolehkan lompatan langsung (Ditolak: melanggar invariant arsitektural bahwa event modal wajib ditutup dan state kembali normal sebelum evaluasi akhir).
+
+---
+
 ## LOG SELF-HEALING (D12)
 - **[ITEM-01] ERROR**: `TS2339: Property 'env' does not exist on type 'ImportMeta' in src/contracts/envSchema.ts`
   - **AKAR**: Bundler Vite membutuhkan deklarasi ambient `vite/client` agar TypeScript mengenali properti `import.meta.env`.
@@ -104,5 +120,10 @@ Dokumen ini mencatat seluruh keputusan arsitektural, teknis, dan mekanik game **
   - **AKAR**: ESLint 9 default parser (`espree`) tidak mengenali sintaks TypeScript dan JSX tanpa parser TypeScript AST.
   - **PERBAIKAN**: Memasang devDependency terkunci `typescript-eslint@8.5.0` dan mengonfigurasi parser di `eslint.config.js`.
   - **PENCEGAHAN**: Konfigurasikan parser `typescript-eslint` pada setiap setup proyek TypeScript dengan ESLint flat config.
+- **[ITEM-03] ERROR**: `ERR_INVALID_SCREEN_TRANSITION: Wajib menyelesaikan dialog dilema sebelum transisi ke kelulusan (ERR_BLOCKED_BY_EVENT)`
+  - **AKAR**: `GameActionHandler.executeSelectEventOption` mencoba mengembalikan `nextScreen: GRADUATION_SCREEN` langsung saat karakter berusia 18 tahun, melanggar guard `EVENT_MODAL -> GRADUATION_SCREEN`.
+  - **PERBAIKAN**: Mengembalikan `nextScreen: GAMEPLAY_ACTIVE` dari handler, lalu `GameEngine` melakukan transisi sah bertahap `GAMEPLAY_ACTIVE -> GRADUATION_SCREEN`.
+  - **PENCEGAHAN**: Selalu verifikasi jalur transisi terhadap `SCREEN_TRANSITION_MATRIX` sebelum menetapkan screen target.
+
 
 
