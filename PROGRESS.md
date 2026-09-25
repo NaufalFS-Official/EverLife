@@ -431,3 +431,43 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - Utang teknis / risiko diterima: Nol utang teknis; ukuran bundle 131.31 kB gzip (sangat efisien di bawah anggaran 450 kB).
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario eksploitasi klien lokal (manipulasi storage, bypass checksum, stat overflow), atau verifikasi gerbang akhir (`/gate-final`).
 - Gotchas: Penambahan kontrol pengaturan harus memperhatikan batas D5 (<=300 baris); `SettingsModal.tsx` distabilkan pada 298 baris dengan formatting ringkas tanpa mengurangi fitur.
+
+---
+
+## [PERF-01] 2026-09-26T03:52:00+07:00 — status: COMPLETE
+- Checklist:
+  - Budget retrieval: Ambil budget performa Low/Mid/High tier dari manifest_v1.md (§M1) & game_prd_v1.1.md (§12.1) -> ▣ DONE-VERIFIED
+  - Benchmark harness: Buat scripts/run_perf_benchmark.cjs (Playwright CDP CPU/Network throttling, 60s interaction, RAF FPS, heap, INP) -> ▣ DONE-VERIFIED
+  - Multi-tier measurement: Jalankan benchmark untuk Low-Tier, Mid-Tier, dan High-Tier -> ▣ DONE-VERIFIED
+  - Low-Tier results: 1186ms load (<2000ms), 60fps locked (>=50fps), 3 long frames (0.08%), 5.4MB heap (<95MB), 32ms INP (<45ms) -> ▣ DONE-VERIFIED
+  - Mid-Tier results: 513ms load (<1200ms), 60fps locked (>=60fps), 0 long frames, 4.76MB heap (<140MB), 14ms INP (<25ms) -> ▣ DONE-VERIFIED
+  - High-Tier results: 80ms load (<600ms), 60fps locked (>=58fps), 0 long frames, 5.20MB heap (<190MB), 15ms INP (<16ms) -> ▣ DONE-VERIFIED
+  - Optimization & investigation: Kompresi HTTP gzip pada payload statis (mempercepat load Low-Tier dari 2852ms menjadi 1186ms) & defensive check fastForward -> ▣ DONE-VERIFIED
+  - Zero core mutations: Kepatuhan D16 (git diff --stat src/core/ = 0) -> ▣ DONE-VERIFIED
+  - D5 compliance: Semua berkas <= 300 baris, zero stubs/TODOs -> ▣ DONE-VERIFIED
+  - Penyusunan reports/PERF_REPORT.md dengan tabel LULUS/GAGAL dan daftar uji perangkat fisik L5 -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `eslint.config.js`
+  - `src/engine/useDebugRegistration.ts`
+  - `scripts/run_perf_benchmark.cjs`
+  - `reports/perf_results.json`
+  - `reports/PERF_REPORT.md`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `node scripts/run_perf_benchmark.cjs` -> exit: 0 (Semua tier LULUS 100%)
+  - `git diff --stat src/core/` -> exit: 0 (0 berkas diubah di core/)
+  - `npm run typecheck` -> exit: 0 (tsc --noEmit clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (20 files passed, 78/78 tests passed)
+  - `npm run test:e2e` -> exit: 0 (2/2 Playwright E2E tests passed)
+  - `npm run build` -> exit: 0 (Vite build dist/ clean)
+  - `npm run verify:bundle` -> exit: 0 (131.34 kB gzip < 450 kB budget)
+  - `git grep -inE "TODO|FIXME|..." src scripts` -> exit: 1 (0 temuan stubs)
+- Level verifikasi tercapai: L1 (Toolchain clean), L2/L3 (78/78 unit tests & build bundle pass), L4 (Playwright 2/2 E2E & 3-tier CDP throttling benchmark pass), L5 (4 skenario hardware termal/baterai/digitizer fisik menunggu evaluasi manusia di PERF_REPORT.md).
+- Keputusan baru: DEC-017, SH-007 tercatat di DECISION.md.
+- Utang teknis / risiko diterima: Nol utang teknis; performa semua tier stabil pada 60 FPS locked, bundle gzip 131.34 kB (70.8% di bawah budget 450 kB).
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario eksploitasi klien lokal (manipulasi storage, bypass checksum, stat overflow), atau verifikasi gerbang akhir (`/gate-final`).
+- Gotchas: Pengukuran latensi input harus mengukur event in-page secara langsung ke frame berikutnya untuk menghindari overhead IPC CDP Playwright.
+

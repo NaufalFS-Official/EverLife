@@ -22,9 +22,10 @@ export function useDebugRegistration(
         setState((prev) => (prev ? { ...prev, ...partial } : null));
       },
       fastForward: (years: number) => {
+        if (!state?.character?.finances || state.currentScreen === 'DEATH_SUMMARY') return;
         let current = state;
         for (let i = 0; i < years; i++) {
-          if (current.currentScreen === 'DEATH_SUMMARY') break;
+          if (!current?.character?.finances || current.currentScreen === 'DEATH_SUMMARY') break;
           const res = executeAgeUp(current);
           current = res.nextState;
         }
