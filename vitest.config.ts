@@ -10,6 +10,7 @@ export default defineConfig({
       'tests/integration/**/*.{test,spec}.ts',
       'tests/playtest/**/*.{test,spec}.ts',
       'tests/balance/**/*.{test,spec}.ts',
+      'security/attacks/**/*.{test,spec}.ts',
     ],
   },
 });

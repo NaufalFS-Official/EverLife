@@ -17,6 +17,7 @@
     "test:e2e:install": "playwright install chromium",
     "test:perf": "node scripts/run_perf_benchmark.cjs",
     "test:balance": "vitest run tests/balance",
+    "test:redteam": "vitest run security/attacks",
     "verify:bundle": "node scripts/verify_bundle_size.cjs",
     "detect-secrets": "node scripts/detect_secrets.cjs",
     "generate-placeholders": "node scripts/generate_placeholders.cjs"
