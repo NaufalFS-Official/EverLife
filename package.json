@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:debug": "vite build --mode development",
     "build:web": "npm run build",
     "build:portal": "npm run build && node -e \"console.log('Build portal bundle dist/ siap untuk didistribusikan ke Web Game Portal (itch.io/CrazyGames/Poki).')\"",
     "preview": "vite preview",

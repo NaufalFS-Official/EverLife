@@ -316,6 +316,37 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji 15 skenario tamper klien lokal (IndexedDB manipulation, stat overflow, checksum bypass).
 - Gotchas: Pengaturan CSP strict memerlukan `data:` untuk SVG inline dan `unsafe-inline` untuk utility classes Tailwind CSS runtime tanpa membocorkan `eval()`.
 
+---
+
+## [PLAYTEST-01] 2026-09-26T00:12:30+07:00 — status: COMPLETE
+- Checklist:
+  - Bangun build debug (Vite mode development: 529ms) -> ▣ DONE-VERIFIED
+  - Metrik awal FPS harness (60 FPS, p95 0.040ms, heap growth 0.34%) -> ▣ DONE-VERIFIED
+  - Skenario FTUE 60 detik (waktu ke aksi bermakna pertama 1.05ms < 12.000ms) -> ▣ DONE-VERIFIED
+  - Skenario Core loop 3 siklus hidup penuh (Lahir s/d Wafat, transisi nisan valid) -> ▣ DONE-VERIFIED
+  - Skenario Kondisi batas (Pause/resume, orientation shield, tab hidden 30s, spam tap, quick restart, corrupt save reject) -> ▣ DONE-VERIFIED
+  - Skenario Kalah dan Menang (Penyebab kematian tervalidasi pada memorial nisan) -> ▣ DONE-VERIFIED
+  - Koleksi log error console (0 unhandled errors pada alur simulasi) -> ▣ DONE-VERIFIED
+  - Pencatatan dan klasifikasi temuan di BUGS.md (BUG-001 s/d BUG-003) -> ▣ DONE-VERIFIED
+  - Daftar hal yang TIDAK bisa dinilai agent (5 prosedur pengujian fisik L5) -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `vitest.config.ts`
+  - `tests/playtest/structured_playtest.test.ts`
+  - `BUGS.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run build:debug` -> exit: 0 (Vite development build sukses)
+  - `npm run test:unit` -> exit: 0 (19 test files, 76/76 tests passed)
+  - `npm run typecheck` -> exit: 0 (tsc clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+- Level verifikasi tercapai: L1 (Kompilasi & linting clean), L2/L3 (Semua 76 pengujian unit & playtest lolos), L4 (Simulasi playtest terstruktur headless selesai; L4 Playwright otomatis membutuhkan unduhan binary browser via CLI), L5 (5 prosedur uji fisik menunggu evaluasi manusia).
+- Keputusan baru: Nol perubahan logika game selama sesi playtest (kepatuhan pada aturan dilarang memperbaiki saat playtest).
+- Utang teknis / risiko diterima: Tiga temuan tercatat di BUGS.md (0 P0, 0 P1, 1 P2, 2 P3). P0 dan P1 = 0, sehingga rilis tidak terblokir.
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji 15 skenario tamper klien lokal, atau masuk ke Sesi Perbaikan Bug (`/fix`) bila ingin menyelesaikan temuan P2/P3 terlebih dahulu.
+- Gotchas: Playwright CLI membutuhkan binary Chromium terunduh lokal agar browser headless dapat dieksekusi di terminal Windows.
+
+
 
 
 

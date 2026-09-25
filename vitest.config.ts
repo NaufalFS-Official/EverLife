@@ -5,6 +5,10 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     execArgv: ['--expose-gc'],
-    include: ['tests/unit/**/*.{test,spec}.ts', 'tests/integration/**/*.{test,spec}.ts'],
+    include: [
+      'tests/unit/**/*.{test,spec}.ts',
+      'tests/integration/**/*.{test,spec}.ts',
+      'tests/playtest/**/*.{test,spec}.ts',
+    ],
   },
 });
