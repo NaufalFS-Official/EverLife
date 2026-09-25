@@ -41,9 +41,9 @@
       {
         "id": "c1",
         "text": "Meminjamkan dan bermain balapan bersama",
-        "statDeltas": { "happiness": 15, "karma": 10 },
+        "statDeltas": { "happiness": 15 },
         "logText": "Kami bermain bersama hingga petang dan menjadi teman baik di lingkungan rumah.",
-        "karmaDelta": 10
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -67,7 +67,7 @@
         "text": "Tersenyum ramah dan menyapa seluruh kelas dengan lantang",
         "statDeltas": { "happiness": 12, "looks": 5, "smarts": 5 },
         "logText": "Perkenalan saya disambut tepuk tangan meriah. Teman-teman berebut mengajak saya duduk bersama.",
-        "karmaDelta": 5
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -81,7 +81,7 @@
         "text": "Menceritakan lelucon lucu tentang katak di kolam",
         "statDeltas": { "happiness": 15, "discipline": -5 },
         "logText": "Seisi kelas tertawa terbahak-bahak! Guru tersenyum geleng-geleng kepala melihat aksi saya.",
-        "karmaDelta": 5
+        "karmaDelta": 0
       }
     ]
   },
@@ -98,7 +98,7 @@
         "text": "Mengerjakan sendiri dengan tekun meski harus begadang",
         "statDeltas": { "smarts": 12, "discipline": 15, "health": -5 },
         "logText": "Saya berusaha keras memecahkan soal aljabar tersebut dan mendapat nilai A murni!",
-        "karmaDelta": 10
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -127,9 +127,9 @@
       {
         "id": "c1",
         "text": "Membawanya pulang dan merawatnya bersama orang tua",
-        "statDeltas": { "happiness": 20, "karma": 15 },
+        "statDeltas": { "happiness": 20 },
         "logText": "Orang tua saya mengizinkan memeliharanya. Kami menamainya Bucky dan ia sangat setia!",
-        "karmaDelta": 15
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -158,9 +158,9 @@
       {
         "id": "c1",
         "text": "Membela sahabatmu secara terbuka dengan bukti nyata",
-        "statDeltas": { "happiness": 10, "karma": 15, "discipline": 5 },
+        "statDeltas": { "happiness": 10, "discipline": 5 },
         "logText": "Saya mengunggah klarifikasi lugas. Sahabat saya menangis haru atas loyalitas saya.",
-        "karmaDelta": 15
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -191,7 +191,7 @@
         "text": "Menjawab dengan visi realistis kontribusi profesional",
         "statDeltas": { "smarts": 8, "discipline": 10, "happiness": 10 },
         "logText": "Pewawancara mengangguk kagum pada kedewasaan jawaban saya.",
-        "karmaDelta": 5
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -212,17 +212,17 @@
   {
     "id": "evt_wallet_found",
     "category": "Drama",
-    "minAge": 15,
-    "maxAge": 45,
+    "minAge": 18,
+    "maxAge": 25,
     "title": "Dompet Tebal Terjatuh di Halte Bus",
     "description": "Kamu menemukan sebuah dompet kulit bermerek berisi uang tunai sebesar $1,200 lengkap dengan kartu identitas pemiliknya.",
     "choices": [
       {
         "id": "c1",
         "text": "Mengembalikan dompet utuh kepada alamat pemiliknya",
-        "statDeltas": { "karma": 25, "happiness": 20 },
+        "statDeltas": { "happiness": 20 },
         "logText": "Pemilik dompet adalah seorang kakek pensiunan. Beliau memeluk saya erat dengan air mata bahagia.",
-        "karmaDelta": 25
+        "karmaDelta": 0
       },
       {
         "id": "c2",
@@ -251,7 +251,7 @@
       {
         "id": "c1",
         "text": "Menerima tugas dengan profesional demi promosi mendatang",
-        "statDeltas": { "smarts": 5, "health": -15, "discipline": 15 },
+        "statDeltas": { "smarts": 5, "health": -3, "happiness": -5, "discipline": 15 },
         "logText": "Proyek sukses besar, namun badan saya demam tinggi akibat kelelahan.",
         "karmaDelta": 0
       },
@@ -284,14 +284,14 @@
         "text": "Mulai diet ketat nabati dan rutin joging 5 kilometer tiap pagi",
         "statDeltas": { "health": 20, "happiness": 5, "discipline": 15 },
         "logText": "Dalam 6 bulan, berat badan saya turun ideal dan tekanan darah kembali prima!",
-        "karmaDelta": 5
+        "karmaDelta": 0
       },
       {
         "id": "c2",
         "text": "Mengabaikan anjuran dokter dan tetap makan makanan cepat saji",
-        "statDeltas": { "health": -25, "happiness": 5 },
+        "statDeltas": { "health": -5, "happiness": 5 },
         "logText": "Saya menolak berhenti makan gorengan. Tubuh terasa semakin berat dan mudah lelah.",
-        "karmaDelta": -5
+        "karmaDelta": 0
       },
       {
         "id": "c3",
@@ -313,14 +313,14 @@
       {
         "id": "c1",
         "text": "Merawat anggrek langka dengan pupuk organik setiap sore",
-        "statDeltas": { "happiness": 20, "health": 10, "karma": 10 },
+        "statDeltas": { "happiness": 10, "health": 2 },
         "logText": "Bunga anggrek saya mekar indah dan memenangkan juara pertama piala warga!",
-        "karmaDelta": 10
+        "karmaDelta": 0
       },
       {
         "id": "c2",
         "text": "Hanya duduk santai di teras membaca koran pagi",
-        "statDeltas": { "happiness": 10, "health": 2 },
+        "statDeltas": { "happiness": 5, "health": 1 },
         "logText": "Masa pensiun yang tenang dan damai adalah kemewahan yang saya syukuri.",
         "karmaDelta": 0
       }

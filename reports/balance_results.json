@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-09-25T21:00:56.257Z",
+  "sampleSizePerArchetype": 1000,
+  "totalSimulatedLives": 3000,
+  "archetypes": {
+    "average": {
+      "archetype": "average",
+      "totalRuns": 1000,
+      "medianLifespan": 73,
+      "meanLifespan": 68.1,
+      "p5Lifespan": 30,
+      "p95Lifespan": 90,
+      "childMortalityRate": 2.3,
+      "centenarianRate": 0.3,
+      "medianNetWorth": 8880,
+      "insolvencyRate": 19.4,
+      "ribbons": {
+        "Mediocre": 971,
+        "Unlucky": 26,
+        "Centenarian": 3
+      },
+      "causesOfDeath": {
+        "Meninggal tenang dalam tidur akibat usia tua.": 438,
+        "Kecelakaan lalu lintas fatal.": 120,
+        "Penyakit kronis berkepanjangan pada usia lanjut.": 413,
+        "Komplikasi penyakit langka masa kanak-kanak.": 23,
+        "Serangan jantung mendadak akibat kondisi fisik yang melemah.": 6
+      }
+    },
+    "achiever": {
+      "archetype": "achiever",
+      "totalRuns": 1000,
+      "medianLifespan": 72,
+      "meanLifespan": 66.6,
+      "p5Lifespan": 23,
+      "p95Lifespan": 90,
+      "childMortalityRate": 3.8,
+      "centenarianRate": 0.5,
+      "medianNetWorth": 291120,
+      "insolvencyRate": 17.5,
+      "ribbons": {
+        "Successful": 569,
+        "Mediocre": 384,
+        "Unlucky": 42,
+        "Centenarian": 5
+      },
+      "causesOfDeath": {
+        "Meninggal tenang dalam tidur akibat usia tua.": 410,
+        "Penyakit kronis berkepanjangan pada usia lanjut.": 409,
+        "Komplikasi penyakit langka masa kanak-kanak.": 38,
+        "Kecelakaan lalu lintas fatal.": 142,
+        "Serangan jantung mendadak akibat kondisi fisik yang melemah.": 1
+      }
+    },
+    "criminal": {
+      "archetype": "criminal",
+      "totalRuns": 1000,
+      "medianLifespan": 62,
+      "meanLifespan": 58.8,
+      "p5Lifespan": 27,
+      "p95Lifespan": 76,
+      "childMortalityRate": 2.9,
+      "centenarianRate": 0,
+      "medianNetWorth": 414380,
+      "insolvencyRate": 3.2,
+      "ribbons": {
+        "Jailbird": 967,
+        "Unlucky": 25,
+        "Saint": 2,
+        "Wicked": 6
+      },
+      "causesOfDeath": {
+        "Kecelakaan lalu lintas fatal.": 134,
+        "Penyakit kronis berkepanjangan pada usia lanjut.": 777,
+        "Meninggal tenang dalam tidur akibat usia tua.": 57,
+        "Serangan jantung mendadak akibat kondisi fisik yang melemah.": 3,
+        "Komplikasi penyakit langka masa kanak-kanak.": 29
+      }
+    }
+  }
+}

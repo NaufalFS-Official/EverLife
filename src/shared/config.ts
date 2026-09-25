@@ -42,7 +42,7 @@ export const GAME_CONFIG = {
   /** Eksponen laju penuaan mortalitas tahunan. Rentang aman: 0.030 - 0.060 eksponen */
   FEEL_MORTALITY_EXPONENT: 0.045,
   /** Usia mulai lonjakan skenario krisis dan penyakit. Rentang aman: 50 - 70 tahun */
-  FEEL_CRISIS_START_AGE: 60,
+  FEEL_CRISIS_START_AGE: 65,
 
   // Feel Spec Dekonstruksi Aksi (Timing & Latensi Input)
   /** Durasi respon tombol +Age ditekan hingga log bertambah. Rentang aman: 100 - 300 ms */

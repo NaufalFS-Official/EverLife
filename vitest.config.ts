@@ -9,6 +9,7 @@ export default defineConfig({
       'tests/unit/**/*.{test,spec}.ts',
       'tests/integration/**/*.{test,spec}.ts',
       'tests/playtest/**/*.{test,spec}.ts',
+      'tests/balance/**/*.{test,spec}.ts',
     ],
   },
 });

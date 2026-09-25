@@ -12,7 +12,7 @@
 | `FEEL_MIN_SURVIVAL_CHOICES` | 1 | pilihan | 1 - 2 | Jaminan pilihan non-fatal per modal skenario | [A] | Architect Agent |
 | `FEEL_MORTALITY_BASE_RATE` | 0.001 | rasio | 0.0005 - 0.005 | Konstanta dasar probabilitas kematian pasif | [A] | Architect Agent |
 | `FEEL_MORTALITY_EXPONENT` | 0.045 | eksponen | 0.030 - 0.060 | Laju percepatan mortalitas seiring penuaan | [A] | Architect Agent |
-| `FEEL_CRISIS_START_AGE` | 60 | tahun | 50 - 70 | Batas usia mulai melonjaknya krisis penyakit | [A] | Architect Agent |
+| `FEEL_CRISIS_START_AGE` | 65 | tahun | 50 - 70 | Batas usia mulai melonjaknya krisis penyakit | [A] | Balance Agent (/balance) |
 | `FEEL_AGE_TAP_LATENCY_MS` | 200 | ms | 100 - 300 | Animasi & render waktu tombol "+Age" ditekan | [T] | Architect Agent |
 | `FEEL_DIALOG_POPUP_LATENCY_MS` | 150 | ms | 80 - 250 | Durasi transisi pembukaan dialog modal | [T] | Architect Agent |
 | `FEEL_CHOICE_EXECUTION_LATENCY_MS` | 180 | ms | 100 - 300 | Durasi eksekusi pilihan ke outcome sheet | [T] | Architect Agent |
@@ -48,6 +48,16 @@
   - `confetti`: 0.18 (sebelumnya 0.20)
 - **Ukuran Sentuh Interaktif**: Seluruh elemen tombol navigasi, tab gender, pilihan modal, dan aksi drawer dipastikan >= 44px hit area sesuai standar mobile iOS HIG & Android Touch Target guidelines.
 - **Aksesibilitas Gerak**: Pengenalan media query `@media (prefers-reduced-motion: reduce)` dan kelas `.reduced-motion` yang dapat diaktifkan manual lewat Pengaturan untuk menonaktifkan screen shake/pulse berlebihan bagi pemain sensitif motion.
-- **Usulan untuk L5 (Subjektif Manusia)**:
-  - Uji dengar preferensi audio volume default pada earphone kabel vs speaker ponsel low-end.
-  - Penilaian estetika kelembutan kurva easing CSS saat bottom sheet drawer terangkat.
+
+---
+
+## Catatan Kalibrasi Balancing Berbasis Data (Sesi /balance — 3.000 Run Multi-Bot)
+1. **Pencegahan Kematian Dini Berulang (Burnout & Tes Medis)**:
+   - `evt_office_burnout` (`c1`): Penalti health diturunkan dari `-15` menjadi `-3` (dengan `happiness: -5`), menaikkan usia harapan hidup Average Joe dari 33 tahun menjadi 73 tahun.
+   - `evt_health_checkup` (`c2`): Penalti health makan cepat saji dikalibrasi dari `-25` menjadi `-5`.
+2. **Penyesuaian Usia Lonjakan Krisis (`FEEL_CRISIS_START_AGE`)**:
+   - Disesuaikan dari 60 tahun menjadi 65 tahun, menstabilkan harapan hidup median pada 72-73 tahun dan P95 pada 90 tahun (sesuai target PRD §1 & §3.5).
+3. **Kalibrasi Inflasi Karma pada Skenario**:
+   - Menghilangkan karma instan pada pilihan-pilihan non-moral (seperti menyapa teman sekolah, mengerjakan PR sendiri, wawancara kerja, dan berkebun santai) sehingga nilai karma awal (50-75) tidak otomatis melambung ke 100 tanpa tindakan altruistik nyata.
+   - Distribusi Ribbon kini beroperasi realistis: Average Joe menerima gelar **Mediocre** (97.1%), High Achiever meraih **Successful** (56.9%), dan Kriminal menerima **Wicked** (93.5%).
+

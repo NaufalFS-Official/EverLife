@@ -471,3 +471,46 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario eksploitasi klien lokal (manipulasi storage, bypass checksum, stat overflow), atau verifikasi gerbang akhir (`/gate-final`).
 - Gotchas: Pengukuran latensi input harus mengukur event in-page secara langsung ke frame berikutnya untuk menghindari overhead IPC CDP Playwright.
 
+---
+
+## [BALANCE-01] 2026-09-26T04:02:00+07:00 — status: COMPLETE
+- Checklist:
+  - Target retrieval: Ambil target keseimbangan hidup dari PRD (§1, §3.5, §10) & Blueprint S2/S7 -> ▣ DONE-VERIFIED
+  - Headless test harness: Siapkan bot bertingkat (Average Joe, High Achiever, Risk Taker) via vitest di tests/balance/balance_simulation.test.ts -> ▣ DONE-VERIFIED
+  - Multi-bot simulation: Eksekusi 3.000 run headless (1.000 run per arketipe) deterministik dengan Mulberry32 PRNG -> ▣ DONE-VERIFIED
+  - Iteration 1 (Burnout mortality): Kalibrasi penalti health c1 evt_office_burnout dari -15 ke -3 (meningkatkan median lifespan Average Joe dari 33 ke 69 tahun) -> ▣ DONE-VERIFIED
+  - Iteration 2 (Crisis age): Kalibrasi FEEL_CRISIS_START_AGE dari 60 ke 65 tahun di shared/config.ts (median lifespan stabil di 72-73 tahun, P95 90 tahun) -> ▣ DONE-VERIFIED
+  - Iteration 3 (Medical checkup): Kalibrasi penalti health c2 evt_health_checkup dari -25 ke -5 -> ▣ DONE-VERIFIED
+  - Iteration 4 (Karma calibration): Eliminasi inflasi karma pada pilihan skenario non-moral untuk mencegah perolehan instan gelar Saint -> ▣ DONE-VERIFIED
+  - Ribbon balance: 56.9% High Achiever meraih Successful, Average Joe meraih Mediocre (97.1%), Risk Taker meraih Wicked (93.5%) -> ▣ DONE-VERIFIED
+  - Zero core mutations: Kepatuhan D16 (git diff --stat src/core/ = 0) -> ▣ DONE-VERIFIED
+  - D5 compliance: Semua berkas <= 300 baris, zero stubs/TODOs -> ▣ DONE-VERIFIED
+  - Penyusunan reports/BALANCE_REPORT.md dan sinkronisasi BALANCE.md -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `vitest.config.ts`
+  - `src/shared/config.ts`
+  - `src/data/scenarios.json`
+  - `tests/balance/balance_simulation.test.ts`
+  - `reports/balance_results.json`
+  - `reports/BALANCE_REPORT.md`
+  - `BALANCE.md`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run test:balance` -> exit: 0 (4/4 balance tests passed, 3.000 run headless)
+  - `git diff --stat src/core/` -> exit: 0 (0 berkas diubah di core/)
+  - `npm run typecheck` -> exit: 0 (tsc --noEmit clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (21 test files, 82/82 tests passed)
+  - `npm run test:e2e` -> exit: 0 (2/2 Playwright E2E tests passed)
+  - `npm run build` -> exit: 0 (Vite build dist/ clean)
+  - `npm run verify:bundle` -> exit: 0 (131.31 kB gzip < 450 kB budget)
+  - `git grep -inE "TODO|FIXME|..." src tests scripts` -> exit: 1 (0 temuan stubs)
+- Level verifikasi tercapai: L1 (Kompilasi & linting clean), L2/L3 (82/82 unit & balance tests pass, production bundle pass), L4 (Playwright 2/2 E2E & 3.000 run headless balance pass), L5 (3 daftar penilaian emosional/subjektif manusia tercatat di BALANCE_REPORT.md).
+- Keputusan baru: DEC-018 tercatat di DECISION.md.
+- Utang teknis / risiko diterima: Nol utang teknis; kurva mortalitas dan ekonomi sepenuhnya sinkron dengan target PRD v1.1.
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario eksploitasi klien lokal (manipulasi storage, bypass checksum, stat overflow), atau verifikasi gerbang akhir (`/gate-final`).
+- Gotchas: Skenario dengan age band sempit dapat terpicu berulang jika jumlah event dalam rentang tersebut sedikit; penalti atau bonus pada opsi default harus bernilai moderat agar tidak mendistorsi seluruh siklus kehidupan.
+
+
