@@ -2,6 +2,14 @@
 
 > Simulator kehidupan modular berbasis teks di mana setiap keputusan membentuk takdir karakter dari lahir hingga wafat.
 
+## Fitur Utama & Platform
+
+- **Arsitektur Mandiri (Mode A / C0 Offline)**: 100% luring tanpa dependensi server eksternal, siap dimainkan sebagai PWA atau di portal web game.
+- **Penyimpanan Bertingkat & Aman**: Menggunakan IndexedDB dengan fallback otomatis ke `localStorage` dan in-memory storage, dilindungi salted SHA-256 HMAC checksum.
+- **PWA & Offline-First**: Mendukung pemasangan aplikasi mandiri (Standalone PWA) dengan Service Worker cache v1.0.0.
+- **Profil Performa Fleksibel**: 3 tier grafis (Low / Mid / High) dengan adaptasi frame rate runtime otomatis.
+- **Aksesibilitas & Ergonomi**: Mobile portrait shell dengan safe area notch insets, landscape shield overlay, serta pintasan keyboard (`Space`/`Enter`/`A` untuk +Age, `1-4` untuk pilihan, `Esc` untuk menutup menu).
+
 ## Prasyarat
 - Node.js (versi 20+ atau 24 LTS)
 - npm (versi 10+) atau pnpm (versi 9+)
@@ -30,8 +38,16 @@
    npm run build
    ```
 
-5. **Menjalankan Pengujian**:
+5. **Build untuk Distribusi Portal Game Web (itch.io / Poki / CrazyGames)**:
    ```bash
+   npm run build:portal
+   ```
+   Artefak statis di folder `dist/` siap diarsipkan (ZIP) dan diunggah langsung ke portal game HTML5.
+
+6. **Menjalankan Pengujian**:
+   ```bash
+   npm run typecheck
+   npm run lint
    npm run test:unit
    npm run test:e2e
    ```

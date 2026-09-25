@@ -24,12 +24,17 @@ export interface IPlatformAdapter {
   vibrate(ms: number | number[]): boolean;
   getSafeArea(): SafeAreaInsets;
   onVisibilityChange(callback: (visible: boolean) => void): () => void;
+  copyToClipboard(text: string): Promise<boolean>;
+  reload(): void;
+  addKeyboardListener(listener: (e: KeyboardEvent) => void): () => void;
+  isLandscape(): boolean;
+  onResizeOrOrientationChange(callback: (isLandscape: boolean) => void): () => void;
 }
 
 /**
  * Memory Storage fallback untuk lingkungan Node.js atau saat localStorage diblokir.
  */
-class MemoryStorage implements IPlatformStorage {
+export class MemoryStorage implements IPlatformStorage {
   private memoryMap = new Map<string, string>();
 
   getItem(key: string): string | null {
@@ -124,6 +129,52 @@ export class DefaultPlatformAdapter implements IPlatformAdapter {
     document.addEventListener('visibilitychange', handler);
     return () => {
       document.removeEventListener('visibilitychange', handler);
+    };
+  }
+
+  public async copyToClipboard(text: string): Promise<boolean> {
+    if (!this.isBrowser()) return false;
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch {
+      // Fallback
+    }
+    return false;
+  }
+
+  public reload(): void {
+    if (this.isBrowser()) {
+      window.location.reload();
+    }
+  }
+
+  public addKeyboardListener(listener: (e: KeyboardEvent) => void): () => void {
+    if (!this.isBrowser()) return () => {};
+    window.addEventListener('keydown', listener);
+    return () => {
+      window.removeEventListener('keydown', listener);
+    };
+  }
+
+  public isLandscape(): boolean {
+    if (!this.isBrowser()) return false;
+    // Deteksi mobile landscape: lebar > tinggi dan tinggi layar <= 550px
+    return window.innerWidth > window.innerHeight && window.innerHeight <= 550;
+  }
+
+  public onResizeOrOrientationChange(callback: (isLandscape: boolean) => void): () => void {
+    if (!this.isBrowser()) return () => {};
+    const handler = () => {
+      callback(this.isLandscape());
+    };
+    window.addEventListener('resize', handler);
+    window.addEventListener('orientationchange', handler);
+    return () => {
+      window.removeEventListener('resize', handler);
+      window.removeEventListener('orientationchange', handler);
     };
   }
 }

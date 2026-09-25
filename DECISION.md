@@ -14,6 +14,7 @@
 | **DEC-010** | Penambahan field opsional AssetItem, prisonYears, causeOfDeath, ribbon pada GlobalGameState | Mendukung modularitas fitur F-008, F-010, F-011 di Sesi Klien tanpa merusak kompatibilitas backward schema v1 | Pemisahan state di luar GlobalGameState yang menyulitkan persistensi terpadu |
 | **DEC-011** | Modularisasi subkomponen drawer dan pemisahan gameActions & engine/types | Memenuhi Direktif D5 (maksimal 300 baris per file kode) dengan menjaga SubmenuDrawer (~50 baris) dan GameContext (~299 baris) tetap ramping | Menumpuk seluruh logika UI dan actions dalam 1 file monolitik > 400 baris |
 | **DEC-012** | Sintesis Audio Prosedural Web Audio API murni | Menjamin pemutaran 7 cues SFX dengan 0ms latency luring 100% tanpa risiko kegagalan unduhan file statis atau decoding audio browser | Bergantung mutlak pada file eksternal .mp3/.webm yang rentan 404/CORS |
+| **DEC-013** | Tiga lapis fallback persistensi (IndexedDB -> localStorage -> Memory) & modularisasi platform hooks | Menjamin persistensi tidak pernah crash pada mode Incognito/private browsing serta kepatuhan ketat D5 (file <= 300 baris) dan D19 (nol panggilan platform langsung di core/scenes) | Bergantung tunggal pada IndexedDB yang rentan gagal di Safari private browsing atau menumpuk kode platform langsung di UI |
 
 ---
 

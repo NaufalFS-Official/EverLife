@@ -209,4 +209,64 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Masuk ke Sesi Platform (`/goal platform` atau `/resume-platform`) untuk pengujian ketahanan storage multi-tab, offline service worker, dan PWA caching.
 - Gotchas: PRNG di folder `src/core/` harus murni deterministik tanpa `Math.random()` atau `Date.now()`.
 
+---
+
+## [PLATFORM-01] 2026-09-26T00:03:00+07:00 — status: COMPLETE
+- Checklist:
+  - Storage fallback bertingkat: IndexedDB -> localStorage -> MemoryStorage (dengan log peringatan) -> ▣ DONE-VERIFIED
+  - Export/Import payload save dengan salted SHA-256 HMAC checksum & migrator -> ▣ DONE-VERIFIED
+  - Global Error Boundary (React class component) dengan UI recovery & ekspor save darurat -> ▣ DONE-VERIFIED
+  - Device tier system: Low/Mid/High presets, hardware concurrency/memory detection, dan adaptasi runtime FPS -> ▣ DONE-VERIFIED
+  - Touch target >= 44x44px di mobile portrait & safe area insets (notches, dynamic island, home indicator) -> ▣ DONE-VERIFIED
+  - Landscape orientation shield overlay (layar peringatan "putar ke portrait" bila orientasi horizontal) -> ▣ DONE-VERIFIED
+  - Keyboard shortcuts: Space/Enter/A untuk +Age, 1-4 untuk pilihan event dialog/modal, Esc untuk tutup modal/drawer -> ▣ DONE-VERIFIED
+  - App lifecycle: pause & auto-save saat background/tab hidden/blur -> ▣ DONE-VERIFIED
+  - PWA manifest.webmanifest + icons SVG 192px/512px + Service Worker sw.js ber-versi offline-first -> ▣ DONE-VERIFIED
+  - Distribusi: script `npm run build:portal` untuk portal game web (itch.io/Poki/CrazyGames) & README clone-and-run mandiri -> ▣ DONE-VERIFIED
+  - Audit grep: nol panggilan platform langsung di core/ dan scenes/ (D19) -> ▣ DONE-VERIFIED
+  - Verifikasi exit gate: typecheck 0, lint 0, 65/65 unit test pass (16 files), build sukses (121.1 kB gzip) -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `README.md`
+  - `index.html`
+  - `public/manifest.webmanifest`
+  - `public/sw.js`
+  - `public/icons/icon-192.svg`
+  - `public/icons/icon-512.svg`
+  - `src/main.tsx`
+  - `src/App.tsx`
+  - `src/shared/platform.ts`
+  - `src/adapter/localAdapter.ts`
+  - `src/adapter/haptics.ts`
+  - `src/platform/deviceTier.ts`
+  - `src/platform/usePlatformHooks.ts`
+  - `src/engine/ErrorBoundary.tsx`
+  - `src/engine/useDebugRegistration.ts`
+  - `src/engine/gameActions.ts`
+  - `src/engine/GameContext.tsx`
+  - `src/scenes/SettingsModal.tsx`
+  - `src/scenes/DashboardScene.tsx`
+  - `src/scenes/MainMenuScene.tsx`
+  - `tests/unit/device_tier.test.ts`
+  - `tests/unit/storage_fallback.test.ts`
+  - `tests/unit/error_boundary.test.ts`
+  - `tests/unit/pwa_manifest.test.ts`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `git grep -nE "window\.|localStorage|indexedDB|navigator\." src/core src/scenes` -> exit: 1 (0 panggilan terlarang)
+  - `git grep -rnE "TODO|FIXME|..." src/` -> exit: 1 (0 temuan stubs)
+  - `npm run typecheck` -> exit: 0 (tsc clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (16 files passed, 65/65 tests passed)
+  - `npm run build` -> exit: 0 (bundle 121.1 kB gzip < 450 kB budget)
+  - `npm run build:portal` -> exit: 0 (dist/ siap untuk portal game web)
+  - `npm run detect-secrets` -> exit: 0 (0 secret terdeteksi)
+- Level verifikasi tercapai: L1 (Toolchain typecheck/lint 0 error), L2 (Unit test 65/65 pass), L3 (Vite production bundle & static build:portal verified). L4 TIDAK TERSEDIA (Playwright headless butuh konfirmasi instalasi browser binary di CLI Windows; berkas spec E2E disiapkan). L5 MENUNGGU MANUSIA (Uji ergonomi sentuh fisik & sensasi getaran taktil pada perangkat seluler nyata).
+- Keputusan baru: DEC-013 (Tiga lapis fallback persistensi & modularisasi platform hooks per D5/D19).
+- Utang teknis / risiko diterima: Nol utang teknis; ukuran bundle produksi tetap sangat ramping (121.1 kB gzip).
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Asset Hook (`/resume-asset` atau `/goal-asset`) untuk memoles variasi visual SVG dan audio cues sebelum masuk ke Sesi Verifikasi Lanjutan.
+- Gotchas: Isolasi platform mewajibkan navigasi browser, clipboard, dan orientasi dipusatkan di `shared/platform.ts` agar tidak membocorkan pemanggilan `window`/`navigator` ke komponen scene.
+
+
 

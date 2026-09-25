@@ -7,10 +7,10 @@ import { GAME_CONFIG, DefaultPlatformAdapter } from '../shared';
 
 const platform = new DefaultPlatformAdapter();
 
-export function triggerHaptic(durationMs: number = GAME_CONFIG.FEEL_HAPTIC_PULSE_MS): void {
+export function triggerHaptic(durationMs: number = GAME_CONFIG.FEEL_HAPTIC_PULSE_MS): boolean {
   try {
-    platform.vibrate([durationMs]);
+    return platform.vibrate([durationMs]);
   } catch {
-    // Non-blocking fallback jika browser tidak mendukung
+    return false;
   }
 }

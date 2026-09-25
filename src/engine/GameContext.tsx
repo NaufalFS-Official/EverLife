@@ -1,18 +1,18 @@
 /**
  * GAME CONTEXT & STATE ACTIONS PROVIDER (EverLife)
- * Blueprint S3, S5, S8 & D9: React context state holder, transition guards, and auto-persistence.
+ * Blueprint S3, S5, S8 & D9: React context state holder, transition guards,
+ * auto-persistence, and platform lifecycle integration.
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { GlobalGameState, GameScreenState, CharacterCreationParams } from '../core/types';
 import { createNewLife } from '../core/character';
-import { spendTimeWithNPC, giveGiftToNPC } from '../core/relationships';
-import { JobDefinition, applyForJob, resignJob, workHarder } from '../core/career';
-import { purchaseAsset, sellAsset } from '../core/finances';
 import { LocalSaveRepository } from '../adapter/localAdapter';
 import { audio } from './audioManager';
 import { triggerHaptic } from '../adapter/haptics';
-import { Mulberry32PRNG, evaluateTransition, registerDebugHooks, computeStateHash } from '../shared';
+import { evaluateTransition } from '../shared';
+import { usePlatformLifecycle, useKeyboardShortcuts } from '../platform/usePlatformHooks';
+import { useDebugRegistration } from './useDebugRegistration';
 import {
   executeAgeUp,
   executeChoice,
@@ -20,6 +20,13 @@ import {
   executeDoctor,
   executeGym,
   executeCrime,
+  executeSpendTime,
+  executeGiveGift,
+  executeApplyJob,
+  executeQuitJob,
+  executeWorkHard,
+  executeBuyAsset,
+  executeSellAsset,
 } from './gameActions';
 
 import { SubmenuTab, GameContextValue } from './types';
@@ -43,37 +50,18 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
   }, []);
 
-  useEffect(() => {
-    if (!state) return;
-    registerDebugHooks({
-      seed: state.seed,
-      getState: () => state,
-      stateHash: () => computeStateHash(state),
-      setState: (partial: Partial<GlobalGameState>) => {
-        setState((prev) => (prev ? { ...prev, ...partial } : null));
-      },
-      fastForward: (years: number) => {
-        let current = state;
-        for (let i = 0; i < years; i++) {
-          if (current.currentScreen === 'DEATH_SUMMARY') break;
-          const res = executeAgeUp(current);
-          current = res.nextState;
-        }
-        setState({ ...current });
-      },
-      triggerEvent: (eventId: string) => console.log('Debug triggerEvent:', eventId),
-      startReplay: () => console.log('Debug startReplay'),
-      getReplay: () => ({ seed: state.seed, actions: [] }),
-      fps: () => 60,
-    });
-  }, [state]);
-
   const saveCurrentState = useCallback(async (stateToSave: GlobalGameState) => {
     setIsSaving(true);
     await saveRepo.save(stateToSave);
     setIsSaving(false);
     setHasSavedGame(true);
   }, []);
+
+  // Platform Lifecycle: Auto-save saat tab ke latar belakang
+  usePlatformLifecycle(state, saveCurrentState);
+
+  // Debug Hooks registration untuk dev/harness
+  useDebugRegistration(state, setState);
 
   const transitionTo = useCallback(
     (toScreen: GameScreenState): boolean => {
@@ -83,8 +71,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.warn('Transisi state ditolak oleh guard table:', result.reason);
         return false;
       }
-      const updated = { ...state, currentScreen: toScreen };
-      setState(updated);
+      setState({ ...state, currentScreen: toScreen });
       return true;
     },
     [state]
@@ -140,112 +127,77 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setState({ ...nextState });
   }, [state, saveCurrentState]);
 
-  const spendTime = useCallback(
-    (npcId: string) => {
-      if (!state) return;
-      audio.play('ui_click');
-      const rng = new Mulberry32PRNG(state.seed + state.character.age * 777);
-      spendTimeWithNPC(state, npcId, rng);
+  const spendTime = useCallback((npcId: string) => {
+    if (!state) return;
+    executeSpendTime(state, npcId);
+    setState({ ...state });
+    saveCurrentState(state);
+  }, [state, saveCurrentState]);
+
+  const giveGift = useCallback((npcId: string): boolean => {
+    if (!state) return false;
+    const success = executeGiveGift(state, npcId);
+    if (success) {
       setState({ ...state });
       saveCurrentState(state);
-    },
-    [state, saveCurrentState]
-  );
+    }
+    return success;
+  }, [state, saveCurrentState]);
 
-  const giveGift = useCallback(
-    (npcId: string) => {
-      if (!state) return;
-      const res = giveGiftToNPC(state, npcId, 100);
-      if (res.success) {
-        audio.play('cash');
-        setState({ ...state });
-        saveCurrentState(state);
-      } else {
-        audio.play('fail');
-      }
-    },
-    [state, saveCurrentState]
-  );
-
-  const applyJobAction = useCallback(
-    (job: JobDefinition): boolean => {
-      if (!state) return false;
-      const rng = new Mulberry32PRNG(state.seed + state.character.age * 999);
-      const res = applyForJob(state, job, rng);
-      if (res.success) {
-        audio.play('cash');
-        setState({ ...state });
-        saveCurrentState(state);
-        return true;
-      }
-      audio.play('fail');
-      return false;
-    },
-    [state, saveCurrentState]
-  );
+  const applyJobAction = useCallback((job: import('../core/career').JobDefinition): boolean => {
+    if (!state) return false;
+    const success = executeApplyJob(state, job);
+    if (success) {
+      setState({ ...state });
+      saveCurrentState(state);
+    }
+    return success;
+  }, [state, saveCurrentState]);
 
   const quitJobAction = useCallback(() => {
     if (!state) return;
-    resignJob(state);
-    audio.play('ui_click');
+    executeQuitJob(state);
     setState({ ...state });
     saveCurrentState(state);
   }, [state, saveCurrentState]);
 
   const workHardAction = useCallback(() => {
     if (!state) return;
-    const res = workHarder(state);
-    if (res.success) {
-      audio.play('ui_click');
+    executeWorkHard(state);
+    setState({ ...state });
+    saveCurrentState(state);
+  }, [state, saveCurrentState]);
+
+  const buyAssetAction = useCallback((asset: { id: string; name: string; category: 'Vehicle' | 'RealEstate'; value: number; maintenanceAnnual: number }): boolean => {
+    if (!state) return false;
+    const success = executeBuyAsset(state, asset);
+    if (success) {
+      setState({ ...state });
+      saveCurrentState(state);
+    }
+    return success;
+  }, [state, saveCurrentState]);
+
+  const sellOwnedAsset = useCallback((assetId: string) => {
+    if (!state) return;
+    const success = executeSellAsset(state, assetId);
+    if (success) {
       setState({ ...state });
       saveCurrentState(state);
     }
   }, [state, saveCurrentState]);
 
-  const buyAssetAction = useCallback(
-    (asset: { id: string; name: string; category: 'Vehicle' | 'RealEstate'; value: number; maintenanceAnnual: number }): boolean => {
-      if (!state) return false;
-      const success = purchaseAsset(state, asset);
-      if (success) {
-        audio.play('cash');
-        setState({ ...state });
-        saveCurrentState(state);
-        return true;
-      }
-      audio.play('fail');
-      return false;
-    },
-    [state, saveCurrentState]
-  );
-
-  const sellOwnedAsset = useCallback(
-    (assetId: string) => {
-      if (!state) return;
-      const success = sellAsset(state, assetId);
-      if (success) {
-        audio.play('cash');
-        setState({ ...state });
-        saveCurrentState(state);
-      }
-    },
-    [state, saveCurrentState]
-  );
-
-  const doCrimeAction = useCallback(
-    (crimeType: 'shoplift' | 'robbery' | 'heist'): boolean => {
-      if (!state) return false;
-      const success = executeCrime(state, crimeType);
-      setState({ ...state });
-      saveCurrentState(state);
-      return success;
-    },
-    [state, saveCurrentState]
-  );
+  const doCrimeAction = useCallback((crimeType: 'shoplift' | 'robbery' | 'heist'): boolean => {
+    if (!state) return false;
+    const success = executeCrime(state, crimeType);
+    setState({ ...state });
+    saveCurrentState(state);
+    return success;
+  }, [state, saveCurrentState]);
 
   const visitDoctor = useCallback(() => {
     if (!state) return;
-    const success = executeDoctor(state);
-    if (success) {
+    if (executeDoctor(state)) {
       setState({ ...state });
       saveCurrentState(state);
     }
@@ -253,8 +205,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const goToGym = useCallback(() => {
     if (!state) return;
-    const success = executeGym(state);
-    if (success) {
+    if (executeGym(state)) {
       setState({ ...state });
       saveCurrentState(state);
     }
@@ -287,6 +238,15 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     audio.play('ui_click');
     setActiveSubmenu(null);
   }, []);
+
+  // Keyboard Shortcuts: Space/Enter/A -> +Age, 1-4 -> choice, Esc -> close
+  useKeyboardShortcuts({
+    state,
+    activeSubmenu,
+    onAgeUp: ageUp,
+    onChooseOption: chooseOption,
+    onCloseSubmenu: closeSubmenu,
+  });
 
   return (
     <GameContext.Provider

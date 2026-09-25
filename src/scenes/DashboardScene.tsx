@@ -16,13 +16,16 @@ import {
   Plus,
   Volume2,
   VolumeX,
+  Settings,
 } from 'lucide-react';
+import { SettingsModal } from './SettingsModal';
 
 export const DashboardScene: React.FC = () => {
   const { state, ageUp, openSubmenu } = useGame();
   const logContainerRef = useRef<HTMLDivElement>(null);
   const [isPressingAge, setIsPressingAge] = useState(false);
   const [isMuted, setIsMuted] = useState(audio.getIsMuted());
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Auto-scroll ke entri log terbaru
   useEffect(() => {
@@ -73,12 +76,25 @@ export const DashboardScene: React.FC = () => {
           <button
             onClick={handleToggleSound}
             aria-label={isMuted ? 'Nyalakan Suara' : 'Matikan Suara'}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition cursor-pointer"
+            className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition cursor-pointer"
           >
             {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
           </button>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            aria-label="Buka Pengaturan"
+            className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition cursor-pointer"
+          >
+            <Settings size={16} />
+          </button>
         </div>
       </header>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
 
       {/* 2. AVATAR CARD */}
       <div className="py-2.5 bg-slate-100/70 border-b border-slate-200/60 flex items-center justify-center shrink-0">

@@ -6,11 +6,13 @@
 import React from 'react';
 import { useGame } from '../engine/GameContext';
 import { audio } from '../engine/audioManager';
-import { Play, RotateCcw, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { Play, RotateCcw, Volume2, VolumeX, Sparkles, Settings } from 'lucide-react';
+import { SettingsModal } from './SettingsModal';
 
 export const MainMenuScene: React.FC = () => {
   const { hasSavedGame, resumeSavedGame, transitionTo } = useGame();
   const [isMuted, setIsMuted] = React.useState(audio.getIsMuted());
+  const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
   const handleToggleSound = () => {
     const muted = audio.toggleMute();
@@ -24,16 +26,28 @@ export const MainMenuScene: React.FC = () => {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-between p-6 text-center select-none">
-      {/* Sound Toggle Header */}
-      <div className="w-full flex justify-end">
+      {/* Sound & Settings Header */}
+      <div className="w-full flex justify-end gap-2">
         <button
           onClick={handleToggleSound}
           aria-label={isMuted ? 'Nyalakan Suara' : 'Matikan Suara'}
-          className="p-3 bg-white/80 backdrop-blur rounded-full shadow-md text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur rounded-full shadow-md text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
         >
           {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         </button>
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          aria-label="Buka Pengaturan"
+          className="w-11 h-11 flex items-center justify-center bg-white/80 backdrop-blur rounded-full shadow-md text-slate-700 hover:bg-slate-100 transition active:scale-95 cursor-pointer"
+        >
+          <Settings size={20} />
+        </button>
       </div>
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
 
       {/* Hero Title & Branding */}
       <div className="my-auto space-y-4">
