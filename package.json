@@ -1,0 +1,40 @@
+{
+  "name": "everlife",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "detect-secrets": "node scripts/detect_secrets.cjs",
+    "generate-placeholders": "node scripts/generate_placeholders.cjs"
+  },
+  "dependencies": {
+    "canvas-confetti": "1.9.4",
+    "howler": "2.2.4",
+    "idb-keyval": "6.3.0",
+    "lucide-react": "1.48.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/canvas-confetti": "1.9.0",
+    "@types/howler": "2.2.13",
+    "@types/node": "22.13.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "eslint": "9.21.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  }
+}
