@@ -61,6 +61,10 @@ export const App: React.FC = () => {
   const [isLandscape, setIsLandscape] = useState(platform.isLandscape());
 
   useEffect(() => {
+    const isReduced = platform.storage.getItem('everlife_reduced_motion') === 'true';
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('reduced-motion', isReduced);
+    }
     return platform.onResizeOrOrientationChange((landscape) => {
       setIsLandscape(landscape);
     });

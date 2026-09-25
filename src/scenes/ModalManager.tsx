@@ -54,10 +54,10 @@ export const ModalManager: React.FC = () => {
           </div>
           <button
             onClick={surpriseMe}
-            className="flex items-center gap-1 text-xs font-bold bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-bold bg-white/20 hover:bg-white/30 px-3 min-h-[44px] rounded-full transition cursor-pointer"
             title="Pilih Acak (Surprise Me!)"
           >
-            <Dices size={14} /> Surprise Me!
+            <Dices size={16} /> Surprise Me!
           </button>
         </div>
 
@@ -83,7 +83,7 @@ export const ModalManager: React.FC = () => {
               <button
                 key={idx}
                 onClick={() => chooseOption(idx)}
-                className="w-full text-left px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 active:scale-98 transition font-medium text-xs text-slate-800 flex items-start gap-2.5 group cursor-pointer shadow-2xs"
+                className="w-full min-h-[44px] text-left px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 active:scale-98 transition font-medium text-xs text-slate-800 flex items-start gap-2.5 group cursor-pointer shadow-2xs"
               >
                 <span className="w-5 h-5 rounded-full bg-slate-200 text-slate-700 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 transition">
                   {idx + 1}

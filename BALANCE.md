@@ -36,3 +36,18 @@
 | `TAX_RATE_DEFAULT` | 0.20 | rasio | 0.05 - 0.45 | Tarif pajak pendapatan default tahunan | [A] | Architect Agent |
 | `ASSET_MAINTENANCE_RATE` | 0.02 | rasio | 0.01 - 0.05 | Biaya pemeliharaan aset tahunan (% nilai aset) | [A] | Architect Agent |
 | `LIVING_EXPENSE_BASE` | 3600 | USD/tahun | 1000 - 10000 | Biaya hidup dasar tahunan saat dewasa | [A] | Architect Agent |
+
+## Catatan Perubahan Presentasi & Polish (Sesi /polish — Agent DA VINCI)
+- **Tingkat Gain Efek Suara (Procedural Web Audio)**: Dikalibrasi untuk kenyamanan pendengaran mobile/earphone:
+  - `ui_click`: 0.15 (sebelumnya 0.20)
+  - `age_tick`: 0.20 (sebelumnya 0.25)
+  - `birth`: 0.18 (sebelumnya 0.20)
+  - `cash`: 0.20 (sebelumnya 0.25)
+  - `death`: 0.25 (sebelumnya 0.30)
+  - `fail`: 0.20 (sebelumnya 0.25)
+  - `confetti`: 0.18 (sebelumnya 0.20)
+- **Ukuran Sentuh Interaktif**: Seluruh elemen tombol navigasi, tab gender, pilihan modal, dan aksi drawer dipastikan >= 44px hit area sesuai standar mobile iOS HIG & Android Touch Target guidelines.
+- **Aksesibilitas Gerak**: Pengenalan media query `@media (prefers-reduced-motion: reduce)` dan kelas `.reduced-motion` yang dapat diaktifkan manual lewat Pengaturan untuk menonaktifkan screen shake/pulse berlebihan bagi pemain sensitif motion.
+- **Usulan untuk L5 (Subjektif Manusia)**:
+  - Uji dengar preferensi audio volume default pada earphone kabel vs speaker ponsel low-end.
+  - Penilaian estetika kelembutan kurva easing CSS saat bottom sheet drawer terangkat.

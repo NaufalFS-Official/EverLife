@@ -43,15 +43,15 @@ export const RelationshipsTab: React.FC = () => {
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={() => spendTime(npc.id)}
-                  className="flex-1 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-emerald-800 text-[11px] font-bold rounded-lg transition cursor-pointer"
+                  className="flex-1 min-h-[44px] py-2 bg-slate-100 hover:bg-emerald-100 text-slate-800 hover:text-emerald-800 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center"
                 >
                   Luangkan Waktu
                 </button>
                 <button
                   onClick={() => giveGift(npc.id)}
-                  className="py-1.5 px-3 bg-slate-100 hover:bg-amber-100 text-slate-800 hover:text-amber-800 text-[11px] font-bold rounded-lg transition cursor-pointer"
+                  className="min-h-[44px] py-2 px-3.5 bg-slate-100 hover:bg-amber-100 text-slate-800 hover:text-amber-800 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center"
                 >
-                  Beri Hadiah ($100)
+                  Beri Hadiah ($50)
                 </button>
               </div>
             </>

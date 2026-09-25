@@ -1,7 +1,7 @@
 /**
  * SETTINGS & PLATFORM BACKUP MODAL (EverLife)
  * Blueprint S14 & DAEL-21 s/d DAEL-25: Pengaturan Tier Grafis, Audio SFX,
- * Uji Taktil, Ekspor/Impor Save Data aman dengan validasi checksum, dan reset game.
+ * Uji Taktil, Aksesibilitas Gerak, Ekspor/Impor Save Data aman, dan reset game.
  */
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -12,7 +12,7 @@ import { LocalSaveRepository } from '../adapter/localAdapter';
 import { telemetry } from '../adapter/telemetry';
 import { platform } from '../shared/platform';
 import { DeviceTier, TIER_CONFIGS, detectInitialDeviceTier } from '../platform/deviceTier';
-import { X, Volume2, VolumeX, Smartphone, Download, Upload, Trash2, Cpu, Check, AlertCircle, ShieldCheck } from 'lucide-react';
+import { X, Volume2, VolumeX, Smartphone, Download, Upload, Trash2, Cpu, Check, AlertCircle, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -37,22 +37,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [actionFeedback, setActionFeedback] = useState<{ msg: string; isError?: boolean } | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
   const [telemetryConsent, setTelemetryConsent] = useState(telemetry.getConsent());
-
-  // Cleanup pending reload timer saat unmount (BUG-002)
-  useEffect(() => {
-    return () => {
-      if (reloadTimerRef.current) {
-        clearTimeout(reloadTimerRef.current);
-        reloadTimerRef.current = null;
-      }
-    };
+  const [reducedMotion, setReducedMotion] = useState(() => platform.storage.getItem('everlife_reduced_motion') === 'true');
+  useEffect(() => () => {
+    if (reloadTimerRef.current) clearTimeout(reloadTimerRef.current);
   }, []);
 
   const handleClose = () => {
-    if (reloadTimerRef.current) {
-      clearTimeout(reloadTimerRef.current);
-      reloadTimerRef.current = null;
-    }
+    if (reloadTimerRef.current) clearTimeout(reloadTimerRef.current);
     onClose();
   };
 
@@ -64,9 +55,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     setTelemetryConsent(nextVal);
     audio.play('ui_click');
     setActionFeedback({
-      msg: nextVal
-        ? 'Telemetri anonim diaktifkan untuk diagnostik performa.'
-        : 'Telemetri dinonaktifkan & log lokal dibersihkan.',
+      msg: nextVal ? 'Telemetri anonim diaktifkan untuk diagnostik performa.' : 'Telemetri dinonaktifkan & log lokal dibersihkan.',
     });
   };
 
@@ -74,6 +63,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     const muted = audio.toggleMute();
     setIsMuted(muted);
     setActionFeedback({ msg: muted ? 'Efek suara dimatikan.' : 'Efek suara diaktifkan.' });
+  };
+
+  const handleToggleReducedMotion = () => {
+    const nextVal = !reducedMotion;
+    setReducedMotion(nextVal);
+    platform.storage.setItem('everlife_reduced_motion', String(nextVal));
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('reduced-motion', nextVal);
+    }
+    audio.play('ui_click');
+    setActionFeedback({ msg: nextVal ? 'Kurangi Gerakan diaktifkan.' : 'Animasi normal diaktifkan.' });
   };
 
   const handleTierChange = (tier: DeviceTier) => {
@@ -96,7 +96,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       setActionFeedback({ msg: 'Belum ada data permainan aktif untuk diekspor.', isError: true });
       return;
     }
-
     const copied = await platform.copyToClipboard(raw);
     if (copied) {
       setActionFeedback({ msg: 'Data save berhasil disalin ke clipboard!' });
@@ -112,7 +111,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       setActionFeedback({ msg: 'Tempelkan data JSON save sebelum mengimpor.', isError: true });
       return;
     }
-
     const ok = await saveRepo.importPayload(importJson.trim());
     if (ok) {
       setActionFeedback({ msg: 'Data save valid! Memuat ulang permainan...' });
@@ -154,15 +152,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-5 overflow-y-auto space-y-5 text-sm">
-          {/* Action Feedback Banner */}
           {actionFeedback && (
-            <div
-              className={`p-3 rounded-xl flex items-center gap-2 text-xs font-medium ${
-                actionFeedback.isError
-                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                  : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-              }`}
-            >
+            <div className={`p-3 rounded-xl flex items-center gap-2 text-xs font-medium ${
+              actionFeedback.isError ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+            }`}>
               {actionFeedback.isError ? <AlertCircle size={16} /> : <Check size={16} />}
               <span>{actionFeedback.msg}</span>
             </div>
@@ -180,9 +173,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="button"
                   onClick={() => handleTierChange(t)}
                   className={`min-h-[44px] py-2 px-1 rounded-xl text-xs font-bold border transition cursor-pointer flex flex-col items-center justify-center ${
-                    selectedTier === t
-                      ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    selectedTier === t ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                   }`}
                 >
                   <span className="capitalize">{t}</span>
@@ -191,14 +182,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               ))}
             </div>
             <p className="text-[11px] text-slate-500">
-              Deteksi otomatis perangkat: <span className="font-semibold">{detectInitialDeviceTier().toUpperCase()}</span>
+              Deteksi otomatis: <span className="font-semibold">{detectInitialDeviceTier().toUpperCase()}</span>
             </p>
           </div>
 
-          {/* 2. Audio & Haptics */}
+          {/* 2. Audio, Haptics & Accessibility */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
-              Audio & Taktil
+              Audio, Taktil & Aksesibilitas
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -209,7 +200,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 {isMuted ? <VolumeX size={16} className="text-rose-500" /> : <Volume2 size={16} className="text-emerald-600" />}
                 <span className="text-xs">{isMuted ? 'Muted' : 'Suara Aktif'}</span>
               </button>
-
               <button
                 type="button"
                 onClick={handleTestHaptic}
@@ -218,7 +208,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <Smartphone size={16} className="text-blue-500" />
                 <span className="text-xs">Uji Haptik</span>
               </button>
-
+              <button
+                type="button"
+                onClick={handleToggleReducedMotion}
+                className="col-span-2 min-h-[44px] px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-800 font-semibold flex items-center justify-between transition cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className={reducedMotion ? 'text-amber-500' : 'text-slate-400'} />
+                  <span className="text-xs">Kurangi Gerakan (Reduced Motion)</span>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${reducedMotion ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600'}`}>
+                  {reducedMotion ? 'Aktif' : 'Nonaktif'}
+                </span>
+              </button>
               <button
                 type="button"
                 onClick={handleToggleTelemetry}
@@ -247,7 +249,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             >
               <Download size={16} /> Salin Cadangan Save (JSON)
             </button>
-
             <div className="space-y-1.5 pt-1">
               <textarea
                 value={importJson}

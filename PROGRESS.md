@@ -387,3 +387,47 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - Utang teknis / risiko diterima: Nol bug terbuka (0 P0, 0 P1, 0 P2, 0 P3). Semua bug Playtest telah berstatus Closed.
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario tamper klien lokal (IndexedDB manipulation, stat overflow, checksum bypass), atau eksekusi verifikasi gerbang akhir (`/gate-final`).
 - Gotchas: Playwright strict mode mendeteksi multi-matching locators pada elemen yang sama-sama muncul di layar (ayah & ibu), sehingga selector membutuhkan `.first()`.
+
+---
+
+## [POLISH-01] 2026-09-26T03:35:00+07:00 — status: COMPLETE
+- Checklist:
+  - DA VINCI 01: Audit baseline screenshot & latensi input-to-feedback -> ▣ DONE-VERIFIED
+  - DA VINCI 02: Touch target >= 44x44px pada seluruh kontrol mobile (navigasi dock, gender tabs, select inputs, action buttons, drawer close) -> ▣ DONE-VERIFIED
+  - DA VINCI 03: Standarisasi feedback visual & audio (kalibrasi gain Web Audio dan master volume control) -> ▣ DONE-VERIFIED
+  - DA VINCI 04: Perbaikan konsistensi teks dan diskrepansi harga hadiah ($50 vs $100) -> ▣ DONE-VERIFIED
+  - DA VINCI 05: Aksesibilitas gerak: prefers-reduced-motion media query + kelas .reduced-motion + toggle Pengaturan -> ▣ DONE-VERIFIED
+  - DA VINCI 06: Zero diff di src/core/ (git diff --stat src/core/ = 0) -> ▣ DONE-VERIFIED
+  - DA VINCI 07: Kepatuhan D5 (seluruh berkas src/ <= 300 baris, no stubs/todos) -> ▣ DONE-VERIFIED
+  - DA VINCI 08: Pembaruan BALANCE.md & penyusunan reports/POLISH_REPORT.md -> ▣ DONE-VERIFIED
+  - DA VINCI 09: Full verification suite (typecheck 0, lint 0, 78/78 unit tests PASS, 2/2 E2E PASS, bundle 131.31 kB gzip) -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `src/App.tsx`
+  - `src/engine/audioManager.ts`
+  - `src/index.css`
+  - `src/scenes/CreationScene.tsx`
+  - `src/scenes/DashboardScene.tsx`
+  - `src/scenes/ModalManager.tsx`
+  - `src/scenes/SettingsModal.tsx`
+  - `src/scenes/SubmenuDrawer.tsx`
+  - `src/scenes/drawers/ActivitiesTab.tsx`
+  - `src/scenes/drawers/AssetsTab.tsx`
+  - `src/scenes/drawers/OccupationTab.tsx`
+  - `src/scenes/drawers/RelationshipsTab.tsx`
+  - `BALANCE.md`
+  - `reports/POLISH_REPORT.md`
+  - `PROGRESS.md`
+  - `DECISION.md`
+- Perintah bukti terakhir + hasil:
+  - `git diff --stat src/core/` -> exit: 0 (0 berkas diubah di core/)
+  - `npm run typecheck` -> exit: 0 (tsc --noEmit clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (20 files passed, 78/78 tests passed)
+  - `npm run test:e2e` -> exit: 0 (2/2 Playwright E2E tests passed)
+  - `npm run verify:bundle` -> exit: 0 (131.31 kB gzip < 450 kB budget)
+  - `node -e "..."` (scan TODO/FIXME/stubs di src/) -> exit: 0 (0 temuan)
+- Level verifikasi tercapai: L1 (Kompilasi & linting clean), L2/L3 (78/78 unit tests & Vite production bundle PASS), L4 (Playwright 2/2 E2E PASS), L5 (3 usulan evaluasi subjektif tercatat di POLISH_REPORT.md untuk penilaian manusia).
+- Keputusan baru: DEC-016 (Kalibrasi gain Web Audio dan penambahan preferensi persistensi reduced motion).
+- Utang teknis / risiko diterima: Nol utang teknis; ukuran bundle 131.31 kB gzip (sangat efisien di bawah anggaran 450 kB).
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario eksploitasi klien lokal (manipulasi storage, bypass checksum, stat overflow), atau verifikasi gerbang akhir (`/gate-final`).
+- Gotchas: Penambahan kontrol pengaturan harus memperhatikan batas D5 (<=300 baris); `SettingsModal.tsx` distabilkan pada 298 baris dengan formatting ringkas tanpa mengurangi fitur.

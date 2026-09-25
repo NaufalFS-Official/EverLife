@@ -35,7 +35,7 @@ export const SubmenuDrawer: React.FC = () => {
           </div>
           <button
             onClick={closeSubmenu}
-            className="p-1 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-200 transition cursor-pointer"
+            className="w-11 h-11 flex items-center justify-center -mr-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-200 transition cursor-pointer"
             aria-label="Tutup menu"
           >
             <X size={20} />

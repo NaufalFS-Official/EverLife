@@ -15,6 +15,7 @@ export type SoundEffectType =
 class AudioManager {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
+  private volume: number = 1.0;
 
   constructor() {
     // AudioContext diinisialisasi secara lazy saat interaksi pertama pemain (autoplay policy)
@@ -47,6 +48,14 @@ class AudioManager {
     return this.isMuted;
   }
 
+  public setVolume(vol: number): void {
+    this.volume = Math.max(0, Math.min(1, vol));
+  }
+
+  public getVolume(): number {
+    return this.volume;
+  }
+
   /**
    * Memainkan efek suara prosedural melalui sintesis gelombang Web Audio API.
    */
@@ -65,8 +74,8 @@ class AudioManager {
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(800, now);
           osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+          gain.gain.setValueAtTime(0.15 * this.volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, now + 0.04);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(now);
@@ -80,8 +89,8 @@ class AudioManager {
           osc.type = 'sine';
           osc.frequency.setValueAtTime(520, now);
           osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
-          gain.gain.setValueAtTime(0.25, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          gain.gain.setValueAtTime(0.20 * this.volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, now + 0.12);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(now);
@@ -98,8 +107,8 @@ class AudioManager {
             const noteStart = now + idx * 0.15;
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(freq, noteStart);
-            gain.gain.setValueAtTime(0.2, noteStart);
-            gain.gain.exponentialRampToValueAtTime(0.001, noteStart + 0.4);
+            gain.gain.setValueAtTime(0.18 * this.volume, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.001 * this.volume, noteStart + 0.4);
             osc.connect(gain);
             gain.connect(ctx.destination);
             osc.start(noteStart);
@@ -117,8 +126,8 @@ class AudioManager {
             const noteStart = now + idx * 0.08;
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, noteStart);
-            gain.gain.setValueAtTime(0.25, noteStart);
-            gain.gain.exponentialRampToValueAtTime(0.01, noteStart + 0.2);
+            gain.gain.setValueAtTime(0.20 * this.volume, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, noteStart + 0.2);
             osc.connect(gain);
             gain.connect(ctx.destination);
             osc.start(noteStart);
@@ -134,8 +143,8 @@ class AudioManager {
           osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(160, now);
           osc.frequency.exponentialRampToValueAtTime(80, now + 1.2);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+          gain.gain.setValueAtTime(0.25 * this.volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.001 * this.volume, now + 1.2);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(now);
@@ -149,8 +158,8 @@ class AudioManager {
           osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(280, now);
           osc.frequency.linearRampToValueAtTime(140, now + 0.25);
-          gain.gain.setValueAtTime(0.25, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          gain.gain.setValueAtTime(0.20 * this.volume, now);
+          gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, now + 0.25);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(now);
@@ -167,8 +176,8 @@ class AudioManager {
             const noteStart = now + idx * 0.07;
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, noteStart);
-            gain.gain.setValueAtTime(0.2, noteStart);
-            gain.gain.exponentialRampToValueAtTime(0.01, noteStart + 0.3);
+            gain.gain.setValueAtTime(0.18 * this.volume, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.01 * this.volume, noteStart + 0.3);
             osc.connect(gain);
             gain.connect(ctx.destination);
             osc.start(noteStart);

@@ -151,10 +151,10 @@ export const DashboardScene: React.FC = () => {
       </div>
 
       {/* 6. BOTTOM NAVIGATION DRAWER BAR */}
-      <nav className="w-full bg-white border-t border-slate-200 px-3 py-2 flex items-center justify-around z-10">
+      <nav className="w-full bg-white border-t border-slate-200 px-3 py-1 flex items-center justify-around z-10">
         <button
           onClick={() => openSubmenu('occupation')}
-          className={`flex flex-col items-center gap-1 transition p-1 ${
+          className={`min-h-[44px] min-w-[48px] flex flex-col items-center justify-center gap-0.5 transition px-1 ${
             state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
           }`}
           aria-label="Buka Menu Pekerjaan"
@@ -165,7 +165,7 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('assets')}
-          className={`flex flex-col items-center gap-1 transition p-1 ${
+          className={`min-h-[44px] min-w-[48px] flex flex-col items-center justify-center gap-0.5 transition px-1 ${
             state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
           }`}
           aria-label="Buka Menu Aset"
@@ -178,7 +178,7 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('relationships')}
-          className={`flex flex-col items-center gap-1 transition p-1 ${
+          className={`min-h-[44px] min-w-[48px] flex flex-col items-center justify-center gap-0.5 transition px-1 ${
             state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
           }`}
           aria-label="Buka Menu Relasi"
@@ -189,7 +189,7 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('activities')}
-          className={`flex flex-col items-center gap-1 transition p-1 ${
+          className={`min-h-[44px] min-w-[48px] flex flex-col items-center justify-center gap-0.5 transition px-1 ${
             state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
           }`}
           aria-label="Buka Menu Aktivitas"

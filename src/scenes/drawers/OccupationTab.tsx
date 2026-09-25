@@ -50,13 +50,13 @@ export const OccupationTab: React.FC = () => {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={workHard}
-                className="flex-1 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-xs hover:bg-emerald-500 transition cursor-pointer"
+                className="flex-1 min-h-[44px] py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-xs hover:bg-emerald-500 transition cursor-pointer flex items-center justify-center"
               >
                 Bekerja Keras
               </button>
               <button
                 onClick={quitJob}
-                className="py-2 px-4 bg-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-rose-100 hover:text-rose-700 transition cursor-pointer"
+                className="min-h-[44px] py-2 px-4 bg-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-rose-100 hover:text-rose-700 transition cursor-pointer flex items-center justify-center"
               >
                 Undurkan Diri
               </button>
@@ -93,7 +93,7 @@ export const OccupationTab: React.FC = () => {
                   </span>
                   <button
                     onClick={() => applyJob(job)}
-                    className="px-3 py-1.5 bg-slate-900 text-white text-[11px] font-bold rounded-lg hover:bg-emerald-600 transition cursor-pointer"
+                    className="min-h-[44px] min-w-[56px] px-3.5 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-emerald-600 transition cursor-pointer flex items-center justify-center"
                   >
                     Lamar
                   </button>

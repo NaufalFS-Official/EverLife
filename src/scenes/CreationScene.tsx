@@ -92,7 +92,7 @@ export const CreationScene: React.FC = () => {
       <div className="flex items-center justify-between pb-4 border-b border-slate-200">
         <button
           onClick={() => transitionTo('MAIN_MENU')}
-          className="p-2 -ml-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center -ml-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition cursor-pointer"
           aria-label="Kembali ke menu"
         >
           <ArrowLeft size={20} />
@@ -100,7 +100,7 @@ export const CreationScene: React.FC = () => {
         <h2 className="font-bold text-slate-800 text-base">Karakter Baru</h2>
         <button
           onClick={handleRandomize}
-          className="p-2 -mr-2 text-emerald-600 hover:text-emerald-700 rounded-full hover:bg-emerald-50 transition cursor-pointer flex items-center gap-1 text-xs font-semibold"
+          className="min-h-[44px] px-3 -mr-2 text-emerald-600 hover:text-emerald-700 rounded-full hover:bg-emerald-50 transition cursor-pointer flex items-center gap-1 text-xs font-semibold"
           title="Surprise Me! (Acak)"
         >
           <Dices size={18} /> Acak
@@ -161,7 +161,7 @@ export const CreationScene: React.FC = () => {
                 key={g}
                 type="button"
                 onClick={() => setGender(g)}
-                className={`py-2 text-xs font-bold rounded-xl border transition cursor-pointer ${
+                className={`min-h-[44px] py-2 text-xs font-bold rounded-xl border transition cursor-pointer flex items-center justify-center ${
                   gender === g
                     ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
                     : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
@@ -180,7 +180,7 @@ export const CreationScene: React.FC = () => {
             <select
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-emerald-500"
+              className="w-full min-h-[44px] px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-emerald-500 cursor-pointer"
             >
               {CITIES.map((c) => (
                 <option key={c} value={c}>{c}</option>
@@ -192,7 +192,7 @@ export const CreationScene: React.FC = () => {
             <select
               value={specialTalent}
               onChange={(e) => setSpecialTalent(e.target.value as SpecialTalent)}
-              className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-emerald-500"
+              className="w-full min-h-[44px] px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-emerald-500 cursor-pointer"
             >
               {TALENTS.map((t) => (
                 <option key={t} value={t}>{t}</option>

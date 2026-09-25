@@ -48,7 +48,7 @@ export const AssetsTab: React.FC = () => {
                 </div>
                 <button
                   onClick={() => sellOwnedAsset(asset.id)}
-                  className="px-3 py-1.5 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg hover:bg-rose-200 transition cursor-pointer"
+                  className="min-h-[44px] min-w-[56px] px-3.5 py-2 bg-rose-100 text-rose-700 text-xs font-bold rounded-xl hover:bg-rose-200 transition cursor-pointer flex items-center justify-center"
                 >
                   Jual
                 </button>
@@ -82,7 +82,7 @@ export const AssetsTab: React.FC = () => {
                   </span>
                   <button
                     onClick={() => buyAsset(item)}
-                    className="px-3 py-1.5 bg-emerald-600 text-white text-[11px] font-bold rounded-lg hover:bg-emerald-500 transition cursor-pointer"
+                    className="min-h-[44px] min-w-[56px] px-3.5 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-500 transition cursor-pointer flex items-center justify-center"
                   >
                     Beli
                   </button>

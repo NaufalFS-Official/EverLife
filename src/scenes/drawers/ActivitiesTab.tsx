@@ -15,7 +15,7 @@ export const ActivitiesTab: React.FC = () => {
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={visitDoctor}
-            className="p-3 bg-white border border-slate-200 rounded-xl text-left hover:border-emerald-300 transition cursor-pointer shadow-2xs"
+            className="min-h-[44px] p-3 bg-white border border-slate-200 rounded-xl text-left hover:border-emerald-300 transition cursor-pointer shadow-2xs"
           >
             <Stethoscope size={18} className="text-rose-500 mb-1" />
             <p className="font-bold text-xs text-slate-900">Pergi ke Dokter</p>
@@ -24,7 +24,7 @@ export const ActivitiesTab: React.FC = () => {
 
           <button
             onClick={goToGym}
-            className="p-3 bg-white border border-slate-200 rounded-xl text-left hover:border-emerald-300 transition cursor-pointer shadow-2xs"
+            className="min-h-[44px] p-3 bg-white border border-slate-200 rounded-xl text-left hover:border-emerald-300 transition cursor-pointer shadow-2xs"
           >
             <Dumbbell size={18} className="text-sky-500 mb-1" />
             <p className="font-bold text-xs text-slate-900">Gym Kebugaran</p>
@@ -42,7 +42,7 @@ export const ActivitiesTab: React.FC = () => {
           <div className="space-y-2">
             <button
               onClick={() => doCrime('shoplift')}
-              className="w-full p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
+              className="w-full min-h-[44px] p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
             >
               <div>
                 <p className="font-bold text-xs text-slate-900">Mencopet di Pasar</p>
@@ -53,7 +53,7 @@ export const ActivitiesTab: React.FC = () => {
 
             <button
               onClick={() => doCrime('robbery')}
-              className="w-full p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
+              className="w-full min-h-[44px] p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
             >
               <div>
                 <p className="font-bold text-xs text-slate-900">Merampok Toko Perhiasan</p>
@@ -64,7 +64,7 @@ export const ActivitiesTab: React.FC = () => {
 
             <button
               onClick={() => doCrime('heist')}
-              className="w-full p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
+              className="w-full min-h-[44px] p-3 bg-white border border-rose-200 rounded-xl text-left hover:bg-rose-50/50 transition cursor-pointer flex justify-between items-center"
             >
               <div>
                 <p className="font-bold text-xs text-slate-900">Pembobolan Brankas Bank</p>
