@@ -346,7 +346,44 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji 15 skenario tamper klien lokal, atau masuk ke Sesi Perbaikan Bug (`/fix`) bila ingin menyelesaikan temuan P2/P3 terlebih dahulu.
 - Gotchas: Playwright CLI membutuhkan binary Chromium terunduh lokal agar browser headless dapat dieksekusi di terminal Windows.
 
+---
 
-
-
-
+## [FIX-01] 2026-09-26T00:55:00+07:00 — status: COMPLETE
+- Checklist:
+  - F1: Reproduksi otomatis gagal untuk BUG-001 & BUG-002 -> ▣ DONE-VERIFIED
+  - F2: Identifikasi baris spesifik akar masalah -> ▣ DONE-VERIFIED
+  - F3: Audit blast radius (scenes, engine, types, playwright) -> ▣ DONE-VERIFIED
+  - F4: Perbaikan target minimal (canOpenSubmenu, modal attention shake, timer unmount cleanup, safe health check) -> ▣ DONE-VERIFIED
+  - F5: Uji regresi BUG-001, BUG-002, BUG-003 lulus (20/20 files, 78/78 tests pass; Playwright 2/2 E2E pass) -> ▣ DONE-VERIFIED
+  - F6: Full verification suite (typecheck, lint, unit, e2e, build, verify:bundle, detect-secrets) -> ▣ DONE-VERIFIED
+  - F7: Verifikasi sanitasi kode (D5 no stubs/todos, files <= 300 lines, D19 platform adapter clean) -> ▣ DONE-VERIFIED
+  - F8: Pembaruan BUGS.md, DECISION.md, PROGRESS.md -> ▣ DONE-VERIFIED
+  - F9: Git commit terverifikasi -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `src/App.tsx`
+  - `src/engine/GameContext.tsx`
+  - `src/engine/gameActions.ts`
+  - `src/engine/types.ts`
+  - `src/scenes/DashboardScene.tsx`
+  - `src/scenes/ModalManager.tsx`
+  - `src/scenes/SettingsModal.tsx`
+  - `tests/e2e/ftue_gameplay.spec.ts`
+  - `tests/playtest/structured_playtest.test.ts`
+  - `tests/unit/settings_modal_timer.test.ts`
+  - `BUGS.md`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit: 0 (tsc clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (20 test files, 78/78 tests passed)
+  - `npm run test:e2e` -> exit: 0 (2/2 Playwright E2E tests passed)
+  - `npm run build` -> exit: 0 (Vite build dist/ clean)
+  - `npm run verify:bundle` -> exit: 0 (130.86 kB gzip < 450 kB budget)
+  - `npm run detect-secrets` -> exit: 0 (0 secret terdeteksi)
+- Level verifikasi tercapai: L1 (Kompilasi & linting clean), L2/L3 (78/78 unit tests lolos), L4 (Playwright E2E 2/2 specs lolos, visual mobile simulation verified), L5 (5 prosedur uji fisik menunggu evaluasi manusia).
+- Keputusan baru: DEC-015, SH-006 tercatat di DECISION.md.
+- Utang teknis / risiko diterima: Nol bug terbuka (0 P0, 0 P1, 0 P2, 0 P3). Semua bug Playtest telah berstatus Closed.
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji skenario tamper klien lokal (IndexedDB manipulation, stat overflow, checksum bypass), atau eksekusi verifikasi gerbang akhir (`/gate-final`).
+- Gotchas: Playwright strict mode mendeteksi multi-matching locators pada elemen yang sama-sama muncul di layar (ayah & ibu), sehingga selector membutuhkan `.first()`.

@@ -31,4 +31,6 @@ export interface GameContextValue {
   resumeSavedGame: () => Promise<boolean>;
   restartGame: () => void;
   transitionTo: (toScreen: GameScreenState) => boolean;
+  modalAttentionNonce: number;
+  triggerModalAttention: () => void;
 }

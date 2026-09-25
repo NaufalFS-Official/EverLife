@@ -18,6 +18,7 @@ import {
   executeAgeUp, executeChoice, executeSurpriseMe, executeDoctor,
   executeGym, executeCrime, executeSpendTime, executeGiveGift,
   executeApplyJob, executeQuitJob, executeWorkHard, executeBuyAsset, executeSellAsset,
+  canOpenSubmenu,
 } from './gameActions';
 
 import { SubmenuTab, GameContextValue } from './types';
@@ -32,6 +33,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [activeSubmenu, setActiveSubmenu] = useState<SubmenuTab | null>(null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [hasSavedGame, setHasSavedGame] = useState<boolean>(false);
+  const [modalAttentionNonce, setModalAttentionNonce] = useState(0);
 
   useEffect(() => {
     saveRepo.load().then((saved) => {
@@ -56,10 +58,27 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const transitionTo = useCallback(
     (toScreen: GameScreenState): boolean => {
-      if (!state) return false;
-      const result = evaluateTransition(state.currentScreen, toScreen);
+      const fromScreen: GameScreenState = state ? state.currentScreen : 'MAIN_MENU';
+      const result = evaluateTransition(fromScreen, toScreen);
       if (!result.allowed) {
         console.warn('Transisi state ditolak oleh guard table:', result.reason);
+        return false;
+      }
+      if (toScreen === 'MAIN_MENU') {
+        setState(null);
+        return true;
+      }
+      if (!state) {
+        if (toScreen === 'CHARACTER_CREATION') {
+          setState({
+            runId: '',
+            seed: 0,
+            currentScreen: 'CHARACTER_CREATION',
+            activeModal: null,
+            character: {} as never,
+          });
+          return true;
+        }
         return false;
       }
       setState({ ...state, currentScreen: toScreen });
@@ -139,22 +158,16 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const giveGift = useCallback((npcId: string): boolean => {
     if (!state) return false;
-    const success = executeGiveGift(state, npcId);
-    if (success) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
-    return success;
+    const ok = executeGiveGift(state, npcId);
+    if (ok) { setState({ ...state }); saveCurrentState(state); }
+    return ok;
   }, [state, saveCurrentState]);
 
   const applyJobAction = useCallback((job: import('../core/career').JobDefinition): boolean => {
     if (!state) return false;
-    const success = executeApplyJob(state, job);
-    if (success) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
-    return success;
+    const ok = executeApplyJob(state, job);
+    if (ok) { setState({ ...state }); saveCurrentState(state); }
+    return ok;
   }, [state, saveCurrentState]);
 
   const quitJobAction = useCallback(() => {
@@ -173,45 +186,32 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const buyAssetAction = useCallback((asset: { id: string; name: string; category: 'Vehicle' | 'RealEstate'; value: number; maintenanceAnnual: number }): boolean => {
     if (!state) return false;
-    const success = executeBuyAsset(state, asset);
-    if (success) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
-    return success;
+    const ok = executeBuyAsset(state, asset);
+    if (ok) { setState({ ...state }); saveCurrentState(state); }
+    return ok;
   }, [state, saveCurrentState]);
 
   const sellOwnedAsset = useCallback((assetId: string) => {
     if (!state) return;
-    const success = executeSellAsset(state, assetId);
-    if (success) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
+    if (executeSellAsset(state, assetId)) { setState({ ...state }); saveCurrentState(state); }
   }, [state, saveCurrentState]);
 
   const doCrimeAction = useCallback((crimeType: 'shoplift' | 'robbery' | 'heist'): boolean => {
     if (!state) return false;
-    const success = executeCrime(state, crimeType);
+    const ok = executeCrime(state, crimeType);
     setState({ ...state });
     saveCurrentState(state);
-    return success;
+    return ok;
   }, [state, saveCurrentState]);
 
   const visitDoctor = useCallback(() => {
     if (!state) return;
-    if (executeDoctor(state)) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
+    if (executeDoctor(state)) { setState({ ...state }); saveCurrentState(state); }
   }, [state, saveCurrentState]);
 
   const goToGym = useCallback(() => {
     if (!state) return;
-    if (executeGym(state)) {
-      setState({ ...state });
-      saveCurrentState(state);
-    }
+    if (executeGym(state)) { setState({ ...state }); saveCurrentState(state); }
   }, [state, saveCurrentState]);
 
   const resumeSavedGame = useCallback(async (): Promise<boolean> => {
@@ -232,10 +232,21 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setActiveSubmenu(null);
   }, []);
 
+  const triggerModalAttention = useCallback(() => {
+    audio.play('fail');
+    triggerHaptic(30);
+    setModalAttentionNonce((prev) => prev + 1);
+  }, []);
+
   const openSubmenu = useCallback((tab: SubmenuTab) => {
+    const check = canOpenSubmenu(state);
+    if (!check.allowed) {
+      triggerModalAttention();
+      return;
+    }
     audio.play('ui_click');
     setActiveSubmenu(tab);
-  }, []);
+  }, [state, triggerModalAttention]);
 
   const closeSubmenu = useCallback(() => {
     audio.play('ui_click');
@@ -254,29 +265,12 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   return (
     <GameContext.Provider
       value={{
-        state,
-        activeSubmenu,
-        isSaving,
-        hasSavedGame,
-        startNewLife,
-        ageUp,
-        chooseOption,
-        surpriseMe,
-        spendTime,
-        giveGift,
-        applyJob: applyJobAction,
-        quitJob: quitJobAction,
-        workHard: workHardAction,
-        buyAsset: buyAssetAction,
-        sellOwnedAsset,
-        doCrime: doCrimeAction,
-        visitDoctor,
-        goToGym,
-        openSubmenu,
-        closeSubmenu,
-        resumeSavedGame,
-        restartGame,
-        transitionTo,
+        state, activeSubmenu, isSaving, hasSavedGame, modalAttentionNonce,
+        startNewLife, ageUp, chooseOption, surpriseMe, spendTime, giveGift,
+        applyJob: applyJobAction, quitJob: quitJobAction, workHard: workHardAction,
+        buyAsset: buyAssetAction, sellOwnedAsset, doCrime: doCrimeAction,
+        visitDoctor, goToGym, openSubmenu, closeSubmenu, resumeSavedGame,
+        restartGame, transitionTo, triggerModalAttention,
       }}
     >
       {children}

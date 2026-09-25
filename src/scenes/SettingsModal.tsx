@@ -4,7 +4,7 @@
  * Uji Taktil, Ekspor/Impor Save Data aman dengan validasi checksum, dan reset game.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGame } from '../engine/GameContext';
 import { audio } from '../engine/audioManager';
 import { triggerHaptic } from '../adapter/haptics';
@@ -30,12 +30,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onSelectTier,
 }) => {
   const { restartGame } = useGame();
+  const reloadTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isMuted, setIsMuted] = useState(audio.getIsMuted());
   const [selectedTier, setSelectedTier] = useState<DeviceTier>(currentTier);
   const [importJson, setImportJson] = useState('');
   const [actionFeedback, setActionFeedback] = useState<{ msg: string; isError?: boolean } | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
   const [telemetryConsent, setTelemetryConsent] = useState(telemetry.getConsent());
+
+  // Cleanup pending reload timer saat unmount (BUG-002)
+  useEffect(() => {
+    return () => {
+      if (reloadTimerRef.current) {
+        clearTimeout(reloadTimerRef.current);
+        reloadTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleClose = () => {
+    if (reloadTimerRef.current) {
+      clearTimeout(reloadTimerRef.current);
+      reloadTimerRef.current = null;
+    }
+    onClose();
+  };
 
   if (!isOpen) return null;
 
@@ -97,15 +116,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     const ok = await saveRepo.importPayload(importJson.trim());
     if (ok) {
       setActionFeedback({ msg: 'Data save valid! Memuat ulang permainan...' });
-      setTimeout(() => {
-        platform.reload();
-      }, 1000);
+      if (reloadTimerRef.current) clearTimeout(reloadTimerRef.current);
+      reloadTimerRef.current = setTimeout(() => { platform.reload(); }, 1000);
     } else {
       setActionFeedback({ msg: 'Impor ditolak: Format JSON rusak atau Checksum tidak cocok!', isError: true });
     }
   };
 
   const handleConfirmReset = () => {
+    if (reloadTimerRef.current) {
+      clearTimeout(reloadTimerRef.current);
+      reloadTimerRef.current = null;
+    }
     audio.play('death');
     restartGame();
     onClose();
@@ -122,7 +144,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <h2 className="font-bold text-slate-900 text-base">Pengaturan & Cadangan</h2>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Tutup Pengaturan"
             className="w-11 h-11 flex items-center justify-center text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition cursor-pointer"
           >
@@ -257,18 +279,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="p-3 bg-rose-50 border border-rose-200 rounded-2xl space-y-2 text-center">
                 <p className="text-xs font-bold text-rose-800">Yakin ingin menghapus seluruh progres?</p>
                 <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleConfirmReset}
-                    className="flex-1 min-h-[44px] bg-rose-600 text-white rounded-xl font-bold text-xs hover:bg-rose-700 cursor-pointer"
-                  >
+                  <button type="button" onClick={handleConfirmReset} className="flex-1 min-h-[44px] bg-rose-600 text-white rounded-xl font-bold text-xs hover:bg-rose-700 cursor-pointer">
                     Ya, Hapus
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmReset(false)}
-                    className="flex-1 min-h-[44px] bg-slate-200 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-300 cursor-pointer"
-                  >
+                  <button type="button" onClick={() => setShowConfirmReset(false)} className="flex-1 min-h-[44px] bg-slate-200 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-300 cursor-pointer">
                     Batal
                   </button>
                 </div>

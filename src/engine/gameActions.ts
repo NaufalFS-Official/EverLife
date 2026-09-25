@@ -171,3 +171,23 @@ export function executeSellAsset(state: GlobalGameState, assetId: string): boole
   }
   return false;
 }
+
+export interface SubmenuTransitionResult {
+  allowed: boolean;
+  reason?: string;
+}
+
+/**
+ * Validasi guard transisi pembukaan submenu/drawer (F-004 / AC-003 & BUG-001).
+ * Melarang pembukaan menu jika kejadian naratif (activeModal) belum diselesaikan.
+ */
+export function canOpenSubmenu(state: GlobalGameState | null): SubmenuTransitionResult {
+  if (!state) return { allowed: false, reason: 'State game belum aktif' };
+  if (state.activeModal !== null || state.currentScreen === 'SCENARIO_POPUP') {
+    return {
+      allowed: false,
+      reason: 'Selesaikan kejadian saat ini terlebih dahulu sebelum membuka menu lain',
+    };
+  }
+  return { allowed: true };
+}

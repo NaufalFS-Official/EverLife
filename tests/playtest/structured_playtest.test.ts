@@ -9,6 +9,7 @@ import { evaluateTransition } from '../../src/shared/state';
 import { LocalSaveRepository } from '../../src/adapter/localAdapter';
 import { Mulberry32PRNG } from '../../src/shared/rng';
 import { runSimulationBenchmark } from '../../src/engine/fpsHarness';
+import { canOpenSubmenu } from '../../src/engine/gameActions';
 
 describe('Playtest Terstruktur (L4 Testability)', () => {
   // 1. FTUE: First 60 Seconds Gameplay Flow
@@ -144,7 +145,7 @@ describe('Playtest Terstruktur (L4 Testability)', () => {
     const illegalTransition = evaluateTransition('GAMEPLAY_ACTIVE', 'MAIN_MENU');
     expect(illegalTransition.allowed).toBe(false);
 
-    // 3d. Transisi terlarang saat modal aktif
+    // 3d. Transisi terlarang saat modal aktif (BUG-001)
     s1.activeModal = {
       id: 'test_modal',
       category: 'Drama',
@@ -154,8 +155,16 @@ describe('Playtest Terstruktur (L4 Testability)', () => {
       description: 'Pilihan harus diselesaikan',
       choices: [{ text: 'Opsi 1', statDeltas: {}, logText: 'Log 1' }],
     };
+    s1.currentScreen = 'SCENARIO_POPUP';
     // Guard mengharuskan modal selesai terlebih dahulu
     expect(s1.activeModal).not.toBeNull();
+
+    // [BUG-001 REGRESSION]: Transisi ke drawer / submenu dilarang keras saat modal skenario aktif
+    const submenuTransition = evaluateTransition('SCENARIO_POPUP', 'SUBMENU_OPEN');
+    expect(submenuTransition.allowed).toBe(false);
+    const submenuCheck = canOpenSubmenu(s1);
+    expect(submenuCheck.allowed).toBe(false);
+    expect(submenuCheck.reason).toContain('Selesaikan kejadian saat ini terlebih dahulu');
 
     // 3e. Reload di tengah modal
     await repo.save(s1);

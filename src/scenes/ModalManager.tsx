@@ -3,12 +3,27 @@
  * F-004: Dialog skenario interaktif, cabang pilihan berbobot, dan outcome resolver.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../engine/GameContext';
-import { Dices, Sparkles } from 'lucide-react';
+import { Dices, Sparkles, AlertCircle } from 'lucide-react';
 
 export const ModalManager: React.FC = () => {
-  const { state, chooseOption, surpriseMe } = useGame();
+  const { state, chooseOption, surpriseMe, modalAttentionNonce, triggerModalAttention } = useGame();
+  const [isShaking, setIsShaking] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+
+  useEffect(() => {
+    if (modalAttentionNonce > 0) {
+      setIsShaking(true);
+      setShowWarning(true);
+      const timer = setTimeout(() => setIsShaking(false), 250);
+      const warnTimer = setTimeout(() => setShowWarning(false), 2500);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(warnTimer);
+      };
+    }
+  }, [modalAttentionNonce]);
 
   if (!state || !state.activeModal) {
     return null;
@@ -17,8 +32,16 @@ export const ModalManager: React.FC = () => {
   const event = state.activeModal;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in select-none">
-      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-scale-up">
+    <div
+      onClick={triggerModalAttention}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in select-none"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-scale-up transition-transform duration-100 ${
+          isShaking ? 'translate-x-1 ring-4 ring-rose-400/80 animate-pulse' : ''
+        }`}
+      >
         {/* Modal Top Header */}
         <div className="bg-emerald-600 px-5 py-4 text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -46,6 +69,13 @@ export const ModalManager: React.FC = () => {
           <p className="text-sm text-slate-600 leading-relaxed">
             {event.description}
           </p>
+
+          {showWarning && (
+            <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs px-3 py-2 rounded-xl font-bold flex items-center gap-2 animate-bounce">
+              <AlertCircle size={15} className="shrink-0 text-rose-600" />
+              <span>Selesaikan kejadian saat ini terlebih dahulu!</span>
+            </div>
+          )}
 
           {/* Action Choices (2 - 4 pilihan) */}
           <div className="space-y-2 pt-2">

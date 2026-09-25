@@ -19,7 +19,11 @@ import { Smartphone } from 'lucide-react';
 const SceneRouter: React.FC = () => {
   const { state } = useGame();
   const screen = state?.currentScreen ?? 'MAIN_MENU';
-  const isHealthCritical = Boolean(state && state.character.attributes.health < 25 && screen !== 'DEATH_SUMMARY');
+  const isHealthCritical = Boolean(
+    state?.character?.attributes?.health !== undefined &&
+    state.character.attributes.health < 25 &&
+    screen !== 'DEATH_SUMMARY'
+  );
 
   return (
     <div

@@ -154,7 +154,10 @@ export const DashboardScene: React.FC = () => {
       <nav className="w-full bg-white border-t border-slate-200 px-3 py-2 flex items-center justify-around z-10">
         <button
           onClick={() => openSubmenu('occupation')}
-          className="flex flex-col items-center gap-1 text-slate-600 hover:text-emerald-600 transition cursor-pointer p-1"
+          className={`flex flex-col items-center gap-1 transition p-1 ${
+            state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
+          }`}
+          aria-label="Buka Menu Pekerjaan"
         >
           <Briefcase size={18} />
           <span className="text-[10px] font-bold">Pekerjaan</span>
@@ -162,7 +165,10 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('assets')}
-          className="flex flex-col items-center gap-1 text-slate-600 hover:text-emerald-600 transition cursor-pointer p-1"
+          className={`flex flex-col items-center gap-1 transition p-1 ${
+            state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
+          }`}
+          aria-label="Buka Menu Aset"
         >
           <Home size={18} />
           <span className="text-[10px] font-bold">Aset</span>
@@ -172,7 +178,10 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('relationships')}
-          className="flex flex-col items-center gap-1 text-slate-600 hover:text-emerald-600 transition cursor-pointer p-1"
+          className={`flex flex-col items-center gap-1 transition p-1 ${
+            state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
+          }`}
+          aria-label="Buka Menu Relasi"
         >
           <Users size={18} />
           <span className="text-[10px] font-bold">Relasi</span>
@@ -180,7 +189,10 @@ export const DashboardScene: React.FC = () => {
 
         <button
           onClick={() => openSubmenu('activities')}
-          className="flex flex-col items-center gap-1 text-slate-600 hover:text-emerald-600 transition cursor-pointer p-1"
+          className={`flex flex-col items-center gap-1 transition p-1 ${
+            state.activeModal ? 'text-slate-400 opacity-60 cursor-not-allowed' : 'text-slate-600 hover:text-emerald-600 cursor-pointer'
+          }`}
+          aria-label="Buka Menu Aktivitas"
         >
           <Activity size={18} />
           <span className="text-[10px] font-bold">Aktivitas</span>

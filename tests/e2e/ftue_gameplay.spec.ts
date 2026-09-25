@@ -25,11 +25,17 @@ test.describe('E2E FTUE: First 60 Seconds End-to-End Gameplay Flow (Blueprint S4
     await ageFab.click();
     await expect(page.getByText('1 Thn')).toBeVisible();
 
+    // Selesaikan skenario naratif jika muncul sebelum membuka drawer
+    const surpriseBtn = page.getByRole('button', { name: /Surprise Me!/i });
+    if (await surpriseBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await surpriseBtn.click();
+    }
+
     // 5. Buka Menu Relasi
     const relasiTab = page.getByRole('button', { name: /Relasi/i });
     await relasiTab.click();
     await expect(page.getByText('Keluarga & Relasi')).toBeVisible();
-    await expect(page.getByText(/Father/i).or(page.getByText(/Mother/i))).toBeVisible();
+    await expect(page.getByText(/Father/i).first()).toBeVisible();
 
     // 6. Tutup Drawer Relasi
     const closeBtn = page.getByRole('button', { name: /Tutup menu/i });
