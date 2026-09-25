@@ -3,7 +3,7 @@
 Log STATE SUMMARY (append di akhir tiap sesi)
 
 ## Status Keseluruhan
-- **Tahap Saat Ini**: SESI SETUP LINGKUNGAN (/goal setup) SELESAI
+- **Tahap Saat Ini**: SESI KONTRAK BERSAMA (/goal contract) SELESAI
 - **Status PRD**: `docs/game_prd_v1.1.md` (PRD v1.1 - LOCKED)
 - **Status Blueprint**: `docs/blueprint_final.md` (APPROVED & LOCKED)
 - **Status Manifest**: `manifest_v1.md` (LOCKED & READY)
@@ -15,8 +15,8 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - [x] **Tahap 1B-Fondasi: Inisialisasi Repositori (/init)** -> Selesai. Struktur repo, direktif AGENTS.md, dokumen memori root diinisialisasi.
 - [x] **Tahap 1C / Tahap 2: Manifest Aset & File Inventory (`/manifest`)** -> Selesai. `manifest_v1.md` dibuat di root repo.
 - [x] **Sesi 1A: Setup Lingkungan & Scaffolding (`/goal setup`)** -> Selesai. Toolchain, dependensi terkunci, kanvas kosong, skrip standar, placeholder generator diverifikasi.
-- [ ] **Sesi 1B: Kontrak Tipe & Skema (`/goal-contract`)** -> Berikutnya.
-- [ ] **Sesi 1C: Client Alpha Core Loop (`/resume-client`)** -> Menunggu kontrak selesai.
+- [x] **Sesi 1B: Kontrak Tipe & Skema (`/goal-contract`)** -> Selesai. Seluruh kontrak data, guard table, Zod schema, PRNG, save envelope diverifikasi.
+- [ ] **Sesi 1C: Client Alpha Core Loop (`/resume-client`)** -> Berikutnya.
 
 ---
 
@@ -120,3 +120,51 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - Utang teknis / risiko diterima: Nol utang teknis; ukuran bundle awal sangat optimal (~73 kB gzip dari pagu 450 kB).
 - LANGKAH BERIKUTNYA: Masuk ke Sesi Kontrak (`/goal-contract`) untuk menulis model data TypeScript murni dan konstanta balance.
 - Gotchas: Penambahan `src/vite-env.d.ts` diperlukan agar TypeScript mengenali `import.meta.env` dan CSS side-effect import.
+
+---
+
+## [CONTRACT-01] 2026-09-25T23:38:00+07:00 — status: COMPLETE
+- Checklist:
+  - game-config (konstanta Feel Spec dari S2 & S7, satuan eksplisit, msToFrames) -> ▣ DONE-VERIFIED
+  - game-state (domain models, state machine + STATE_GUARD_TABLE sebagai data) -> ▣ DONE-VERIFIED
+  - game-events (GameAction, payload tipe terisolasi) -> ▣ DONE-VERIFIED
+  - asset-manifest (ASSET_MANIFEST 11 entitas placeholder M4) -> ▣ DONE-VERIFIED
+  - content-schema (Zod schema scenarioEventSchema, jobListingSchema) -> ▣ DONE-VERIFIED
+  - rng.ts (Mulberry32 PRNG deterministik ber-seed 32-bit & computeStateHash D16) -> ▣ DONE-VERIFIED
+  - platform.ts (IPlatformAdapter, DefaultPlatformAdapter, MemoryStorage fallback D19) -> ▣ DONE-VERIFIED
+  - debug-hooks.ts (GameDebugHooks, conditional window.__game via ?debug=1) -> ▣ DONE-VERIFIED
+  - save-schema.ts (SaveEnvelope, schemaVersion=1, SHA-256 HMAC checksum, migrateSaveData, fixture) -> ▣ DONE-VERIFIED
+  - env-schema.ts (Zod envSchema runtime validator) -> ▣ DONE-VERIFIED
+  - tests/unit/contracts.test.ts (20 unit tests Vitest 100% pass) -> ▣ DONE-VERIFIED
+  - Verifikasi typecheck, lint, build, dan 0 stub scan (D5) -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `package.json`
+  - `package-lock.json`
+  - `eslint.config.js`
+  - `BALANCE.md`
+  - `DECISION.md`
+  - `src/shared/config.ts`
+  - `src/shared/state.ts`
+  - `src/shared/events.ts`
+  - `src/shared/assets.ts`
+  - `src/shared/contentSchema.ts`
+  - `src/shared/rng.ts`
+  - `src/shared/platform.ts`
+  - `src/shared/debugHooks.ts`
+  - `src/shared/saveSchema.ts`
+  - `src/shared/envSchema.ts`
+  - `src/shared/index.ts`
+  - `tests/unit/contracts.test.ts`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit: 0 (tsc --noEmit clean)
+  - `npm run lint` -> exit: 0 (eslint clean)
+  - `npm run test:unit` -> exit: 0 (2 files passed, 20/20 tests passed)
+  - `npm run build` -> exit: 0 (Vite dist build 72.8 kB gzip < 450 kB)
+  - `git grep -nE "TODO|FIXME|..." src/ tests/` -> exit: 1 (0 temuan stubs)
+- Level verifikasi tercapai: L1 (Toolchain typecheck/lint), L2 (Vitest unit tests pada schema validation, guard table, migrate fixture, determinism RNG). L3 (Production bundle build clean).
+- Keputusan baru: DEC-009 (Instalasi paket zod@4.6.5 locked version untuk schema validation runtime). Self-healing SH-001 & SH-002 tercatat di DECISION.md.
+- Utang teknis / risiko diterima: Nol utang teknis; modul `/shared` kini FROZEN dan siap dipakai secara aman oleh modul client/core simulation.
+- LANGKAH BERIKUTNYA: Eksekusi Sesi 1C: Client Alpha Core Loop (`/goal client` atau `/resume-client`) untuk mengimplementasikan core state machine, ticker penuaan, event modal, dan stat bar.
+- Gotchas: Strict flag `noUnusedLocals` memerlukan setiap helper kriptografi yang diekspor diuji secara eksplisit di test suite.
+

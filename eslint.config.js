@@ -1,9 +1,11 @@
 import js from '@eslint/js';
 
 export default [
+  {
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'public/**'],
+  },
   js.configs.recommended,
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'playwright-report/**', 'test-results/**'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

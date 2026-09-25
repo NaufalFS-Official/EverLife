@@ -2,6 +2,7 @@
 
 | Konstanta | Nilai | Satuan | Rentang Aman | Dampak | Sumber (Tag) | Diubah Oleh |
 | --- | --- | --- | --- | --- | --- | --- |
+| `TARGET_FPS` | 60 | fps | 30 - 120 | Frame rate target game loop dan konversi ms ke frame | [T] | Architect Agent |
 | `FEEL_TEXT_SPEED_CPS` | 0 | ms/chunk | 0 - 50 | Kecepatan cetak narasi tahunan (0 = instan) | [A] | Architect Agent |
 | `FEEL_TREE_BRANCH_MIN` | 2 | pilihan | 2 - 3 | Jumlah minimum cabang pilihan per dialog | [I] | Architect Agent |
 | `FEEL_TREE_BRANCH_MAX` | 4 | pilihan | 3 - 5 | Jumlah maksimum cabang pilihan per dialog | [I] | Architect Agent |
