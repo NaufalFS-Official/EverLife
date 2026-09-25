@@ -69,6 +69,15 @@ export interface ScenarioEvent {
   choices: ChoiceOutcome[];
 }
 
+export interface AssetItem {
+  id: string;
+  name: string;
+  category: 'Vehicle' | 'RealEstate';
+  value: number;
+  maintenanceAnnual: number;
+  yearPurchased: number;
+}
+
 export interface GlobalGameState {
   runId: string;
   seed: number;
@@ -92,6 +101,10 @@ export interface GlobalGameState {
     job: { id: string; title: string; salary: number; performance: number } | null;
     relationships: NPC[];
     lifeLog: LogEntry[];
+    assets?: AssetItem[];
+    prisonYears?: number;
+    causeOfDeath?: string;
+    ribbon?: string;
   };
 }
 

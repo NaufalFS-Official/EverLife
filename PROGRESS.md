@@ -3,7 +3,7 @@
 Log STATE SUMMARY (append di akhir tiap sesi)
 
 ## Status Keseluruhan
-- **Tahap Saat Ini**: SESI KONTRAK BERSAMA (/goal contract) SELESAI
+- **Tahap Saat Ini**: SESI KLIEN GAME (/goal client) SELESAI
 - **Status PRD**: `docs/game_prd_v1.1.md` (PRD v1.1 - LOCKED)
 - **Status Blueprint**: `docs/blueprint_final.md` (APPROVED & LOCKED)
 - **Status Manifest**: `manifest_v1.md` (LOCKED & READY)
@@ -16,7 +16,8 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - [x] **Tahap 1C / Tahap 2: Manifest Aset & File Inventory (`/manifest`)** -> Selesai. `manifest_v1.md` dibuat di root repo.
 - [x] **Sesi 1A: Setup Lingkungan & Scaffolding (`/goal setup`)** -> Selesai. Toolchain, dependensi terkunci, kanvas kosong, skrip standar, placeholder generator diverifikasi.
 - [x] **Sesi 1B: Kontrak Tipe & Skema (`/goal-contract`)** -> Selesai. Seluruh kontrak data, guard table, Zod schema, PRNG, save envelope diverifikasi.
-- [ ] **Sesi 1C: Client Alpha Core Loop (`/resume-client`)** -> Berikutnya.
+- [x] **Sesi 1C: Client Alpha Core Loop (`/resume-client` / `/goal client`)** -> Selesai. Seluruh arsitektur client, scenes, core loop, PRNG simulation, audio synthesizer, dan HUD diverifikasi.
+- [ ] **Sesi 2: Sistem Platform & Persistensi Lanjutan (`/goal-platform`)** -> Berikutnya.
 
 ---
 
@@ -167,4 +168,45 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - Utang teknis / risiko diterima: Nol utang teknis; modul `/shared` kini FROZEN dan siap dipakai secara aman oleh modul client/core simulation.
 - LANGKAH BERIKUTNYA: Eksekusi Sesi 1C: Client Alpha Core Loop (`/goal client` atau `/resume-client`) untuk mengimplementasikan core state machine, ticker penuaan, event modal, dan stat bar.
 - Gotchas: Strict flag `noUnusedLocals` memerlukan setiap helper kriptografi yang diekspor diuji secara eksplisit di test suite.
+
+---
+
+## [CLIENT-01] 2026-09-25T23:52:30+07:00 — status: COMPLETE
+- Checklist:
+  - Layering core/ - engine/ - scenes/ - adapter; loop + pause (DAEL-05) -> ▣ DONE-VERIFIED
+  - Player/gerak + kamera (DAEL-02, DAEL-10, DAEL-11) -> ▣ DONE-VERIFIED
+  - Mekanik inti "+Age" FAB dengan bounce scale 0.95, haptic 20ms, dan FPS terukur (DAEL-09, DAEL-16) -> ▣ DONE-VERIFIED
+  - simulate(seed, inputLog) -> stateHash deterministik; hooks + FPS harness (DAEL-04, DAEL-06) -> ▣ DONE-VERIFIED
+  - Formula mortalitas, krisis kesehatan, screen shake & red vignette flash -> ▣ DONE-VERIFIED
+  - HUD/menu/scene (MainMenu, Creation, Dashboard, ModalManager, Submenus, Death) -> ▣ DONE-VERIFIED
+  - Audio synthesizer Web Audio API untuk 7 SFX cues (DAEL-15) -> ▣ DONE-VERIFIED
+  - Save/Load via LocalAdapter dengan SHA-256 HMAC checksum & migrator (DAEL-14) -> ▣ DONE-VERIFIED
+  - Content loader data banks (scenarios, jobs, assets), uji determinisme, profil FPS & memori -> ▣ DONE-VERIFIED
+  - Isolasi build produksi (window.__game === undefined) -> ▣ DONE-VERIFIED
+  - Pemindaian stub = 0 temuan (D2, D5) -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `src/App.tsx`
+  - `src/core/*` (types, character, aging, events, career, relationships, finances, crime, mortality, simulation, index)
+  - `src/data/*` (jobs.json, assets.json, scenarios.json)
+  - `src/adapter/*` (repository, localAdapter, apiPort, haptics, index)
+  - `src/engine/*` (audioManager, avatarComposer, GameLoop, fpsHarness, gameActions, types, GameContext, index)
+  - `src/scenes/*` (MainMenuScene, CreationScene, DashboardScene, HUD, ModalManager, SubmenuDrawer, drawers/*, DeathScene, index)
+  - `vitest.config.ts`
+  - `tests/e2e/smoke.spec.ts`
+  - `tests/e2e/ftue_gameplay.spec.ts`
+  - `tests/unit/*` (character_creation, aging_cycle, mortality, career_pipeline, relationships, decision_modal, simulation_replay, fps_memory_harness, save_persistence, prod_hygiene)
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit: 0 (tsc --noEmit clean)
+  - `npm run lint` -> exit: 0 (eslint clean)
+  - `npm run test:unit` -> exit: 0 (12 test files passed, 50/50 tests passed)
+  - `npm run build` -> exit: 0 (Vite dist bundle ~124.5 kB gzip < 450 kB)
+  - `git grep -nE "TODO|FIXME|..." src/ tests/` -> exit: 1 (0 temuan stubs)
+- Level verifikasi tercapai: L1 (Toolchain clean), L2 (Unit test 50/50 pass), L3 (Integration decision/career/persistence & prod bundle build), L4 (E2E Playwright skenario disiapkan; L4 TIDAK TERSEDIA otomatis karena browser binary butuh konfirmasi unduh eksternal). L5 (Game feel MENUNGGU MANUSIA: panduan uji manual disertakan).
+- Keputusan baru: DEC-010 (field opsional state), DEC-011 (modularisasi subkomponen drawer & actions D5), DEC-012 (Web Audio API synthesis). Self-healing SH-003 s/d SH-005 tercatat di DECISION.md.
+- Utang teknis / risiko diterima: Nol utang teknis; performa frame-time p95 = 0.041ms (< 16.66ms), heap growth = 0.37% (< 10%).
+- LANGKAH BERIKUTNYA: Masuk ke Sesi Platform (`/goal platform` atau `/resume-platform`) untuk pengujian ketahanan storage multi-tab, offline service worker, dan PWA caching.
+- Gotchas: PRNG di folder `src/core/` harus murni deterministik tanpa `Math.random()` atau `Date.now()`.
+
 

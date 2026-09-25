@@ -1,0 +1,329 @@
+[
+  {
+    "id": "evt_vaccine_toddler",
+    "category": "Childhood",
+    "minAge": 1,
+    "maxAge": 4,
+    "title": "Jadwal Imunisasi Balita",
+    "description": "Ibumu membawamu ke puskesmas untuk mendapatkan suntikan vaksin polio dan campak. Jarum suntik tampak sangat berkilau di tangan dokter.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Menangis sekencang-kencangnya dan memberontak",
+        "statDeltas": { "happiness": -10, "health": 5 },
+        "logText": "Saya menangis histeris sampai seisi klinik memandang heran, tapi vaksin berhasil disuntikkan.",
+        "karmaDelta": 0
+      },
+      {
+        "id": "c2",
+        "text": "Tetap tenang sambil memeluk boneka beruang",
+        "statDeltas": { "happiness": 5, "health": 15, "discipline": 10 },
+        "logText": "Saya bersikap berani saat jarum disuntikkan. Dokter memuji keberanian saya dan memberi permen.",
+        "karmaDelta": 5
+      },
+      {
+        "id": "c3",
+        "text": "Menggigit tangan dokter dengan sekuat tenaga",
+        "statDeltas": { "happiness": -5, "discipline": -15 },
+        "logText": "Dokter menjerit kesakitan! Ibu saya meminta maaf berkali-kali kepada perawat klinik.",
+        "karmaDelta": -10
+      }
+    ]
+  },
+  {
+    "id": "evt_toy_sharing",
+    "category": "Childhood",
+    "minAge": 3,
+    "maxAge": 5,
+    "title": "Rebutan Mainan di Taman",
+    "description": "Seorang anak tetangga sebaya mendekat dan ingin meminjam mobil remote kontrol kesayanganmu.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Meminjamkan dan bermain balapan bersama",
+        "statDeltas": { "happiness": 15, "karma": 10 },
+        "logText": "Kami bermain bersama hingga petang dan menjadi teman baik di lingkungan rumah.",
+        "karmaDelta": 10
+      },
+      {
+        "id": "c2",
+        "text": "Menyembunyikan mainan di balik punggung",
+        "statDeltas": { "happiness": -5, "karma": -5 },
+        "logText": "Anak tetangga menangis kecewa lalu pulang mengadu ke orang tuanya.",
+        "karmaDelta": -5
+      }
+    ]
+  },
+  {
+    "id": "evt_first_school_day",
+    "category": "School",
+    "minAge": 6,
+    "maxAge": 8,
+    "title": "Hari Pertama Masuk Sekolah Dasar",
+    "description": "Lonceng sekolah berdentang nyaring. Guru kelas memintamu memperkenalkan diri di hadapan seluruh teman kelas baru.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Tersenyum ramah dan menyapa seluruh kelas dengan lantang",
+        "statDeltas": { "happiness": 12, "looks": 5, "smarts": 5 },
+        "logText": "Perkenalan saya disambut tepuk tangan meriah. Teman-teman berebut mengajak saya duduk bersama.",
+        "karmaDelta": 5
+      },
+      {
+        "id": "c2",
+        "text": "Malu-malu dan hanya menyebutkan nama panggilan",
+        "statDeltas": { "happiness": 0, "smarts": 2 },
+        "logText": "Saya memperkenalkan diri singkat lalu segera duduk di barisan belakang.",
+        "karmaDelta": 0
+      },
+      {
+        "id": "c3",
+        "text": "Menceritakan lelucon lucu tentang katak di kolam",
+        "statDeltas": { "happiness": 15, "discipline": -5 },
+        "logText": "Seisi kelas tertawa terbahak-bahak! Guru tersenyum geleng-geleng kepala melihat aksi saya.",
+        "karmaDelta": 5
+      }
+    ]
+  },
+  {
+    "id": "evt_homework_cheating",
+    "category": "School",
+    "minAge": 9,
+    "maxAge": 12,
+    "title": "Tugas Matematika yang Rumit",
+    "description": "Teman sebangkumu menawari lembar jawaban pekerjaan rumah matematika yang sangat sulit dengan imbalan separuh bekal makan siangmu.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Mengerjakan sendiri dengan tekun meski harus begadang",
+        "statDeltas": { "smarts": 12, "discipline": 15, "health": -5 },
+        "logText": "Saya berusaha keras memecahkan soal aljabar tersebut dan mendapat nilai A murni!",
+        "karmaDelta": 10
+      },
+      {
+        "id": "c2",
+        "text": "Mencontek jawabannya demi menghemat waktu",
+        "statDeltas": { "smarts": -5, "discipline": -10, "happiness": 5 },
+        "logText": "Tugas selesai cepat, tapi saya tidak memahami materi saat ulangan harian tiba.",
+        "karmaDelta": -10
+      },
+      {
+        "id": "c3",
+        "text": "Mengajak teman tersebut belajar kelompok bersama",
+        "statDeltas": { "smarts": 10, "happiness": 10, "karma": 10 },
+        "logText": "Kami belajar bersama di perpustakaan sekolah. Keduanya berhasil menguasai rumus dengan baik.",
+        "karmaDelta": 10
+      }
+    ]
+  },
+  {
+    "id": "evt_stray_puppy",
+    "category": "Childhood",
+    "minAge": 8,
+    "maxAge": 14,
+    "title": "Anak Anjing Tersesat di Depan Pagar",
+    "description": "Saat pulang sekolah saat hujan deras, kamu menemukan seekor anak anjing menggigil basah di dekat selokan.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Membawanya pulang dan merawatnya bersama orang tua",
+        "statDeltas": { "happiness": 20, "karma": 15 },
+        "logText": "Orang tua saya mengizinkan memeliharanya. Kami menamainya Bucky dan ia sangat setia!",
+        "karmaDelta": 15
+      },
+      {
+        "id": "c2",
+        "text": "Membelikan makanan kaleng dari minimarket terdekat",
+        "statDeltas": { "happiness": 8, "karma": 8 },
+        "logText": "Saya memberi makanan bergizi sebelum anak anjing itu dijemput oleh penampungan hewan.",
+        "karmaDelta": 8
+      },
+      {
+        "id": "c3",
+        "text": "Mengabaikannya dan langsung masuk ke kamar mandi",
+        "statDeltas": { "karma": -15, "happiness": -5 },
+        "logText": "Saya memilih tidak peduli. Suara rintihan anak anjing itu terngiang di benak saya beberapa hari.",
+        "karmaDelta": -15
+      }
+    ]
+  },
+  {
+    "id": "evt_high_school_drama",
+    "category": "Drama",
+    "minAge": 14,
+    "maxAge": 17,
+    "title": "Gosip Panas di Sekolah Menengah",
+    "description": "Seseorang menyebarkan desas-desus tidak benar tentang sahabat karibmu di grup obrolan media sosial.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Membela sahabatmu secara terbuka dengan bukti nyata",
+        "statDeltas": { "happiness": 10, "karma": 15, "discipline": 5 },
+        "logText": "Saya mengunggah klarifikasi lugas. Sahabat saya menangis haru atas loyalitas saya.",
+        "karmaDelta": 15
+      },
+      {
+        "id": "c2",
+        "text": "Memilih netral dan tidak ikut campur dalam perselisihan",
+        "statDeltas": { "happiness": -5, "karma": -5 },
+        "logText": "Saya diam saja demi cari aman. Hubungan pertemanan kami menjadi agak renggang.",
+        "karmaDelta": -5
+      },
+      {
+        "id": "c3",
+        "text": "Ikut membagikan meme ejekan untuk mencairkan suasana",
+        "statDeltas": { "happiness": -15, "karma": -20 },
+        "logText": "Lelucon saya melukai perasaannya sangat dalam. Sahabat saya memblokir kontak saya.",
+        "karmaDelta": -20
+      }
+    ]
+  },
+  {
+    "id": "evt_first_job_interview",
+    "category": "Career",
+    "minAge": 18,
+    "maxAge": 25,
+    "title": "Wawancara Pekerjaan Pertama",
+    "description": "Pewawancara bertanya: 'Di mana Anda melihat diri Anda lima tahun dari sekarang?'",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Menjawab dengan visi realistis kontribusi profesional",
+        "statDeltas": { "smarts": 8, "discipline": 10, "happiness": 10 },
+        "logText": "Pewawancara mengangguk kagum pada kedewasaan jawaban saya.",
+        "karmaDelta": 5
+      },
+      {
+        "id": "c2",
+        "text": "Menjawab: 'Duduk di kursi Anda sebagai bos baru!'",
+        "statDeltas": { "looks": 5, "discipline": -10, "happiness": -5 },
+        "logText": "Pewawancara tertegun menatap saya. Suasana ruangan mendadak dingin dan kaku.",
+        "karmaDelta": 0
+      },
+      {
+        "id": "c3",
+        "text": "Menjawab: 'Menikmati hidup di pulau terpencil tanpa deadline'",
+        "statDeltas": { "happiness": 10, "discipline": -5 },
+        "logText": "Pewawancara tertawa kecil namun mencoret formulir lamaran saya.",
+        "karmaDelta": 0
+      }
+    ]
+  },
+  {
+    "id": "evt_wallet_found",
+    "category": "Drama",
+    "minAge": 15,
+    "maxAge": 45,
+    "title": "Dompet Tebal Terjatuh di Halte Bus",
+    "description": "Kamu menemukan sebuah dompet kulit bermerek berisi uang tunai sebesar $1,200 lengkap dengan kartu identitas pemiliknya.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Mengembalikan dompet utuh kepada alamat pemiliknya",
+        "statDeltas": { "karma": 25, "happiness": 20 },
+        "logText": "Pemilik dompet adalah seorang kakek pensiunan. Beliau memeluk saya erat dengan air mata bahagia.",
+        "karmaDelta": 25
+      },
+      {
+        "id": "c2",
+        "text": "Mengambil uang tunai lalu membuang dompet ke tong sampah",
+        "statDeltas": { "happiness": 5, "karma": -30 },
+        "logText": "Saya mengantongi uang haram tersebut, namun perasaan cemas terus menghantui.",
+        "karmaDelta": -30
+      },
+      {
+        "id": "c3",
+        "text": "Menyerahkannya ke pos polisi terdekat",
+        "statDeltas": { "karma": 15, "discipline": 10 },
+        "logText": "Polisi mencatat laporan penemuan barang dan mengapresiasi kejujuran saya.",
+        "karmaDelta": 15
+      }
+    ]
+  },
+  {
+    "id": "evt_office_burnout",
+    "category": "Career",
+    "minAge": 22,
+    "maxAge": 55,
+    "title": "Beban Lembur Tak Berujung",
+    "description": "Atasan memintamu menyelesaikan proyek mendadak hingga larut malam selama akhir pekan tanpa uang lembur.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Menerima tugas dengan profesional demi promosi mendatang",
+        "statDeltas": { "smarts": 5, "health": -15, "discipline": 15 },
+        "logText": "Proyek sukses besar, namun badan saya demam tinggi akibat kelelahan.",
+        "karmaDelta": 0
+      },
+      {
+        "id": "c2",
+        "text": "Menolak dengan tegas batas jam kerja demi kesehatan mental",
+        "statDeltas": { "happiness": 15, "health": 10, "discipline": 5 },
+        "logText": "Atasan sedikit kecewa, tetapi saya berhasil menjaga keseimbangan hidup sehat.",
+        "karmaDelta": 5
+      },
+      {
+        "id": "c3",
+        "text": "Mengajak seluruh tim bernegosiasi kompensasi tambahan",
+        "statDeltas": { "smarts": 10, "karma": 10, "discipline": 10 },
+        "logText": "Negosiasi berhasil! Seluruh rekan kerja mendapat bonus lembur yang pantas.",
+        "karmaDelta": 10
+      }
+    ]
+  },
+  {
+    "id": "evt_health_checkup",
+    "category": "Health",
+    "minAge": 40,
+    "maxAge": 70,
+    "title": "Hasil Tes Medis Tahunan",
+    "description": "Dokter keluarga memperingatkan bahwa kadar kolesterol dan tekanan darahmu mulai menunjukkan angka kuning bahaya.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Mulai diet ketat nabati dan rutin joging 5 kilometer tiap pagi",
+        "statDeltas": { "health": 20, "happiness": 5, "discipline": 15 },
+        "logText": "Dalam 6 bulan, berat badan saya turun ideal dan tekanan darah kembali prima!",
+        "karmaDelta": 5
+      },
+      {
+        "id": "c2",
+        "text": "Mengabaikan anjuran dokter dan tetap makan makanan cepat saji",
+        "statDeltas": { "health": -25, "happiness": 5 },
+        "logText": "Saya menolak berhenti makan gorengan. Tubuh terasa semakin berat dan mudah lelah.",
+        "karmaDelta": -5
+      },
+      {
+        "id": "c3",
+        "text": "Membeli suplemen vitamin mahal dari internet tanpa resep",
+        "statDeltas": { "health": -5, "smarts": -5 },
+        "logText": "Suplemen herbal tersebut tidak banyak berpengaruh selain menguras kantong.",
+        "karmaDelta": 0
+      }
+    ]
+  },
+  {
+    "id": "evt_elderly_gardening",
+    "category": "Drama",
+    "minAge": 60,
+    "maxAge": 90,
+    "title": "Kebun Bunga di Halaman Belakang",
+    "description": "Di usia senja, kamu memiliki banyak waktu luang di rumah. Tetangga mengajakmu mengikuti kontes anggrek lingkungan.",
+    "choices": [
+      {
+        "id": "c1",
+        "text": "Merawat anggrek langka dengan pupuk organik setiap sore",
+        "statDeltas": { "happiness": 20, "health": 10, "karma": 10 },
+        "logText": "Bunga anggrek saya mekar indah dan memenangkan juara pertama piala warga!",
+        "karmaDelta": 10
+      },
+      {
+        "id": "c2",
+        "text": "Hanya duduk santai di teras membaca koran pagi",
+        "statDeltas": { "happiness": 10, "health": 2 },
+        "logText": "Masa pensiun yang tenang dan damai adalah kemewahan yang saya syukuri.",
+        "karmaDelta": 0
+      }
+    ]
+  }
+]
