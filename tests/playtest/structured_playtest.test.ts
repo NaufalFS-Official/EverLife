@@ -4,7 +4,6 @@ import { tickAge } from '../../src/core/aging';
 import { resolveChoice, surpriseMeChoice } from '../../src/core/events';
 import { applyForJob } from '../../src/core/career';
 import { commitCrime } from '../../src/core/crime';
-import { purchaseAsset } from '../../src/core/finances';
 import { spendTimeWithNPC } from '../../src/core/relationships';
 import { evaluateTransition } from '../../src/shared/state';
 import { LocalSaveRepository } from '../../src/adapter/localAdapter';
@@ -128,7 +127,6 @@ describe('Playtest Terstruktur (L4 Testability)', () => {
   // 3. Kondisi Batas (Edge Cases)
   it('SKENARIO-03 [KONDISI BATAS]: Pause/Resume, Spam Input, Restart Cepat, dan Save Korup', async () => {
     const repo = new LocalSaveRepository();
-    const rng = new Mulberry32PRNG(999);
 
     // 3a. Save Korup & Tampered Checksum
     expect(await repo.importPayload('non-json-data')).toBe(false);
@@ -156,7 +154,6 @@ describe('Playtest Terstruktur (L4 Testability)', () => {
       description: 'Pilihan harus diselesaikan',
       choices: [{ text: 'Opsi 1', statDeltas: {}, logText: 'Log 1' }],
     };
-    const openDrawerWhileModal = evaluateTransition('GAMEPLAY_ACTIVE', 'SUBMENU_OPEN');
     // Guard mengharuskan modal selesai terlebih dahulu
     expect(s1.activeModal).not.toBeNull();
 
