@@ -6,6 +6,7 @@
 
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { LocalSaveRepository } from '../adapter/localAdapter';
+import { telemetry } from '../adapter/telemetry';
 
 interface Props {
   children: ReactNode;
@@ -37,6 +38,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('Unhandled render error caught by EverLife ErrorBoundary:', error, errorInfo);
+    telemetry.recordClientError(error, {
+      componentStack: (errorInfo.componentStack ?? '').slice(0, 200),
+    });
   }
 
   private handleReload = (): void => {

@@ -8,25 +8,16 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 import { GlobalGameState, GameScreenState, CharacterCreationParams } from '../core/types';
 import { createNewLife } from '../core/character';
 import { LocalSaveRepository } from '../adapter/localAdapter';
+import { telemetry } from '../adapter/telemetry';
 import { audio } from './audioManager';
 import { triggerHaptic } from '../adapter/haptics';
 import { evaluateTransition } from '../shared';
 import { usePlatformLifecycle, useKeyboardShortcuts } from '../platform/usePlatformHooks';
 import { useDebugRegistration } from './useDebugRegistration';
 import {
-  executeAgeUp,
-  executeChoice,
-  executeSurpriseMe,
-  executeDoctor,
-  executeGym,
-  executeCrime,
-  executeSpendTime,
-  executeGiveGift,
-  executeApplyJob,
-  executeQuitJob,
-  executeWorkHard,
-  executeBuyAsset,
-  executeSellAsset,
+  executeAgeUp, executeChoice, executeSurpriseMe, executeDoctor,
+  executeGym, executeCrime, executeSpendTime, executeGiveGift,
+  executeApplyJob, executeQuitJob, executeWorkHard, executeBuyAsset, executeSellAsset,
 } from './gameActions';
 
 import { SubmenuTab, GameContextValue } from './types';
@@ -84,6 +75,12 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const newState = createNewLife(params);
       setState(newState);
       saveCurrentState(newState);
+      telemetry.trackEvent({
+        eventName: 'life_started',
+        runId: newState.runId,
+        age: 0,
+        deviceTier: 'mid',
+      });
     },
     [saveCurrentState]
   );
@@ -94,6 +91,12 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (isFatal) {
       saveRepo.clear();
       setHasSavedGame(false);
+      telemetry.trackEvent({
+        eventName: 'life_ended',
+        runId: state.runId,
+        age: nextState.character.age,
+        deviceTier: 'mid',
+      });
     } else {
       saveCurrentState(nextState);
     }

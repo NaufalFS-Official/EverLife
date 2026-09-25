@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "verify:bundle": "node scripts/verify_bundle_size.cjs",
     "detect-secrets": "node scripts/detect_secrets.cjs",
     "generate-placeholders": "node scripts/generate_placeholders.cjs"
   },

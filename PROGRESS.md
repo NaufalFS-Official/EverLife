@@ -268,5 +268,54 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Eksekusi Sesi Asset Hook (`/resume-asset` atau `/goal-asset`) untuk memoles variasi visual SVG dan audio cues sebelum masuk ke Sesi Verifikasi Lanjutan.
 - Gotchas: Isolasi platform mewajibkan navigasi browser, clipboard, dan orientasi dipusatkan di `shared/platform.ts` agar tidak membocorkan pemanggilan `window`/`navigator` ke komponen scene.
 
+---
+
+## [INFRA-01] 2026-09-26T00:09:00+07:00 — status: COMPLETE
+- Checklist:
+  - Multi-stage GitHub Actions CI/CD pipeline (`.github/workflows/ci.yml`) -> ▣ DONE-VERIFIED
+  - Enforce Bundle Budget Gate via `scripts/verify_bundle_size.cjs` (< 450 kB gzip; real: 130.28 kB) -> ▣ DONE-VERIFIED
+  - Edge security headers (CSP, X-Frame-Options, Permissions-Policy, HSTS) via `public/_headers` & `vercel.json` -> ▣ DONE-VERIFIED
+  - Telemetri consent-gated (PRD §13.0 / D8) via `TelemetryService` di `src/adapter/telemetry.ts` -> ▣ DONE-VERIFIED
+  - Client-side error tracking buffer & FPS metrics reporter -> ▣ DONE-VERIFIED
+  - Headless endurance stress test (500 siklus hidup penuh, pertumbuhan heap 0.99% < 10%) -> ▣ DONE-VERIFIED
+  - Dokumen operasional: `docs/DEPLOY_GUIDE.md`, `docs/ASSET_GUIDE.md`, `docs/GAME_DESIGN.md`, `ENV_CHECKLIST.md` -> ▣ DONE-VERIFIED
+  - Repositori siap-clone: `README.md` terupdate dengan instruksi build portal HTML5 -> ▣ DONE-VERIFIED
+  - Verifikasi exit gate: typecheck 0, lint 0, 71/71 unit tests pass (18 test files), build sukses -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `.github/workflows/ci.yml`
+  - `public/_headers`
+  - `vercel.json`
+  - `scripts/verify_bundle_size.cjs`
+  - `package.json`
+  - `ENV_CHECKLIST.md`
+  - `docs/DEPLOY_GUIDE.md`
+  - `docs/ASSET_GUIDE.md`
+  - `docs/GAME_DESIGN.md`
+  - `src/adapter/telemetry.ts`
+  - `src/adapter/index.ts`
+  - `src/engine/ErrorBoundary.tsx`
+  - `src/engine/GameContext.tsx`
+  - `src/scenes/SettingsModal.tsx`
+  - `tests/unit/telemetry_error_tracker.test.ts`
+  - `tests/unit/endurance_stress.test.ts`
+  - `DECISION.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `npm run typecheck` -> exit: 0 (tsc clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (18 files passed, 71/71 tests passed)
+  - `npm run build` -> exit: 0 (Vite build dist/ clean)
+  - `npm run verify:bundle` -> exit: 0 (Total 130.28 kB gzip < 450 kB budget)
+  - `npm run build:portal` -> exit: 0 (bundle portal siap distribusi)
+  - `npm run detect-secrets` -> exit: 0 (0 secret terdeteksi)
+  - `git grep -nE "window\.|localStorage|indexedDB|navigator\." src/core src/scenes` -> exit: 1 (0 panggilan langsung)
+  - `git grep -rnE "TODO|FIXME|..." src/` -> exit: 1 (0 temuan stubs)
+- Level verifikasi tercapai: L1 (CI/CD pipeline & static analysis clean), L2 (Unit tests 71/71 pass), L3 (Vite production bundle & static edge deployment verified), L5 (Headless endurance 500 lifetimes verified, heap growth 0.99%).
+- Keputusan baru: DEC-014 (Observabilitas consent-gated & buffer lokal sirkular untuk error tracking).
+- Utang teknis / risiko diterima: Nol utang teknis; ukuran bundle 130.28 kB gzip jauh di bawah batas anggaran 450 kB.
+- LANGKAH BERIKUTNYA: Eksekusi Sesi Red Team & Blue Team (`/goal redteam` atau `/resume-redteam`) untuk menguji 15 skenario tamper klien lokal (IndexedDB manipulation, stat overflow, checksum bypass).
+- Gotchas: Pengaturan CSP strict memerlukan `data:` untuk SVG inline dan `unsafe-inline` untuk utility classes Tailwind CSS runtime tanpa membocorkan `eval()`.
+
+
 
 

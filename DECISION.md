@@ -15,6 +15,7 @@
 | **DEC-011** | Modularisasi subkomponen drawer dan pemisahan gameActions & engine/types | Memenuhi Direktif D5 (maksimal 300 baris per file kode) dengan menjaga SubmenuDrawer (~50 baris) dan GameContext (~299 baris) tetap ramping | Menumpuk seluruh logika UI dan actions dalam 1 file monolitik > 400 baris |
 | **DEC-012** | Sintesis Audio Prosedural Web Audio API murni | Menjamin pemutaran 7 cues SFX dengan 0ms latency luring 100% tanpa risiko kegagalan unduhan file statis atau decoding audio browser | Bergantung mutlak pada file eksternal .mp3/.webm yang rentan 404/CORS |
 | **DEC-013** | Tiga lapis fallback persistensi (IndexedDB -> localStorage -> Memory) & modularisasi platform hooks | Menjamin persistensi tidak pernah crash pada mode Incognito/private browsing serta kepatuhan ketat D5 (file <= 300 baris) dan D19 (nol panggilan platform langsung di core/scenes) | Bergantung tunggal pada IndexedDB yang rentan gagal di Safari private browsing atau menumpuk kode platform langsung di UI |
+| **DEC-014** | Observabilitas consent-gated (PRD §13.0) & buffer lokal sirkular untuk error tracking | Menjaga privasi pengguna tanpa ketergantungan server runtime eksternal pada Mode A C0 serta gate bundle otomatis (< 450 kB gzip) | Mengirim telemetri tanpa persetujuan (non-consent) atau mengandalkan layanan cloud logging berbayar pihak ketiga |
 
 ---
 

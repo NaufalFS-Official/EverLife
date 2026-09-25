@@ -9,9 +9,10 @@ import { useGame } from '../engine/GameContext';
 import { audio } from '../engine/audioManager';
 import { triggerHaptic } from '../adapter/haptics';
 import { LocalSaveRepository } from '../adapter/localAdapter';
+import { telemetry } from '../adapter/telemetry';
 import { platform } from '../shared/platform';
 import { DeviceTier, TIER_CONFIGS, detectInitialDeviceTier } from '../platform/deviceTier';
-import { X, Volume2, VolumeX, Smartphone, Download, Upload, Trash2, Cpu, Check, AlertCircle } from 'lucide-react';
+import { X, Volume2, VolumeX, Smartphone, Download, Upload, Trash2, Cpu, Check, AlertCircle, ShieldCheck } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -34,8 +35,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [importJson, setImportJson] = useState('');
   const [actionFeedback, setActionFeedback] = useState<{ msg: string; isError?: boolean } | null>(null);
   const [showConfirmReset, setShowConfirmReset] = useState(false);
+  const [telemetryConsent, setTelemetryConsent] = useState(telemetry.getConsent());
 
   if (!isOpen) return null;
+
+  const handleToggleTelemetry = () => {
+    const nextVal = !telemetryConsent;
+    telemetry.setConsent(nextVal);
+    setTelemetryConsent(nextVal);
+    audio.play('ui_click');
+    setActionFeedback({
+      msg: nextVal
+        ? 'Telemetri anonim diaktifkan untuk diagnostik performa.'
+        : 'Telemetri dinonaktifkan & log lokal dibersihkan.',
+    });
+  };
 
   const handleToggleMute = () => {
     const muted = audio.toggleMute();
@@ -181,6 +195,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               >
                 <Smartphone size={16} className="text-blue-500" />
                 <span className="text-xs">Uji Haptik</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleToggleTelemetry}
+                className="col-span-2 min-h-[44px] px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-800 font-semibold flex items-center justify-between transition cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={16} className={telemetryConsent ? 'text-emerald-600' : 'text-slate-400'} />
+                  <span className="text-xs">Telemetri Anonim & Error Crash</span>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${telemetryConsent ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}`}>
+                  {telemetryConsent ? 'Aktif' : 'Nonaktif'}
+                </span>
               </button>
             </div>
           </div>
