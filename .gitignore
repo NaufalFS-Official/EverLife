@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.pnpm/
+
+# Production output
+dist/
+build/
+
+# Coverage & test artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Environment files & certificates
+.env*
+!.env.example
+*.pem
+
+# Assets & temporary artifacts
+*.atlas
+*.log
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
