@@ -13,6 +13,7 @@ export function useDebugRegistration(
   setState: React.Dispatch<React.SetStateAction<GlobalGameState | null>>
 ): void {
   useEffect(() => {
+    if (import.meta.env.PROD) return;
     if (!state) return;
     registerDebugHooks({
       seed: state.seed,

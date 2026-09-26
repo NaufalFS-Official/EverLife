@@ -40,6 +40,16 @@ export function calculateLivingExpenses(age: number): number {
 }
 
 /**
+ * Sanitasi nilai moneter untuk mencegah injeksi NaN, Infinity, atau non-number.
+ */
+export function sanitizeCurrency(val: unknown, fallback: number = 0): number {
+  if (typeof val !== 'number' || Number.isNaN(val) || !Number.isFinite(val)) {
+    return fallback;
+  }
+  return Math.round(val);
+}
+
+/**
  * Menghitung dan memperbarui saldo serta kekayaan bersih tahunan.
  */
 export function processAnnualCashflow(state: GlobalGameState): {
@@ -50,7 +60,7 @@ export function processAnnualCashflow(state: GlobalGameState): {
   maintenanceCost: number;
 } {
   const { character } = state;
-  const salary = character.job ? character.job.salary : 0;
+  const salary = character.job ? sanitizeCurrency(character.job.salary, 0) : 0;
   const tax = calculateAnnualTax(salary);
   const living = calculateLivingExpenses(character.age);
   const maintenance = calculateAnnualAssetMaintenance(character.assets ?? []);
@@ -58,9 +68,12 @@ export function processAnnualCashflow(state: GlobalGameState): {
   const totalExpense = living + maintenance + tax;
   const netSavingsDelta = salary - totalExpense;
 
+  const currentBalance = sanitizeCurrency(character.finances.bankBalance, 0);
+  const updatedBalance = currentBalance + netSavingsDelta;
+
   character.finances.annualSalary = salary;
   character.finances.livingExpenses = totalExpense;
-  character.finances.bankBalance += netSavingsDelta;
+  character.finances.bankBalance = sanitizeCurrency(updatedBalance, 0);
 
   const totalAssets = calculateTotalAssetValue(character.assets ?? []);
   character.finances.netWorth = character.finances.bankBalance + totalAssets;
@@ -81,6 +94,7 @@ export function purchaseAsset(
   state: GlobalGameState,
   assetTemplate: Omit<AssetItem, 'yearPurchased'>
 ): boolean {
+  state.character.finances.bankBalance = sanitizeCurrency(state.character.finances.bankBalance, 0);
   if (state.character.finances.bankBalance < assetTemplate.value) {
     return false;
   }
@@ -123,7 +137,8 @@ export function sellAsset(state: GlobalGameState, assetId: string): boolean {
   }
 
   state.character.assets.splice(index, 1);
-  state.character.finances.bankBalance += saleValue;
+  const currentBalance = sanitizeCurrency(state.character.finances.bankBalance, 0);
+  state.character.finances.bankBalance = currentBalance + saleValue;
 
   const totalAssets = calculateTotalAssetValue(state.character.assets);
   state.character.finances.netWorth = state.character.finances.bankBalance + totalAssets;

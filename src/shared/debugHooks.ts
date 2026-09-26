@@ -37,8 +37,10 @@ declare global {
 
 /**
  * Memeriksa apakah mode debug aktif (URL parameter ?debug=1 atau env VITE_DEBUG_MODE).
+ * Secara tegas mengembalikan false pada mode produksi untuk mengeliminasi dead code.
  */
 export function isDebugMode(): boolean {
+  if (import.meta.env.PROD) return false;
   if (typeof window === 'undefined') return false;
   try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -49,11 +51,11 @@ export function isDebugMode(): boolean {
 }
 
 /**
- * Mendaftarkan hooks debug ke window.__game hanya jika mode debug aktif.
+ * Mendaftarkan hooks debug ke window.__game hanya jika mode debug aktif dan bukan build produksi.
  */
 export function registerDebugHooks(hooks: GameDebugHooks): void {
-  if (typeof window !== 'undefined' && isDebugMode()) {
-    window.__game = hooks;
+  if (!import.meta.env.PROD && typeof window !== 'undefined' && isDebugMode()) {
+    (window as unknown as { __game?: GameDebugHooks }).__game = hooks;
   }
 }
 
@@ -61,7 +63,7 @@ export function registerDebugHooks(hooks: GameDebugHooks): void {
  * Melepas hooks debug dari window.__game.
  */
 export function unregisterDebugHooks(): void {
-  if (typeof window !== 'undefined') {
-    delete window.__game;
+  if (!import.meta.env.PROD && typeof window !== 'undefined') {
+    delete (window as unknown as { __game?: GameDebugHooks }).__game;
   }
 }

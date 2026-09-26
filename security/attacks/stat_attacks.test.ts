@@ -56,14 +56,15 @@ describe('RED TEAM: Stat & Attribute Tamper (ATK-001 s/d ATK-006)', () => {
     tickAge(state, rng);
 
     console.log('[ATK-005-STAT RAW RESP] Memory reverted to 10, after tickAge age is:', state.character.age);
-    // VULNERABILITY AUDIT: tickAge merely increments age by 1 without checking history monotonicity.
-    // Result: Age becomes 11 while lifeLog already recorded age 35!
-    expect(state.character.age).toBe(11);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // validateAndSyncAgeMonotonicity detects rewind (age 10 < maxRecordedAge 35), restores to 35, advances to 36
+    expect(state.character.age).toBe(36);
   });
 
   it('[ATK-006-STAT] Delta usia melonjak / Age skip (5 -> 95)', () => {
     const state = createNewLife({ firstName: 'Test', lastName: 'Skip', gender: 'Male', seed: 54321 });
     state.character.age = 5;
+    state.character.lifeLog.push({ age: 5, text: 'Usia 5 tahun', categoryTag: 'Aging', iconKey: 'icon_age' });
 
     // Attacker forcibly jumps age to 95 in memory
     state.character.age = 95;
@@ -71,7 +72,8 @@ describe('RED TEAM: Stat & Attribute Tamper (ATK-001 s/d ATK-006)', () => {
     tickAge(state, rng);
 
     console.log('[ATK-006-STAT RAW RESP] Memory jumped to 95, after tickAge age is:', state.character.age, 'Screen:', state.currentScreen);
-    // Age becomes 96, triggers elderly mortality evaluation
-    expect(state.character.age).toBe(96);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // validateAndSyncAgeMonotonicity detects skip (> lastLoggedAge + 1), clamps to 5, advances strictly to 6
+    expect(state.character.age).toBe(6);
   });
 });

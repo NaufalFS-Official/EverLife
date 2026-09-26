@@ -14,9 +14,10 @@ describe('RED TEAM: Input Validation & Injection (ATK-017 s/d ATK-020)', () => {
 
     console.log('[ATK-017-INPUT RAW RESP] Stored firstName:', state.character.name.first);
 
-    // VULNERABILITY AUDIT: The raw string is preserved verbatim without HTML entity stripping.
-    // In React DOM it is rendered as textNode (safe from direct DOM XSS), but raw string is unsanitized.
-    expect(state.character.name.first).toBe(xssPayload);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // sanitizeName strips HTML script tags: <script>alert(1)</script> -> alert(1)
+    expect(state.character.name.first).not.toContain('<script>');
+    expect(state.character.name.first).toBe('alert(1)');
   });
 
   it('[ATK-018-INPUT] Stored XSS SVG/Img Tag pada nama belakang (<img src=x onerror=alert(1)>)', () => {
@@ -24,7 +25,10 @@ describe('RED TEAM: Input Validation & Injection (ATK-017 s/d ATK-020)', () => {
     const state = createNewLife({ firstName: 'Victim', lastName: imgPayload, gender: 'Male' });
 
     console.log('[ATK-018-INPUT RAW RESP] Stored lastName:', state.character.name.last);
-    expect(state.character.name.last).toBe(imgPayload);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // sanitizeName strips img tag entirely and falls back to safe default 'Fulana'
+    expect(state.character.name.last).not.toContain('<img');
+    expect(state.character.name.last).toBe('Fulana');
   });
 
   it('[ATK-019-INPUT] String panjang ekstrem / Buffer bloat (10.000 karakter)', () => {
@@ -33,9 +37,10 @@ describe('RED TEAM: Input Validation & Injection (ATK-017 s/d ATK-020)', () => {
 
     console.log('[ATK-019-INPUT RAW RESP] Accepted name length:', state.character.name.first.length, 'BirthLog length:', state.character.lifeLog[0]?.text.length);
 
-    // VULNERABILITY AUDIT: createNewLife has NO max-length validation!
-    // A 10,000-character name is stored in state, bloating lifeLog and localStorage.
-    expect(state.character.name.first.length).toBe(10000);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // MAX_NAME_LENGTH clamps character name to 30 characters, preventing storage/memory bloat
+    expect(state.character.name.first.length).toBe(30);
+    expect(state.character.name.first).toBe('A'.repeat(30));
   });
 
   it('[ATK-020-INPUT] Prototype Pollution via JSON payload (__proto__ injection)', () => {

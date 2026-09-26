@@ -20,6 +20,37 @@ export interface AgingTickResult {
 }
 
 /**
+ * Memvalidasi dan memastikan usia karakter berjalan monotonik (+1 diskrit).
+ * Mencegah manipulasi memori Age Rewind (pembalikan usia) maupun Age Skip (lompatan usia).
+ */
+export function validateAndSyncAgeMonotonicity(state: GlobalGameState): {
+  revertedRewind: boolean;
+  clampedSkip: boolean;
+} {
+  const logs = state.character.lifeLog ?? [];
+  const maxRecordedAge = logs.reduce((max, entry) => Math.max(max, entry.age), 0);
+  let revertedRewind = false;
+  let clampedSkip = false;
+
+  // 1. Guard Age Rewind: Usia tidak boleh lebih kecil dari usia maksimal yang pernah dicapai
+  if (state.character.age < maxRecordedAge) {
+    state.character.age = maxRecordedAge;
+    revertedRewind = true;
+  }
+
+  // 2. Guard Age Skip: Bila karakter sudah aktif menua (>1 entri log), lompatan tidak boleh melampaui riwayat
+  if (logs.length > 1) {
+    const lastLoggedAge = logs[logs.length - 1]?.age ?? 0;
+    if (state.character.age > lastLoggedAge + 1) {
+      state.character.age = lastLoggedAge;
+      clampedSkip = true;
+    }
+  }
+
+  return { revertedRewind, clampedSkip };
+}
+
+/**
  * Menjalankan siklus penuaan tahunan (+Age).
  * Sumber kebenaran bagi seluruh transisi usia karakter.
  */
@@ -29,6 +60,9 @@ export function tickAge(
 ): AgingTickResult {
   const { character } = state;
   const annualLogs: string[] = [];
+
+  // Validasi monotonitas usia untuk mencegah Age Rewind dan Age Skip
+  validateAndSyncAgeMonotonicity(state);
 
   // 1. Tambah usia 1 tahun
   character.age += 1;

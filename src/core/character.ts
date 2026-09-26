@@ -90,6 +90,21 @@ export function generateInitialFamily(rng: Mulberry32PRNG, lastName: string): NP
   ];
 }
 
+export const MAX_NAME_LENGTH = 30;
+
+/**
+ * Sanitasi nama karakter: memotong ke MAX_NAME_LENGTH (30 char),
+ * membersihkan tag HTML/skrip, dan menjamin string aman.
+ */
+export function sanitizeName(input: unknown, fallback: string = 'Karakter'): string {
+  if (typeof input !== 'string') return fallback;
+  // 1. Bersihkan seluruh tag HTML / XML (<script>, <img ...>, dll.)
+  const stripped = input.replace(/<[^>]*>?/gm, '').trim();
+  // 2. Potong panjang maksimal ke MAX_NAME_LENGTH
+  const truncated = stripped.slice(0, MAX_NAME_LENGTH).trim();
+  return truncated.length > 0 ? truncated : fallback;
+}
+
 /**
  * Membuat state karakter baru lengkap dengan jaminan sandbox dan log kelahiran.
  */
@@ -97,12 +112,17 @@ export function createNewLife(params: CharacterCreationParams): GlobalGameState 
   const seed = params.seed ?? 123456789;
   const rng = new Mulberry32PRNG(seed);
 
-  const firstName = params.firstName.trim();
-  const lastName = params.lastName.trim();
-
-  if (firstName.length === 0 || lastName.length === 0) {
+  if (
+    typeof params.firstName !== 'string' ||
+    typeof params.lastName !== 'string' ||
+    params.firstName.trim().length === 0 ||
+    params.lastName.trim().length === 0
+  ) {
     throw new Error('Nama depan dan belakang tidak boleh kosong');
   }
+
+  const firstName = sanitizeName(params.firstName, 'Fulan');
+  const lastName = sanitizeName(params.lastName, 'Fulana');
 
   const initialAttributes: CharacterAttributes = {
     happiness: clampStat(params.customStats?.happiness ?? rng.nextInt(60, 95)),

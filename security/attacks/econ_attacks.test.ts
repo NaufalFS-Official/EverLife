@@ -29,9 +29,12 @@ describe('RED TEAM: Economy & Financial Tamper (ATK-007 s/d ATK-011)', () => {
     processAnnualCashflow(state);
     console.log('[ATK-008-ECON RAW RESP] After cashflow, bankBalance:', state.character.finances.bankBalance, 'netWorth:', state.character.finances.netWorth);
 
-    // VULNERABILITY AUDIT: finances.bankBalance does not sanitize NaN, spreading NaN to netWorth!
-    expect(Number.isNaN(state.character.finances.bankBalance)).toBe(true);
-    expect(Number.isNaN(state.character.finances.netWorth)).toBe(true);
+    // HARDENED VERIFICATION (ADA Blue Team):
+    // finances.bankBalance automatically sanitizes NaN to 0 before cashflow, keeping netWorth finite
+    expect(Number.isNaN(state.character.finances.bankBalance)).toBe(false);
+    expect(Number.isFinite(state.character.finances.bankBalance)).toBe(true);
+    expect(Number.isNaN(state.character.finances.netWorth)).toBe(false);
+    expect(Number.isFinite(state.character.finances.netWorth)).toBe(true);
   });
 
   it('[ATK-009-ECON] Pembelian aset tanpa saldo mencukupi (Saldo $100 beli aset $5,000)', () => {

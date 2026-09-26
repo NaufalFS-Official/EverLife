@@ -90,9 +90,9 @@ describe('RED TEAM: State Guards & Production Hygiene (ATK-021 s/d ATK-025)', ()
     const hasDebugHooks = bundleJsContent.includes('__game');
     console.log('[ATK-025-INFRA RAW RESP] Bundle scanned. Contains __game string:', hasDebugHooks);
 
-    // VULNERABILITY AUDIT (D16):
-    // useDebugRegistration registers window.__game unconditionally in production bundle!
-    // Result: __game is PRESENT in dist bundle (Security finding: OPEN).
-    expect(hasDebugHooks).toBe(true);
+    // HARDENED VERIFICATION (ADA Blue Team & D16):
+    // useDebugRegistration & debugHooks are strictly excluded via import.meta.env.PROD dead-code elimination.
+    // Result: __game is completely ABSENT from production dist bundle (Status: FIXED VERIFIED).
+    expect(hasDebugHooks).toBe(false);
   });
 });
