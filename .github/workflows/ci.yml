@@ -5,6 +5,12 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -103,3 +109,40 @@ jobs:
           name: everlife-dist
           path: dist/
           retention-days: 7
+
+  deploy-pages:
+    name: Deploy to GitHub Pages (Mobile & Desktop)
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: [build-and-gate]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download Built Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: everlife-dist
+          path: ./dist
+
+      - name: Deploy to gh-pages branch (Direct Web Hosting)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
