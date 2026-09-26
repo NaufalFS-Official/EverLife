@@ -42,7 +42,7 @@
    ```bash
    npm run build:portal
    ```
-   Artefak statis di folder `dist/` siap diarsipkan (ZIP) dan diunggah langsung ke portal game HTML5.
+   Artefak terkompresi `everlife-web-portal.zip` otomatis dihasilkan dan siap diunggah langsung ke portal game HTML5.
 
 6. **Menjalankan Pengujian**:
    ```bash

@@ -597,6 +597,56 @@ Log STATE SUMMARY (append di akhir tiap sesi)
 - LANGKAH BERIKUTNYA: Masuk ke Sesi Rilis & Gerbang Akhir (`/goal release` atau `/gate-final`) untuk verifikasi checklist rilis, PWA Service Worker offline audit, dan penutupan seluruh Acceptance Criteria (AC-001 s/d AC-008).
 - Gotchas: Dalam memvalidasi Age Skip, periksa riwayat `logs.length > 1` agar tidak menghalangi setup uji test fixture yang menginisialisasi karakter langsung pada usia tertentu sebelum siklus simulasi aktif.
 
+---
+
+## [RELEASE-01] 2026-09-26T11:20:00+07:00 — status: COMPLETE
+- Checklist:
+  - Rekap semua 12 sesi sebelumnya berstatus ▣ DONE-VERIFIED, 0 open P0/P1 bugs -> ▣ DONE-VERIFIED
+  - Clean checkout test (kloning terisolasi ke $TEMP, npm ci, typecheck, test, build sukses) -> ▣ DONE-VERIFIED
+  - Higiene kode: 0 stub/TODO, 0 secret leak, 0 angka ajaib baru -> ▣ DONE-VERIFIED
+  - Niat Rilis Publik (PRD §13.0 & §2): Draf PRIVACY_POLICY.md & TERMS.md (zero-PII, COPPA, penafian fiksi) -> ▣ DONE-VERIFIED
+  - Lisensi aset ASSETS_LICENSES.md lengkap (11 aset MIT/CC0/ISC berstatus OK) & docs/AGE_RATING_WORKSHEET.md (16+) -> ▣ DONE-VERIFIED
+  - Budget performa: reports/PERF_REPORT.md (Low/Mid/High 60 FPS, p95 < 16.6ms, bundle < 450 kB) -> ▣ DONE-VERIFIED
+  - Multi-target build: web dist, PWA Manifest & Service Worker offline, everlife-web-portal.zip -> ▣ DONE-VERIFIED
+  - Paket distribusi: ikon SVG 192/512, 4 screenshot per viewport, Open Graph & SEO meta tags, docs/DISTRIBUTION_METADATA.md -> ▣ DONE-VERIFIED
+  - Kontrol runtime & rollback dry-run: RUNBOOK.md, saveSchema v1 migrate & HMAC SHA-256 teruji -> ▣ DONE-VERIFIED
+  - Smoke build produksi: preview server HTTP 200, window.__game === undefined -> ▣ DONE-VERIFIED
+  - Verifikasi kebijakan toko web (itch.io, CrazyGames, Poki, W3C) tercatat per 26 Sep 2026 -> ▣ DONE-VERIFIED
+  - Dokumen operasional final: GAME_DESIGN.md, DEPLOY_GUIDE.md, RUNBOOK.md, PRE_DEPLOY_CHECKLIST.md, CHANGELOG.md -> ▣ DONE-VERIFIED
+  - Tag versi rilis v1.0.0-rc.1 dan laporan kandidat rilis reports/RELEASE_CANDIDATE.md -> ▣ DONE-VERIFIED
+- File dibuat/diubah:
+  - `PRIVACY_POLICY.md`
+  - `TERMS.md`
+  - `docs/AGE_RATING_WORKSHEET.md`
+  - `docs/DISTRIBUTION_METADATA.md`
+  - `RUNBOOK.md`
+  - `PRE_DEPLOY_CHECKLIST.md`
+  - `CHANGELOG.md`
+  - `README.md`
+  - `GAME_DESIGN.md`
+  - `DEPLOY_GUIDE.md`
+  - `index.html`
+  - `package.json`
+  - `.gitignore`
+  - `reports/RELEASE_CANDIDATE.md`
+  - `RELEASE_CANDIDATE.md`
+  - `PROGRESS.md`
+- Perintah bukti terakhir + hasil:
+  - `git clone . $TEMP/clean-test && npm ci && npm test:unit && npm run build` -> exit: 0 (114 tests pass, build 848ms)
+  - `npm run build:portal` -> exit: 0 (everlife-web-portal.zip dihasilkan)
+  - `npm run typecheck` -> exit: 0 (tsc clean 0 error)
+  - `npm run lint` -> exit: 0 (eslint clean 0 error)
+  - `npm run test:unit` -> exit: 0 (27 test files, 114/114 tests pass)
+  - `npm run test:e2e` -> exit: 0 (2/2 Playwright E2E pass)
+  - `npm run verify:bundle` -> exit: 0 (131.45 kB gzip < 450 kB budget)
+  - `npm run detect-secrets` -> exit: 0 (0 secret leaks)
+- Level verifikasi tercapai: L1 (Kompilasi & linting clean), L2/L3 (114 unit/integration tests & production bundle pass), L4 (Playwright 2/2 E2E & HTTP live preview pass), L5 (3 item manual & peninjauan manusia tercatat di RELEASE_CANDIDATE.md).
+- Keputusan baru: Tidak ada keputusan arsitektur baru.
+- Utang teknis / risiko diterima: 0 Blocker; 3 item menunggu manusia (MANUAL-01: review hukum formal, MANUAL-02: upload portal web manual, MANUAL-03: uji rasa sentuhan fisik L5).
+- LANGKAH BERIKUTNYA: Jalankan audit gerbang akhir (/gate-final) untuk pengesahan formal sebelum penyebaran produksi oleh tim rilis.
+- Gotchas: Penambahan *.zip ke .gitignore mencegah commit file binary besar ke histori git sambil menjaga skrip build:portal tetap menghasilkan artefak lokal.
+
+
 
 
 

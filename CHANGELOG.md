@@ -2,24 +2,30 @@
 
 Semua perubahan penting pada proyek **EverLife** didokumentasikan di sini.
 
-## [Unreleased]
+## [1.0.0-rc.1] - 2026-09-26
 
 ### Added
-- Inisialisasi struktur repositori, direktori `docs/`, `reports/`, `security/attacks/` via `/init`.
-- Dokumen memori proyek: `PROGRESS.md`, `DECISION.md`, `BUGS.md`, `BALANCE.md`, `CHANGELOG.md`, `ENV_CHECKLIST.md`, `ASSETS_LICENSES.md`, dan `AGENTS.md`.
-- Dokumen analisis dan spesifikasi arsitektur: `docs/gemini_analysis.md`, `docs/game_prd_v1.1.md` (LOCKED), dan `docs/blueprint_final.md` (APPROVED).
-
-### Changed
-- Tidak ada.
+- **Core Simulation**: Mesin penuaan deterministik (+Age), pohon pendidikan & karir bertingkat, relasi keluarga & sosial, transaksi aset (mobil & rumah), dan aktivitas kriminal dengan risiko vonis penjara.
+- **Visual & UI**: Desain antarmuka mobile-first portrait (390x844 px), kustomisasi avatar modular, modal skenario keputusan interaktif dengan animasi getar, kartu memorial nisan dengan sistem Pita Kematian (Ribbons).
+- **Audio Stack**: Sintesis audio prosedural Web Audio API murni untuk 7 SFX responsif (0ms latency, zero assets 404).
+- **Platform & PWA**: Standalone PWA Manifest (`manifest.webmanifest`), Service Worker offline cache (`sw.js`), 3 lapis fallback persistensi (IndexedDB -> localStorage -> Memory).
+- **Distribusi Portal**: Skrip `npm run build:portal` yang menghasilkan arsip terkompresi `everlife-web-portal.zip` siap diunggah ke Itch.io / CrazyGames / Poki.
+- **Legal & Compliance**: Draf `PRIVACY_POLICY.md`, `TERMS.md`, `ASSETS_LICENSES.md`, dan `docs/AGE_RATING_WORKSHEET.md` (rating 16+).
 
 ### Fixed
-- Tidak ada.
+- BUG-001: Feedback visual micro-shake pada dialog modal saat pemain mengetuk dock menu yang terkunci.
+- BUG-002: Cleanup timer `useRef` di `SettingsModal` untuk mencegah potensi kebocoran timer unmount.
+- BUG-003: Konfigurasi instalasi Chromium Playwright tanpa unduhan binary di luar izin.
+- Perbaikan mortalitas burnout dan penalti skenario naratif melalui 3.000 run simulasi headless (median lifespan stabil di 73 tahun).
 
 ### Security
-- Penerapan salted SHA-256 HMAC envelope pada SaveData schema untuk integritas penyimpanan offline C0.
+- **Eliminasi Debug Hooks**: Dead-code elimination via `import.meta.env.PROD` menjamin `window.__game` tidak terbundel ke dalam artefak rilis produksi.
+- **Sanitasi Finansial**: Fungsi `sanitizeCurrency` mencegah racun nilai `NaN` dan `Infinity` pada arus kas dan kekayaan bersih.
+- **Monotonitas Usia**: Validator `validateAndSyncAgeMonotonicity` memblokir upaya Age Rewind (pemunduran umur) dan Age Skip (lompatan penuaan instan).
+- **Sanitasi Input**: Pembersihan tag markup HTML/XSS dan pemotongan panjang nama karakter maksimal 30 karakter (`MAX_NAME_LENGTH`).
+- **Header Keamanan**: Penerapan Content-Security-Policy (CSP), CORS, X-Content-Type-Options, Referrer-Policy, dan Permissions-Policy.
 
-### Balance
-- Penentuan konstanta awal Feel Spec dan mortalitas di `BALANCE.md`.
+---
 
-### Migration
-- Perancangan interface `ISaveRepository` untuk mendukung migrasi mulus dari IndexedDB ke REST/Supabase di masa depan.
+## [0.1.0-alpha] - 2026-09-25
+- Inisialisasi struktur repositori, shared contracts, dan spesifikasi game.

@@ -5,6 +5,7 @@ node_modules/
 # Production output
 dist/
 build/
+*.zip
 
 # Coverage & test artifacts
 coverage/
