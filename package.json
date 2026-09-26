@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "build:debug": "vite build --mode development",
     "build:web": "npm run build",
-    "build:portal": "npm run build && powershell -Command \"Compress-Archive -Path dist/* -DestinationPath everlife-web-portal.zip -Force\" && node -e \"console.log('[PORTAL READY] everlife-web-portal.zip siap diunggah ke Web Game Portal.')\"",
+    "build:portal": "npm run build && node scripts/package_portal.cjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
